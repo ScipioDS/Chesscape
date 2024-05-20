@@ -12,7 +12,7 @@ namespace Chesscape
 {
     public partial class Menu : Form
     {
-        public Form1()
+        public Menu()
         {
             InitializeComponent();
         }
