@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chesscape.Chess
+namespace Chesscape
 {
-    internal class Piece
+    public abstract class Piece
     {
     }
 }
