@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\Chesscape",
-    "\\Chesscape\\Chess"
+    "\\Chesscape\\Chess",
+    "\\Chesscape\\Menu"
   ],
-  "SelectedNode": "\\Chesscape\\Chess\\cburnett_pieces",
+  "SelectedNode": "\\Chesscape.sln",
   "PreviewInSolutionExplorer": false
 }

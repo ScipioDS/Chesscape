@@ -1,0 +1,10 @@
+C:\Users\david\Source\Repos\Chesscape\Chesscape\bin\Debug\Chesscape.exe.config
+C:\Users\david\Source\Repos\Chesscape\Chesscape\bin\Debug\Chesscape.exe
+C:\Users\david\Source\Repos\Chesscape\Chesscape\bin\Debug\Chesscape.pdb
+C:\Users\david\Source\Repos\Chesscape\Chesscape\obj\Debug\Chesscape.csproj.AssemblyReference.cache
+C:\Users\david\Source\Repos\Chesscape\Chesscape\obj\Debug\Chesscape.Chess.TacticsForm.resources
+C:\Users\david\Source\Repos\Chesscape\Chesscape\obj\Debug\Chesscape.Properties.Resources.resources
+C:\Users\david\Source\Repos\Chesscape\Chesscape\obj\Debug\Chesscape.csproj.GenerateResource.cache
+C:\Users\david\Source\Repos\Chesscape\Chesscape\obj\Debug\Chesscape.csproj.CoreCompileInputs.cache
+C:\Users\david\Source\Repos\Chesscape\Chesscape\obj\Debug\Chesscape.exe
+C:\Users\david\Source\Repos\Chesscape\Chesscape\obj\Debug\Chesscape.pdb

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Chesscape
+namespace Chesscape.Chess
 {
     /// <summary>
     /// Note: byte (unsigned 8-bit integer) is used as a type to reduce waste on memory by using int (unsigned 8-bit integer);
@@ -16,13 +16,16 @@ namespace Chesscape
     /// </summary
     public class Square
     {
+        //Logic attributes
         public readonly byte File;
         public readonly byte Rank;
-        private Piece Piece;
+        public Piece Piece;
         public readonly static Dictionary<int, char> NumericToFile = new Dictionary<int, char>();
         public readonly static Dictionary<char, int> FileToNumeric = new Dictionary<char, int>();
 
-        // TODO: add attributes for drawing
+        //Drawing attributes
+        public Point TopLeftCoord { get; set; }
+        public Color ColorDraw { get; set; }
 
         /// <summary>
         /// Full identification and definition of a square.
@@ -30,7 +33,7 @@ namespace Chesscape
         /// <param name="File">The File of the Square</param>
         /// <param name="Rank">The Rank of the Square</param>
         /// <param name="Piece">Piece resident on this Square</param>
-        public Square(byte File, byte Rank, Piece Piece)
+        public Square(byte Rank, byte File, Piece Piece)
         {
             Trace.Assert(File <= 7 && Rank >= 0); // insurance the File is in the range [0, 7]
             Trace.Assert(Rank <= 7 && Rank >= 0); // insurance the Rank is in the range [0, 7]
@@ -40,24 +43,37 @@ namespace Chesscape
             this.Piece = Piece;
         }
 
+
+        /// <summary>
+        /// Sets dictionaries to translate letters to unsigned integers to help index the board. (described in class summary)
+        /// </summary>
         public static void SetFileTranslation()
         {
-            for (char i = 'a'; i < 'a' + 8; ++i)
+            for (char i = 'a'; i <= 'h'; ++i)
             {
                 NumericToFile.Add((i - 'a'), i);
                 FileToNumeric.Add(i, (i - 'a'));
             }
         }
 
+        /// <summary>
+        /// Using dictionaries, makes up a formally defined string represenation of a square("a6", "e4", ...)
+        /// </summary>
+        /// <returns>A formal notation representing a square.</returns>
         public override string ToString()
         {
             return $"{NumericToFile[File]}{Rank + 1}";
         }
 
-        public void Draw(Graphics g)
+        /// <summary>
+        /// Drawing logic of a square.
+        /// </summary>
+        /// <param name="g">Graphics object to draw square.</param>
+        /// <param name="size">Width and height of a square.</param>
+        public void Draw(Graphics g, int size)
         {
-            // TODO: Implement particular square drawing (more arguments may be needed, position...)
-            throw new NotImplementedException();
+            Brush fillSquare = new SolidBrush(ColorDraw);
+            g.FillRectangle(fillSquare, TopLeftCoord.X, TopLeftCoord.Y, size, size);
         }
     }
 }
