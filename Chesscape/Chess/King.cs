@@ -16,7 +16,7 @@ namespace Chesscape.Chess
 
         public override string ToString()
         {
-            return White ? "K" : "k";
+            return White ?  "K" : "k";
         }
     }
 }

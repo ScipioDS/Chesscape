@@ -1,15 +1,8 @@
-﻿using Chesscape;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Messaging;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms.VisualStyles;
+using Chesscape.Chess.Internals;
 
 namespace Chesscape.Chess
 {
@@ -87,102 +80,15 @@ namespace Chesscape.Chess
         }
 
         /// <summary>
-        /// Interface through which the board position is set.
+        /// Interface through which the board position is set using a Forsyth-Edwards Notation as a board identifier.
         /// </summary>
-        /// <param name="FEN">A Forsyth-Edwards notation string.</param>
-        public void SetBoard(string FEN)
+        /// <param name="FENString">A Forsyth-Edwards notation string.</param>
+        public void SetBoard(string FENString)
         {
-            FENTranslateAndSet(FEN);
+            FEN.Translate(FENString);
         }
 
-        /// <summary>
-        /// A Forsyth-Edwards notation translator function. Translates a FEN string to pieces on the board, sets available casting, en-passant target square (if any) and who's turn it is.
-        /// </summary>
-        /// <param name="FEN">A given Forsyth-Edwards notation chess position.</param>
-        private void FENTranslateAndSet(string FEN)
-        {
-            string[] parts = FEN.Split(' ');
-
-            SquareSetup(parts[0]);
-
-            WhiteToPlay = parts[1].Equals("w");
-
-            Square EnPassantTarget = parts[3].Equals("-") ? null : PositionToSquare(parts[3]);
-
-            //TODO: Add available castling rights;
-        }
-
-        /// <summary>
-        /// Gets the first part of FEN string, and using that, translates the string to pieces on the board.
-        /// </summary>
-        /// <param name="firstPartFEN">The piece positions part of the FEN string.</param>
-        private void SquareSetup(string firstPartFEN) {
-
-            byte indexFEN = 0; // used to index the string
-
-            for (int i = 7; i >= 0; --i)
-            {
-                bool nextRow = false;
-
-                for (int j = 0; j < 8; ++j)
-                {
-                    Square squareSetting = Squares[7 - i][j];
-                    char checkEl = firstPartFEN[indexFEN++];
-
-                    switch (checkEl)
-                    {
-                        case 'P':
-                            squareSetting.Piece = new Pawn(true);
-                            break;
-                        case 'p':
-                            squareSetting.Piece = new Pawn(false);
-                            break;
-                        case 'B':
-                            squareSetting.Piece = new Bishop(true);
-                            break;
-                        case 'b':
-                            squareSetting.Piece = new Bishop(false);
-                            break;
-                        case 'Q':
-                            squareSetting.Piece = new Queen(true);
-                            break;
-                        case 'q':
-                            squareSetting.Piece = new Queen(false);
-                            break;
-                        case 'R':
-                            squareSetting.Piece = new Rook(true);
-                            break;
-                        case 'r':
-                            squareSetting.Piece = new Rook(false);
-                            break;
-                        case 'N':
-                            squareSetting.Piece = new Knight(true);
-                            break;
-                        case 'n':
-                            squareSetting.Piece = new Knight(false);
-                            break;
-                        case 'K':
-                            squareSetting.Piece = new King(true);
-                            break;
-                        case 'k':
-                            squareSetting.Piece = new King(false);
-                            break;
-                        case '/':
-                            if (j != 0) nextRow = true;
-                            else j--;
-                            break;
-                        default:
-                            int forward = int.Parse(char.ToString(checkEl)) - 1;
-                            j += forward;
-                            break;
-                    }
-
-                    if (nextRow) break;
-                }
-            }
-        }
-
-
+        
         /// <summary>
         /// Returns the square in the Board matrix with the position passed as an argument
         /// </summary>

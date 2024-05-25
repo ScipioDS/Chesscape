@@ -61,6 +61,7 @@
     <Compile Include="Chess\TacticsForm.Designer.cs">
       <DependentUpon>TacticsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Chess\Internals\FEN.cs" />
     <Compile Include="Menu\Menu.cs">
       <SubType>Form</SubType>
     </Compile>
