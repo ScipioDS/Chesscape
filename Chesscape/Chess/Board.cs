@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Text;
@@ -19,9 +20,11 @@ namespace Chesscape.Chess
         //Do not change value 64 unless necessary.
         private static readonly int SQUARE_SIZE = 64;
 
+        //Board matrix
         public Square[][] Squares { get; set; }
+        //En passant target square
         public Square EnPassantTarget { get; set; }
-
+        //Turn
         public bool WhiteToPlay { get; set; }
 
         /// <summary>
@@ -38,7 +41,7 @@ namespace Chesscape.Chess
                 Squares[i] = new Square[8];
                 for (int j = 0; j < 8; ++j)
                 {
-                    Squares[i][j] = new Square((byte) (7 - i), (byte) j, null);
+                    Squares[i][j] = new Square((byte)(7 - i), (byte)j, null);
                 }
             }
         }
@@ -88,7 +91,7 @@ namespace Chesscape.Chess
             FEN.Translate(FENString);
         }
 
-        
+
         /// <summary>
         /// Returns the square in the Board matrix with the position passed as an argument
         /// </summary>
@@ -98,35 +101,146 @@ namespace Chesscape.Chess
         {
             int file = Square.FileToNumeric[position[0]];
             int rank = int.Parse(position[1].ToString()) - 1;
-            for (int i = 0; i < 8; ++i)
-            {
-                for (int j = 0; j < 8; ++j)
-                {
-                    if (SingleBoard.Squares[i][j] == SingleBoard.Squares[7 - rank][file])
-                    {
-                        Debug.WriteLine($"{i} {j}");
-                        break;
-                    }
-                }
-            }
+
             return SingleBoard.Squares[7 - rank][file];
         }
 
-        
+        /// <summary>
+        /// Computes legal moves that a rook would have (straight line moves)
+        /// This is not to be used only by moves for rooks, Queens can reuse this.
+        /// </summary>
+        /// <param name="source">A square containing a piece.</param>
+        /// <returns>A set containing legal moves that a rook would have.</returns>
+        public HashSet<Move> ForthrightTrajectory(Square source)
+        {
+            HashSet<Move> legalMoves = new HashSet<Move>();
+
+            int sJ = source.File;
+            int sI = source.GetRankPhysical();
+
+            //up
+            for (int i = source.GetRankPhysical() - 1; i >= 0; --i)
+            {
+                AppendMove(source, Squares[i][sJ], legalMoves);
+            }
+
+            //down
+            for (int i = source.GetRankPhysical() + 1; i < 8; ++i)
+            {
+                AppendMove(source, Squares[i][sJ], legalMoves);
+            }
+
+            //left
+            for (int j = source.File - 1; j >= 0; --j)
+            {
+                AppendMove(source, Squares[sI][j], legalMoves);
+            }
+
+            //right
+            for (int j = source.File + 1; j < 8; ++j)
+            {
+                AppendMove(source, Squares[sI][j], legalMoves);
+            }
+
+            return legalMoves;
+        }
+
+        /// <summary>
+        /// Computes the legal moves a knight would have for a given square.
+        /// </summary>
+        /// <param name="source">A square containing a piece.</param>
+        /// <returns>>A set containing legal moves for a knight.</returns>
+        private HashSet<Move> GTrajectory(Square source) 
+        {
+            //TODO implement
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Computes the legal moves a pawn would have for a given square.
+        /// </summary>
+        /// <param name="source">A square containing a piece.</param>
+        /// <returns>A set containing legal moves for a pawn.</returns>
+        private HashSet<Move> PawnTrajectory (Square source)
+        {
+            //TODO implement
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 
+        /// This is not to be used only by moves for bishop, Queens can reuse this.
+        /// </summary>
+        /// <param name="source">A square containing a piece.</param>
+        /// <returns>A set containing legal moves for a bishop.</returns>
+        public HashSet<Move> DiagonalTrajectory(Square source)
+        {
+            HashSet<Move> legalMoves = new HashSet<Move>();
+
+            // bottom right
+            for (int i = source.GetRankPhysical() + 1, j = source.File + 1; i < 8 && j < 8; ++i, ++j)
+            {
+                if (! AppendMove(source, Squares[i][j], legalMoves)) break;
+            }
+
+            // top right
+            for (int i = source.GetRankPhysical() - 1, j = source.File + 1; i >= 0 && j < 8; --i, ++j)
+            {
+                Debug.WriteLine($"{i} {j}");
+                if (!AppendMove(source, Squares[i][j], legalMoves)) break;
+            }
+
+            //top left
+            for (int i = source.GetRankPhysical() - 1, j = source.File - 1; i >= 0 && j >= 0; --i, --j)
+            {
+                if (!AppendMove(source, Squares[i][j], legalMoves)) break;
+            }
+
+            //bottom left
+            for (int i = source.GetRankPhysical() + 1, j = source.File - 1; i < 8 && j >= 0 ; ++i, --j)
+            {
+                if (!AppendMove(source, Squares[i][j], legalMoves)) break;
+            }
+
+            return legalMoves;
+        }
+
+        /// <summary>
+        /// Method that calls upon each square to draw itself.
+        /// </summary>
+        /// <param name="g">Graphics object obtained form Paint method arguments in TacticsForm.cs</param>
+        /// <param name="topLeft">The top left point of the square itself.</param>
         public void DrawAllComponents(Graphics g, Point topLeft)
         {
             Array.ForEach(Squares, rank => Array.ForEach(rank, square => square.Draw(g, SQUARE_SIZE)));
         }
 
+
         /// <summary>
-        /// Debugging purposes. To be called with Debug.WriteLine(board.ToString());
+        /// Utility method to append legal moves to a set. To be called inside trajectory method loops.
+        /// </summary>
+        /// <param name="source">The source square in which the piece resides.</param>
+        /// <param name="target">The target square to which the piece will move.</param>
+        /// <param name="fill">A set that is filled with all legal moves from a given square.</param>
+        /// <returns>True iff we dont encounter a blockade for the trajectory, false otherwise.</returns>
+        private bool AppendMove(Square source, Square target, HashSet<Move> fill)
+        {
+            if ((target.PieceResident() && (source.Piece.White != target.Piece.White)) || !target.PieceResident())
+            {
+                return fill.Add(new Move(source, target));
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Only for debugging purposes. To be called with Debug.WriteLine(board.ToString());
         /// </summary>
         /// <returns>An ASCII string representation of the board.</returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
 
-            for(int i = 0; i < 8; ++i)
+            for (int i = 0; i < 8; ++i)
             {
                 for (int j = 0; j < 8; ++j)
                 {

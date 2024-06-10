@@ -50,6 +50,7 @@
     <Compile Include="Chess\Board.cs" />
     <Compile Include="Chess\King.cs" />
     <Compile Include="Chess\Knight.cs" />
+    <Compile Include="Chess\Move.cs" />
     <Compile Include="Chess\Pawn.cs" />
     <Compile Include="Chess\Piece.cs" />
     <Compile Include="Chess\Queen.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -94,6 +96,42 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Chess\cburnett_pieces\b_rook.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Chess\cburnett_pieces\b_knight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Chess\cburnett_pieces\b_bishop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Chess\cburnett_pieces\b_queen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Chess\cburnett_pieces\w_bishop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Chess\cburnett_pieces\w_king.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Chess\cburnett_pieces\w_knight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Chess\cburnett_pieces\w_pawn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Chess\cburnett_pieces\w_queen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Chess\cburnett_pieces\w_rook.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Chess\cburnett_pieces\b_king.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Chess\cburnett_pieces\b_pawn.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Chesscape.Chess
 {
@@ -13,7 +15,7 @@ namespace Chesscape.Chess
     {
         //Logic attributes
         public readonly byte File;
-        public readonly byte Rank;
+        private readonly byte RankLogical;
         public Piece Piece;
         public readonly static Dictionary<int, char> NumericToFile = new Dictionary<int, char>();
         public readonly static Dictionary<char, int> FileToNumeric = new Dictionary<char, int>();
@@ -21,21 +23,31 @@ namespace Chesscape.Chess
         //Drawing attributes
         public Point TopLeftCoord { get; set; }
         public Color ColorDraw { get; set; }
+        private PictureBox PiecePic;
 
         /// <summary>
         /// Full identification and definition of a square.
         /// </summary>
         /// <param name="File">The File of the Square</param>
-        /// <param name="Rank">The Rank of the Square</param>
+        /// <param name="RankLogical">The Rank of the Square</param>
         /// <param name="Piece">Piece resident on this Square</param>
-        public Square(byte Rank, byte File, Piece Piece)
+        public Square(byte RankLogical, byte File, Piece Piece)
         {
-            Trace.Assert(File <= 7 && Rank >= 0); // insurance the File is in the range [0, 7]
-            Trace.Assert(Rank <= 7 && Rank >= 0); // insurance the Rank is in the range [0, 7]
+            Trace.Assert(File <= 7 && RankLogical >= 0); // insurance the File is in the range [0, 7]
+            Trace.Assert(RankLogical <= 7 && RankLogical >= 0); // insurance the Rank is in the range [0, 7]
 
             this.File = File; // the file is indexed by j in the board matrix (columns)
-            this.Rank = Rank; // the rank is indexed by i in the board matrix (rows)
+            this.RankLogical = RankLogical; // the rank is indexed by i in the board matrix (rows)
             this.Piece = Piece;
+        }
+
+        /// <summary>
+        /// Indicator stating if a piece is on this square.
+        /// </summary>
+        /// <returns>True if a piece is currently on the square, false otherwise.</returns>
+        public bool PieceResident()
+        {
+            return Piece != null;
         }
 
 
@@ -51,22 +63,43 @@ namespace Chesscape.Chess
             }
         }
 
+
         /// <summary>
         /// Using dictionaries, makes up a formally defined string represenation of a square("a6", "e4", ...)
         /// </summary>
         /// <returns>A formal notation representing a square.</returns>
         public override string ToString()
         {
-            return $"{NumericToFile[File]}{Rank + 1}";
+            return $"{NumericToFile[File]}{RankLogical + 1}";
+        }
+
+        /// <summary>
+        /// Very important method! Use only this method to index squares by row in the board matrix.
+        /// </summary>
+        /// <returns>The actual index of the row in the Board matrix.</returns>
+        public int GetRankPhysical()
+        {
+            return 7 - RankLogical;
+        }
+
+        /// <summary>
+        /// Sets the PiecePic field according to which piece lives on the Square. To be used for drawing.
+        /// </summary>
+        public void SetImage()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
         /// Drawing logic of a square.
         /// </summary>
         /// <param name="g">Graphics object to draw square.</param>
+        ///
+     
         /// <param name="size">Width and height of a square.</param>
         public void Draw(Graphics g, int size)
         {
+            SetImage();
             Brush fillSquare = new SolidBrush(ColorDraw);
             g.FillRectangle(fillSquare, TopLeftCoord.X, TopLeftCoord.Y, size, size);
         }
