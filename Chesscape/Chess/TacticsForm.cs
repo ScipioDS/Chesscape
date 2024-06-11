@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
@@ -9,6 +10,7 @@ namespace Chesscape.Chess
     {
 
         private Board board;
+        public static PictureBox[][] picBoxes = new PictureBox[8][];
 
         public TacticsForm()
         {
@@ -18,7 +20,8 @@ namespace Chesscape.Chess
             Square.SetFileTranslation();
             board = Board.GetInstance();
             board.SetPerspective(true);
-            board.SetBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0");
+            board.SetBoard("1R6/2bnQP1K/br1N1BP1/nPkp1P2/2p1P1P1/4Ppqp/p1r1ppp1/1PNR3B w - - 0 1");
+
             Debug.WriteLine(board);
 
             Invalidate();
@@ -26,8 +29,12 @@ namespace Chesscape.Chess
 
         private void TacticsForm_Paint(object sender, PaintEventArgs e)
         {
-            board.DrawAllComponents(e.Graphics, new Point(50, 50));
+            board.DrawAllComponents(e.Graphics);
         }
 
+        private void TacticsForm_Load(object sender, System.EventArgs e)
+        {
+
+        }
     }
 }

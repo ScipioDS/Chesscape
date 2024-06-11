@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace Chesscape.Chess
 {
@@ -85,23 +86,23 @@ namespace Chesscape.Chess
         /// <summary>
         /// Sets the PiecePic field according to which piece lives on the Square. To be used for drawing.
         /// </summary>
-        public void SetImage()
+        public void SetImage(Graphics g)
         {
-            throw new NotImplementedException();
+            if (Piece == null) return;
+            g.DrawImage(Piece.GetImage(), TopLeftCoord);
         }
 
         /// <summary>
         /// Drawing logic of a square.
         /// </summary>
         /// <param name="g">Graphics object to draw square.</param>
-        ///
-     
         /// <param name="size">Width and height of a square.</param>
         public void Draw(Graphics g, int size)
         {
-            SetImage();
-            Brush fillSquare = new SolidBrush(ColorDraw);
-            g.FillRectangle(fillSquare, TopLeftCoord.X, TopLeftCoord.Y, size, size);
+            using (Brush fillSquare = new SolidBrush(ColorDraw))
+                g.FillRectangle(fillSquare, TopLeftCoord.X, TopLeftCoord.Y, size, size);
+
+            SetImage(g);
         }
     }
 }

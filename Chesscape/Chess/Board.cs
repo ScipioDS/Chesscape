@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Text;
+using System.Windows.Forms;
 using Chesscape.Chess.Internals;
+
 
 namespace Chesscape.Chess
 {
@@ -34,14 +36,13 @@ namespace Chesscape.Chess
         {
             Squares = new Square[8][];
 
-            int reverseSetRank = 0;
-
-            for (int i = 7; i >= 0; --i, reverseSetRank++)
+            for (int i = 7; i >= 0; --i)
             {
                 Squares[i] = new Square[8];
                 for (int j = 0; j < 8; ++j)
                 {
                     Squares[i][j] = new Square((byte)(7 - i), (byte)j, null);
+
                 }
             }
         }
@@ -56,8 +57,8 @@ namespace Chesscape.Chess
         /// <summary>
         /// Board perspective drawing logic. Sets the basis square colors from which the board will be drawn.
         /// </summary>
-        /// <param name="startWhite">Pass true if the board perspective is from the white player.</param>
-        public void SetPerspective(bool startWhite)
+        /// <param name="white">Pass true if the board perspective is from the white player.</param>
+        public void SetPerspective(bool white)
         {
             int y_incrementer = 53;
             for (int i = 0; i < 8; ++i, y_incrementer += 64)
@@ -65,20 +66,20 @@ namespace Chesscape.Chess
                 int x_incrementer = 53;
                 for (int j = 0; j < 8; ++j, x_incrementer += 64)
                 {
-                    if (startWhite)
+                    if (white)
                     {
-                        SingleBoard.Squares[i][j].ColorDraw = Color.Bisque;
+                        SingleBoard.Squares[i][j].ColorDraw = Color.FromArgb(255, 173, 189, 143);
                     }
                     else
                     {
-                        SingleBoard.Squares[i][j].ColorDraw = Color.FromArgb(100, 183, 136, 118);
+                        SingleBoard.Squares[i][j].ColorDraw = Color.FromArgb(255, 111, 143, 114);
                     }
 
                     SingleBoard.Squares[i][j].TopLeftCoord = new Point(x_incrementer, y_incrementer);
 
-                    startWhite = !startWhite;
+                    white = !white;
                 }
-                startWhite = !startWhite;
+                white = !white;
             }
         }
 
@@ -210,7 +211,7 @@ namespace Chesscape.Chess
         /// </summary>
         /// <param name="g">Graphics object obtained form Paint method arguments in TacticsForm.cs</param>
         /// <param name="topLeft">The top left point of the square itself.</param>
-        public void DrawAllComponents(Graphics g, Point topLeft)
+        public void DrawAllComponents(Graphics g)
         {
             Array.ForEach(Squares, rank => Array.ForEach(rank, square => square.Draw(g, SQUARE_SIZE)));
         }
