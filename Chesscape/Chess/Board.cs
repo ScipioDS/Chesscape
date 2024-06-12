@@ -31,6 +31,7 @@ namespace Chesscape.Chess
         //Selection
         public Piece SelectedPiece { get; set; } = null;
         public Point Cursor { get; set; }
+        public Square FromSquare {  get; set; }
 
         /// <summary>
         /// Reserves memory for the Square matrix (the board itself). Private due to singleton.
@@ -265,7 +266,36 @@ namespace Chesscape.Chess
         /// </summary>
         public void Select(Point point)
         {
-            // TODO: implement getting from square
+            Square square = getSquare(point);
+
+            if (square.Piece != null) 
+            {
+                this.SelectedPiece = square.Piece;
+                FromSquare = square;
+            }
+            
+            this.Cursor = point;
+        }
+        /// <summary>
+        /// Moves piece from square to square
+        /// </summary>
+        public void MakeMove(Point point)
+        {
+            Square square = getSquare(point);
+
+            if (!square.PieceResident() && FromSquare!=null)
+            {
+                square.Piece = this.SelectedPiece;
+                FromSquare.Piece = null;
+                FromSquare = null;
+            }
+            this.SelectedPiece = null;
+        }
+        /// <summary>
+        /// Returns the square over which a point (the cursor) is located.
+        /// </summary>
+        public Square getSquare(Point point)
+        {
             int iI = 0, jJ = 0;
             int y_incrementer = 53;
             for (int i = 0; i < 8; ++i, y_incrementer += 64)
@@ -282,13 +312,7 @@ namespace Chesscape.Chess
 
                 }
             }
-
-            if (Squares[iI][jJ].Piece != null) 
-            {
-                this.SelectedPiece = Squares[iI][jJ].Piece;
-            }
-            
-            this.Cursor = point;
+            return Squares[iI][jJ];
         }
     }
 }

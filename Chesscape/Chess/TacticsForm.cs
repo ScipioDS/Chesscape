@@ -42,7 +42,7 @@ namespace Chesscape.Chess
         }
         private void TacticsForm_MouseUp(object sender, MouseEventArgs e)
         {
-            board.SelectedPiece = null;
+            board.MakeMove(e.Location);
         }
         private void TacticsForm_MouseMove(object sender, MouseEventArgs e)
         {

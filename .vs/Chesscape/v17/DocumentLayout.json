@@ -7,16 +7,20 @@
       "RelativeMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|solutionrelative:chesscape\\chess\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|C:\\Users\\Skipio\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\TacticsForm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|solutionrelative:Chesscape\\Chess\\TacticsForm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|C:\\Users\\Skipio\\source\\repos\\ChesscapeProject\\chesscape\\chess\\tacticsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|solutionrelative:chesscape\\chess\\tacticsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|C:\\Users\\Skipio\\source\\repos\\ChesscapeProject\\chesscape\\chess\\tacticsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|solutionrelative:chesscape\\chess\\tacticsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|C:\\Users\\Skipio\\source\\repos\\ChesscapeProject\\chesscape\\chess\\piece.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|solutionrelative:chesscape\\chess\\piece.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|c:\\users\\skipio\\source\\repos\\chesscapeproject\\chesscape\\chess\\square.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|solutionrelative:chesscape\\chess\\square.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Document",
@@ -36,10 +40,11 @@
               "RelativeDocumentMoniker": "Chesscape\\Chess\\Piece.cs",
               "ToolTip": "C:\\Users\\Skipio\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\Piece.cs",
               "RelativeToolTip": "Chesscape\\Chess\\Piece.cs",
-              "ViewState": "AQIAAAEAAAAAAAAAAAAQwBYAAAAAAAAA",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAABYAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-11T11:48:02.731Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
@@ -59,14 +64,41 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Square.cs",
+              "DocumentMoniker": "C:\\Users\\Skipio\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\Square.cs",
+              "RelativeDocumentMoniker": "Chesscape\\Chess\\Square.cs",
+              "ToolTip": "C:\\Users\\Skipio\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\Square.cs",
+              "RelativeToolTip": "Chesscape\\Chess\\Square.cs",
+              "ViewState": "AQIAACkAAAAAAAAAAAAgwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-12T19:36:51.28Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "TacticsForm.cs",
+              "DocumentMoniker": "C:\\Users\\Skipio\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\TacticsForm.cs",
+              "RelativeDocumentMoniker": "Chesscape\\Chess\\TacticsForm.cs",
+              "ToolTip": "C:\\Users\\Skipio\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\TacticsForm.cs",
+              "RelativeToolTip": "Chesscape\\Chess\\TacticsForm.cs",
+              "ViewState": "AQIAAB8AAAAAAAAAAAAQwCsAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-06-11T12:08:55.711Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "TacticsForm.cs [Design]",
               "DocumentMoniker": "C:\\Users\\Skipio\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\TacticsForm.cs",
               "RelativeDocumentMoniker": "Chesscape\\Chess\\TacticsForm.cs",
               "ToolTip": "C:\\Users\\Skipio\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\TacticsForm.cs [Design]",
               "RelativeToolTip": "Chesscape\\Chess\\TacticsForm.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-12T12:28:32.608Z"
+              "WhenOpened": "2024-06-12T12:28:32.608Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
@@ -76,22 +108,10 @@
               "RelativeDocumentMoniker": "Chesscape\\Chess\\Board.cs",
               "ToolTip": "C:\\Users\\Skipio\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\Board.cs",
               "RelativeToolTip": "Chesscape\\Chess\\Board.cs",
-              "ViewState": "AQIAAAUBAAAAAAAAAAAgwBMBAACOAAAA",
+              "ViewState": "AQIAAAoBAAAAAAAAAAA3wB4BAAAiAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-11T12:15:24.742Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "TacticsForm.cs",
-              "DocumentMoniker": "C:\\Users\\Skipio\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\TacticsForm.cs",
-              "RelativeDocumentMoniker": "Chesscape\\Chess\\TacticsForm.cs",
-              "ToolTip": "C:\\Users\\Skipio\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\TacticsForm.cs",
-              "RelativeToolTip": "Chesscape\\Chess\\TacticsForm.cs",
-              "ViewState": "AQIAAB0AAAAAAAAAAAAIwCwAAAAnAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-11T12:08:55.711Z"
             }
           ]
         }
