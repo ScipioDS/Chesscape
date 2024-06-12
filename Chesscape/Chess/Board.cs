@@ -28,6 +28,9 @@ namespace Chesscape.Chess
         public Square EnPassantTarget { get; set; }
         //Turn
         public bool WhiteToPlay { get; set; }
+        //Selection
+        public Piece SelectedPiece { get; set; } = null;
+        public Point Cursor { get; set; }
 
         /// <summary>
         /// Reserves memory for the Square matrix (the board itself). Private due to singleton.
@@ -214,6 +217,10 @@ namespace Chesscape.Chess
         public void DrawAllComponents(Graphics g)
         {
             Array.ForEach(Squares, rank => Array.ForEach(rank, square => square.Draw(g, SQUARE_SIZE)));
+            if (SelectedPiece != null)
+            {
+                g.DrawImage(SelectedPiece.GetImage(), new Point(Cursor.X - 32, Cursor.Y - 32));
+            }
         }
 
 
@@ -251,6 +258,37 @@ namespace Chesscape.Chess
                 sb.Append("\n");
             }
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Adds a duplicate of the piece over which the cursor is to selected piece. To be used with move
+        /// </summary>
+        public void Select(Point point)
+        {
+            // TODO: implement getting from square
+            int iI = 0, jJ = 0;
+            int y_incrementer = 53;
+            for (int i = 0; i < 8; ++i, y_incrementer += 64)
+            {
+                int x_incrementer = 53;
+                for (int j = 0; j < 8; ++j, x_incrementer += 64)
+                {
+                    if (point.X >= x_incrementer && point.X <= x_incrementer + 64 && point.Y >= y_incrementer && point.Y <= y_incrementer + 64)
+                    {
+                        iI = i;
+                        jJ = j;
+                        break;
+                    }
+
+                }
+            }
+
+            if (Squares[iI][jJ].Piece != null) 
+            {
+                this.SelectedPiece = Squares[iI][jJ].Piece;
+            }
+            
+            this.Cursor = point;
         }
     }
 }
