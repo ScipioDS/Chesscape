@@ -36,18 +36,5 @@ namespace Chesscape.Chess
         {
 
         }
-        private void TacticsForm_MouseDown(object sender, MouseEventArgs e)
-        {
-            board.Select(e.Location);
-        }
-        private void TacticsForm_MouseUp(object sender, MouseEventArgs e)
-        {
-            board.SelectedPiece = null;
-        }
-        private void TacticsForm_MouseMove(object sender, MouseEventArgs e)
-        {
-            board.Cursor = e.Location;
-            Invalidate();
-        }
     }
 }
