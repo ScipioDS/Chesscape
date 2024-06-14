@@ -376,6 +376,7 @@ namespace Chesscape.Chess
             Square square = getSquare(point);
 
             List<Square> moves = new List<Square>();
+            if (legalMoves == null) return;
             foreach(Move i in legalMoves)
             {
                 moves.Add(i.getToSquare());
