@@ -21,7 +21,6 @@ namespace Chesscape.Chess
             board = Board.GetInstance();
             board.SetPerspective(true);
             board.SetBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-            
 
             Debug.WriteLine(board);
 
