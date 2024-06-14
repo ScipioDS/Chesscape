@@ -32,6 +32,7 @@ namespace Chesscape.Chess
         public Piece SelectedPiece { get; set; } = null;
         public Point Cursor { get; set; }
         public Square FromSquare {  get; set; }
+        HashSet<Move> legalMoves {  get; set; }
 
         /// <summary>
         /// Reserves memory for the Square matrix (the board itself). Private due to singleton.
@@ -155,10 +156,33 @@ namespace Chesscape.Chess
         /// </summary>
         /// <param name="source">A square containing a piece.</param>
         /// <returns>>A set containing legal moves for a knight.</returns>
-        private HashSet<Move> GTrajectory(Square source) 
+        private HashSet<Move> GTrajectory(Square source)
         {
-            //TODO implement
-            throw new NotImplementedException();
+            HashSet<Move> legalMoves = new HashSet<Move>();
+            int File = source.File;
+            int Rank = source.GetRankPhysical();
+            int[,] knightMoves = new int[,]
+            {
+                { 2, 1 }, { 2, -1 }, { -2, 1 }, { -2, -1 },
+                { 1, 2 }, { 1, -2 }, { -1, 2 }, { -1, -2 }
+            };
+            //site vo edna pa neka bucit, neznam so tocno da pisam ovde
+            //osvem deka site mozni 8 nasoki gi provervit i gi vrakat
+            //tie so se legalni
+            for (int i = 0; i < knightMoves.Length / 2; i++)
+            {
+                int newRank = Rank + knightMoves[i, 0];
+                int newFile = File + knightMoves[i, 1];
+                if (checkValid(newRank, newFile))
+                {
+                    AppendMove(source, Squares[newRank][newFile], legalMoves);
+                }
+            }
+            return legalMoves;
+        }
+        private static bool checkValid(int row, int col)
+        {
+            return row >= 0 && row < 8 && col >= 0 && col < 8;
         }
 
         /// <summary>
@@ -166,10 +190,32 @@ namespace Chesscape.Chess
         /// </summary>
         /// <param name="source">A square containing a piece.</param>
         /// <returns>A set containing legal moves for a pawn.</returns>
-        private HashSet<Move> PawnTrajectory (Square source)
+        public HashSet<Move> PawnTrajectory(Square source)
         {
-            //TODO implement
-            throw new NotImplementedException();
+            HashSet<Move> legalMoves = new HashSet<Move>();
+            int File = source.File;
+            int Rank = source.GetRankPhysical();
+            //eden cekor napred
+            if (checkValid(Rank - 1, File))
+            {
+                AppendMove(source, Squares[Rank - 1][File], legalMoves);
+            }
+            //provervit dali e na staring line, pa aku e go dodavat i to
+            if (File == 1 && checkValid(Rank - 2, File))
+            {
+                AppendMove(source, Squares[Rank - 2][File], legalMoves);
+            }
+            //diagonalno od levo(ms?) provervit za capture
+            if (checkValid(File - 1, Rank - 1) && File != 1)
+            {
+                AppendMove(source, Squares[Rank - 1][File - 1], legalMoves);
+            }
+            //diagonalno od desno(ne sum sig) provervit za capture
+            if (checkValid(Rank - 1, File + 1) && File != 1)
+            {
+                AppendMove(source, Squares[Rank - 1][File + 1], legalMoves);
+            }
+            return legalMoves;
         }
 
         /// <summary>
@@ -209,6 +255,26 @@ namespace Chesscape.Chess
 
             return legalMoves;
         }
+        public HashSet<Move> KingTrajectory(Square source)
+        {
+            HashSet<Move> legalMoves = new HashSet<Move>();
+            int File = source.File;
+            int Rank = source.GetRankPhysical();
+            int[,] kingMoves = new int[,]
+            {
+                { 1, 0 }, { 1, 1 }, { 1, -1 }, { -1, 0 }, { -1, 1 }, { -1, -1 }, { 0, 1 }, { 0, -1 }
+            };
+            for (int i = 0; i < kingMoves.GetLength(0); i++)
+            {
+                int newRank = Rank + kingMoves[i, 0];
+                int newFile = File + kingMoves[i, 1];
+                if (checkValid(newRank, newFile))
+                {
+                    AppendMove(source, Squares[newRank][newFile], legalMoves);
+                }
+            }
+            return legalMoves;
+        }
 
         /// <summary>
         /// Method that calls upon each square to draw itself.
@@ -221,6 +287,10 @@ namespace Chesscape.Chess
             if (SelectedPiece != null)
             {
                 g.DrawImage(SelectedPiece.GetImage(), new Point(Cursor.X - 32, Cursor.Y - 32));
+                foreach (Move i in legalMoves)
+                {
+                    i.getToSquare().Availabe = true;
+                }
             }
         }
 
@@ -270,6 +340,28 @@ namespace Chesscape.Chess
 
             if (square.Piece != null) 
             {
+                string piece = square.Piece.ToString().ToLower();
+                switch (piece) {
+                    case "p":
+                        legalMoves = PawnTrajectory(square);
+                        break;
+                    case "q":
+                        legalMoves = ForthrightTrajectory(square);
+                        legalMoves.UnionWith(DiagonalTrajectory(square));
+                        break;
+                    case "k":
+                        legalMoves = KingTrajectory(square);
+                        break;
+                    case "r":
+                        legalMoves = ForthrightTrajectory(square);
+                        break;
+                    case "n":
+                        legalMoves = GTrajectory(square);
+                        break;
+                    case "b":
+                        legalMoves = DiagonalTrajectory(square);
+                        break;
+                }
                 this.SelectedPiece = square.Piece;
                 FromSquare = square;
             }
@@ -283,12 +375,23 @@ namespace Chesscape.Chess
         {
             Square square = getSquare(point);
 
-            if (!square.PieceResident() && FromSquare!=null)
+            List<Square> moves = new List<Square>();
+            foreach(Move i in legalMoves)
+            {
+                moves.Add(i.getToSquare());
+            }
+
+            if (moves.Contains(square) && FromSquare!=null)
             {
                 square.Piece = this.SelectedPiece;
                 FromSquare.Piece = null;
                 FromSquare = null;
             }
+            foreach (Move i in legalMoves)
+            {
+                i.getToSquare().Availabe = false;
+            }
+            legalMoves = null;
             this.SelectedPiece = null;
         }
         /// <summary>

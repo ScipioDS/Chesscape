@@ -28,6 +28,8 @@ namespace Chesscape.Chess
             from.Piece = null;
         }
 
+        public Square getToSquare() { return to; }
+
         public override string ToString()
         {
             //TODO: Check if an identical piece can make the same move, this would change the notation. This applies to Knights and Rooks ONLY. (VERY IMPORTANT)

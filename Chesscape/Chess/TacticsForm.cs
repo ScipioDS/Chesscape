@@ -20,7 +20,7 @@ namespace Chesscape.Chess
             Square.SetFileTranslation();
             board = Board.GetInstance();
             board.SetPerspective(true);
-            board.SetBoard("1R6/2bnQP1K/br1N1BP1/nPkp1P2/2p1P1P1/4Ppqp/p1r1ppp1/1PNR3B w - - 0 1");
+            board.SetBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
             Debug.WriteLine(board);
 

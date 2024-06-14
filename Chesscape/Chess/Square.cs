@@ -24,6 +24,7 @@ namespace Chesscape.Chess
         //Drawing attributes
         public Point TopLeftCoord { get; set; }
         public Color ColorDraw { get; set; }
+        public bool Availabe { get; set; } = false;
         private PictureBox PiecePic;
 
         /// <summary>
@@ -103,6 +104,12 @@ namespace Chesscape.Chess
                 g.FillRectangle(fillSquare, TopLeftCoord.X, TopLeftCoord.Y, size, size);
 
             SetImage(g);
+
+            if (Availabe)
+            {
+                using (Brush fillSquare = new SolidBrush(Color.LightBlue))
+                    g.FillEllipse(fillSquare, TopLeftCoord.X, TopLeftCoord.Y, size, size);
+            }
         }
     }
 }
