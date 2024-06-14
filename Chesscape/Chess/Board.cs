@@ -201,17 +201,17 @@ namespace Chesscape.Chess
                 AppendMove(source, Squares[Rank - 1][File], legalMoves);
             }
             //provervit dali e na staring line, pa aku e go dodavat i to
-            if (File == 1 && checkValid(Rank - 2, File))
+            if (Rank == 6 && checkValid(Rank - 2, File))
             {
                 AppendMove(source, Squares[Rank - 2][File], legalMoves);
             }
             //diagonalno od levo(ms?) provervit za capture
-            if (checkValid(File - 1, Rank - 1) && File != 1)
+            if (checkValid(File - 1, Rank - 1) && File != 1 && Squares[Rank - 1][File-1].PieceResident())
             {
                 AppendMove(source, Squares[Rank - 1][File - 1], legalMoves);
             }
             //diagonalno od desno(ne sum sig) provervit za capture
-            if (checkValid(Rank - 1, File + 1) && File != 1)
+            if (checkValid(Rank - 1, File + 1) && File != 1 && Squares[Rank - 1][File+1].PieceResident())
             {
                 AppendMove(source, Squares[Rank - 1][File + 1], legalMoves);
             }
