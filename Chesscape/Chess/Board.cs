@@ -544,7 +544,7 @@ namespace Chesscape.Chess
             Array.ForEach(Squares, rank => Array.ForEach(rank, square => square.Draw(g, SQUARE_SIZE)));
             if (SelectedPiece != null)
             {
-                g.DrawImage(SelectedPiece.GetImage(), new Point(Cursor.X - 32, Cursor.Y - 32));
+                g.DrawImage(SelectedPiece.GetImageT(), new Point(Cursor.X - 32, Cursor.Y - 32));
                 foreach (Move i in LegalMoves)
                 {
                     i.GetToSquare().Available = true;
@@ -584,6 +584,7 @@ namespace Chesscape.Chess
                         LegalMoves = DiagonalTrajectory(square);
                         break;
                 }
+                
                 this.SelectedPiece = square.Piece;
                 FromSquare = square;
             }

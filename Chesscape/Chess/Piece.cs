@@ -25,5 +25,7 @@ namespace Chesscape.Chess
         {
             return PieceImage;
         }
+
+        public abstract Image GetImageT();
     }
 }

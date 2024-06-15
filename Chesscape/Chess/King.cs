@@ -44,5 +44,11 @@ namespace Chesscape.Chess
             _Moved = true;
         }
 
+        public override Image GetImageT()
+        {
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string fullPathT = Path.GetFullPath(Path.Combine(currentDirectory, @"cburnett_pieces\t_king.png"));
+            return Image.FromFile(fullPathT);
+        }
     }
 }

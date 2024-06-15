@@ -27,5 +27,12 @@ namespace Chesscape.Chess
         {
             return White ? "N" : "n";
         }
+
+        public override Image GetImageT()
+        {
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string fullPathT = Path.GetFullPath(Path.Combine(currentDirectory, @"cburnett_pieces\t_knight.png"));
+            return Image.FromFile(fullPathT);
+        }
     }
 }
