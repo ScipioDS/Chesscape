@@ -18,3 +18,13 @@ C:\Users\Skipio\Source\Repos\ChesscapeProject\Chesscape\obj\Debug\Chesscape.Ches
 C:\Users\Skipio\Source\Repos\ChesscapeProject\Chesscape\obj\Debug\Chesscape.Properties.Resources.resources
 C:\Users\Skipio\Source\Repos\ChesscapeProject\Chesscape\obj\Debug\Chesscape.csproj.GenerateResource.cache
 C:\Users\Skipio\Source\Repos\ChesscapeProject\Chesscape\obj\Debug\Chesscape.csproj.CoreCompileInputs.cache
+C:\Users\david\source\repos\ChesscapeProject\Chesscape\bin\Debug\Chesscape.exe.config
+C:\Users\david\source\repos\ChesscapeProject\Chesscape\bin\Debug\Chesscape.exe
+C:\Users\david\source\repos\ChesscapeProject\Chesscape\bin\Debug\Chesscape.pdb
+C:\Users\david\source\repos\ChesscapeProject\Chesscape\obj\Debug\Chesscape.csproj.AssemblyReference.cache
+C:\Users\david\source\repos\ChesscapeProject\Chesscape\obj\Debug\Chesscape.Chess.TacticsForm.resources
+C:\Users\david\source\repos\ChesscapeProject\Chesscape\obj\Debug\Chesscape.Properties.Resources.resources
+C:\Users\david\source\repos\ChesscapeProject\Chesscape\obj\Debug\Chesscape.csproj.GenerateResource.cache
+C:\Users\david\source\repos\ChesscapeProject\Chesscape\obj\Debug\Chesscape.csproj.CoreCompileInputs.cache
+C:\Users\david\source\repos\ChesscapeProject\Chesscape\obj\Debug\Chesscape.exe
+C:\Users\david\source\repos\ChesscapeProject\Chesscape\obj\Debug\Chesscape.pdb
