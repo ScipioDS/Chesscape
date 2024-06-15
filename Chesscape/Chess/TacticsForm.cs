@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chesscape.Chess.Internals;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -23,6 +24,8 @@ namespace Chesscape.Chess
             board.SetBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
             Debug.WriteLine(board);
+            var ELO = new ELO(1500, 1400, true);
+            Debug.WriteLine(ELO.calculatePlayerELO());
 
             Invalidate();
         }
