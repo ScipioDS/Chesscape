@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Chesscape.Chess.Internals;
@@ -27,7 +28,7 @@ namespace Chesscape.Chess
         //Turn
         public bool WhiteToPlay { get; set; }
         //Legal moves
-        private HashSet<Move> legalMoves { get; set; }
+        private HashSet<Move> LegalMoves { get; set; }
 
 
         //DRAWING ATTRIBUTES
@@ -45,7 +46,6 @@ namespace Chesscape.Chess
         private Board()
         {
             Squares = new Square[8][];
-
             for (int i = 7; i >= 0; --i)
             {
                 Squares[i] = new Square[8];
@@ -102,7 +102,7 @@ namespace Chesscape.Chess
             FEN.Translate(FENString);
         }
 
-        //LEGAL MOVE COMPUTATION METHODS
+        //----------------------------------LEGAL MOVE LOGIC METHODS----------------------------------
 
         /// <summary>
         /// Computes legal moves that a rook would have (straight line moves)
@@ -262,12 +262,14 @@ namespace Chesscape.Chess
         public HashSet<Move> KingTrajectory(Square source)
         {
             HashSet<Move> legalMoves = new HashSet<Move>();
+
             int File = source.File;
             int Rank = source.GetRankPhysical();
             int[,] kingMoves = new int[,]
             {
                 { 1, 0 }, { 1, 1 }, { 1, -1 }, { -1, 0 }, { -1, 1 }, { -1, -1 }, { 0, 1 }, { 0, -1 }
             };
+
             for (int i = 0; i < kingMoves.GetLength(0); i++)
             {
                 int newRank = Rank + kingMoves[i, 0];
@@ -277,10 +279,149 @@ namespace Chesscape.Chess
                     AppendMove(source, Squares[newRank][newFile], legalMoves);
                 }
             }
+            
+            if (CanCastleKingside(source))
+            {
+                legalMoves.Add(new Move(source, Squares[Rank][File + 2]));
+            }
+            if (CanCastleQueenside(source))
+            {
+                legalMoves.Add(new Move(source, Squares[Rank][File - 2]));
+            }
+
+
             return legalMoves;
         }
 
-        //UTILITY METHODS
+        //----------------------------------UTILITY METHODS----------------------------------
+
+        /// <summary>
+        /// Checks if your king can castle queenside.
+        /// </summary>
+        /// <param name="ofKing">Square of the king the player wants to castle.</param>
+        /// <returns>Return true iff you can castle queenside.</returns>
+        private bool CanCastleQueenside(Square ofKing)
+        {
+            if ((ofKing.Piece as ICastleable).Moved()) return false;
+
+            int rankKing = ofKing.GetRankPhysical();
+            int fileKing = ofKing.File;
+
+            for (int j = fileKing - 1; j >= 0; --j)
+            {
+                Square checking = Squares[rankKing][j];
+                if (j != 0)
+                {
+                    if (PieceStaring(checking)) return false;
+                    if (checking.PieceResident())
+                        return false;
+                }
+                else
+                {
+                    return CastleHelper(checking);
+                }
+            }
+
+            //reaching this means that there is an error
+            return false;
+        }
+
+        /// <summary>
+        /// Checks if your king can castle kingside.
+        /// </summary>
+        /// <param name="ofKing">Square of the king the player wants to castle.</param>
+        /// <returns>Return true iff you can castle kingside.</returns>
+        private bool CanCastleKingside(Square ofKing)
+        {
+            if ((ofKing.Piece as ICastleable).Moved()) return false;
+
+            int rankKing = ofKing.GetRankPhysical();
+            int fileKing = ofKing.File;
+
+            for (int j = fileKing + 1; j < 8; ++j)
+            {
+                Square checking = Squares[rankKing][j];
+                if (j != 7)
+                {
+                    if (checking.PieceResident())
+                        return false;
+                    if (PieceStaring(checking)) return false;
+                }
+                else
+                {
+                    return CastleHelper(checking);
+                }
+            }
+
+            //reaching this means that there is an error
+            return false;
+        }
+
+        private bool CastleHelper(Square checking)
+        {
+            if (!checking.PieceResident()) return false;
+            else if (checking.Piece.GetType() != typeof(Rook)) return false;
+            return !(checking.Piece as Rook).Moved();
+        }
+
+        private bool PieceStaring(Square checking)
+        {
+
+            checking.Piece = new Pawn(true); // Imitate a piece being placed to get the trajectory.
+
+            HashSet<Move> legalsDiag = DiagonalTrajectory(checking);
+            HashSet<Move> legalsForthRight = ForthrightTrajectory(checking);
+            HashSet<Move> legalsG = GTrajectory(checking);
+            HashSet<Move> legalsPawn = PawnTrajectory(checking);
+
+            checking.Piece = null;
+
+            foreach (Move move in legalsDiag)
+            {
+                if (!move.GetToSquare().PieceResident()) continue;
+                bool pieceResidingBlack = !move.GetToSquare().Piece.White;
+                Type ofPieceInSquare = move.GetToSquare().Piece.GetType();
+                if ((typeof(Bishop) == ofPieceInSquare || typeof(Queen) == ofPieceInSquare) && pieceResidingBlack)
+                {
+                    return true;
+                }
+            }
+
+            foreach (Move move in legalsForthRight)
+            {
+                if (!move.GetToSquare().PieceResident()) continue;
+                bool pieceResidingBlack = !move.GetToSquare().Piece.White;
+                Type ofPieceInSquare = move.GetToSquare().Piece.GetType();
+                if ((typeof(Rook) == ofPieceInSquare || typeof(Queen) == ofPieceInSquare) && pieceResidingBlack)
+                {
+                    return true;
+                }
+            }
+
+            foreach (Move move in legalsG)
+            {
+                if (!move.GetToSquare().PieceResident()) continue;
+                bool pieceResidingBlack = !move.GetToSquare().Piece.White;
+                Type ofPieceInSquare = move.GetToSquare().Piece.GetType();
+                if (typeof(Knight) == ofPieceInSquare && pieceResidingBlack)
+                {
+                    return true;
+                }
+            }
+
+            foreach (Move move in legalsPawn)
+            {
+                if (!move.GetToSquare().PieceResident()) continue;
+                bool pieceResidingBlack = !move.GetToSquare().Piece.White;
+                Type ofPieceInSquare = move.GetToSquare().Piece.GetType();
+                if (typeof(Pawn) == ofPieceInSquare && pieceResidingBlack)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Utility method to append legal moves to a set. To be called inside trajectory method loops.
@@ -324,34 +465,6 @@ namespace Chesscape.Chess
         }
 
         /// <summary>
-        /// Moves piece from square to square
-        /// </summary>
-        public void MakeMove(Point point)
-        {
-            Square square = GetSquare(point);
-
-            List<Square> moves = new List<Square>();
-            if (legalMoves == null) return;
-            foreach (Move i in legalMoves)
-            {
-                moves.Add(i.getToSquare());
-            }
-
-            if (moves.Contains(square) && FromSquare != null)
-            {
-                square.Piece = this.SelectedPiece;
-                FromSquare.Piece = null;
-                FromSquare = null;
-            }
-            foreach (Move i in legalMoves)
-            {
-                i.getToSquare().Availabe = false;
-            }
-            legalMoves = null;
-            this.SelectedPiece = null;
-        }
-
-        /// <summary>
         /// Returns the square in the Board matrix with the position passed as an argument
         /// </summary>
         /// <param name="position">A formally defined square position.</param>
@@ -364,11 +477,45 @@ namespace Chesscape.Chess
             return SingleBoard.Squares[7 - rank][file];
         }
 
-        //DRAWING METHODS
+        //----------------------------------DRAWING METHODS----------------------------------
 
         /// <summary>
-        /// Returns the square over which a point (the cursor) is located.
+        /// Physically displaces a piece from one square to another on the chessboard.
         /// </summary>
+        /// <param name="point">Point used to find the square which we are moving to.</param>
+        public void MakeMove(Point point)
+        {
+            Square square = GetSquare(point);
+
+            List<Square> moves = new List<Square>();
+            if (LegalMoves == null) return;
+            foreach (Move i in LegalMoves)
+            {
+                moves.Add(i.GetToSquare());
+            }
+
+            if (moves.Contains(square) && FromSquare != null)
+            {
+                //map move onto board
+                new Move(FromSquare, square).MakeMove();
+
+                FromSquare = null;
+            }
+
+            foreach (Move i in LegalMoves)
+            {
+                i.GetToSquare().Availabe = false;
+            }
+
+            LegalMoves = null;
+            this.SelectedPiece = null;
+        }
+
+        /// <summary>
+        /// Finds the square over which a point (the cursor) is located.
+        /// </summary>
+        /// <param name="point">Point used to find the square which we are moving to.</param>
+        /// <returns>The square where we want to place the piece we have picked up.</returns>
         public Square GetSquare(Point point)
         {
             int iI = 0, jJ = 0;
@@ -400,9 +547,9 @@ namespace Chesscape.Chess
             if (SelectedPiece != null)
             {
                 g.DrawImage(SelectedPiece.GetImage(), new Point(Cursor.X - 32, Cursor.Y - 32));
-                foreach (Move i in legalMoves)
+                foreach (Move i in LegalMoves)
                 {
-                    i.getToSquare().Availabe = true;
+                    i.GetToSquare().Availabe = true;
                 }
             }
         }
@@ -420,23 +567,23 @@ namespace Chesscape.Chess
                 switch (piece)
                 {
                     case "p":
-                        legalMoves = PawnTrajectory(square);
+                        LegalMoves = PawnTrajectory(square);
                         break;
                     case "q":
-                        legalMoves = ForthrightTrajectory(square);
-                        legalMoves.UnionWith(DiagonalTrajectory(square));
+                        LegalMoves = ForthrightTrajectory(square);
+                        LegalMoves.UnionWith(DiagonalTrajectory(square));
                         break;
                     case "k":
-                        legalMoves = KingTrajectory(square);
+                        LegalMoves = KingTrajectory(square);
                         break;
                     case "r":
-                        legalMoves = ForthrightTrajectory(square);
+                        LegalMoves = ForthrightTrajectory(square);
                         break;
                     case "n":
-                        legalMoves = GTrajectory(square);
+                        LegalMoves = GTrajectory(square);
                         break;
                     case "b":
-                        legalMoves = DiagonalTrajectory(square);
+                        LegalMoves = DiagonalTrajectory(square);
                         break;
                 }
                 this.SelectedPiece = square.Piece;

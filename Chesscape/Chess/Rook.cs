@@ -8,10 +8,15 @@ using System.Threading.Tasks;
 
 namespace Chesscape.Chess
 {
-    public class Rook : Piece
+    public class Rook : Piece, ICastleable
     {
+
+        private bool _Moved;
+
         public Rook(bool isWhite) : base(isWhite)
         {
+            _Moved = false;
+
             string currentDirectory = Directory.GetCurrentDirectory();
 
             string fullPathW = Path.GetFullPath(Path.Combine(currentDirectory, @"cburnett_pieces\w_rook.png"));
@@ -25,6 +30,16 @@ namespace Chesscape.Chess
         public override string ToString()
         {
             return White ? "R" : "r";
+        }
+
+        public bool Moved()
+        {
+            return _Moved;
+        }
+
+        public void MakeIncastleable()
+        {
+            _Moved = true;
         }
     }
 }

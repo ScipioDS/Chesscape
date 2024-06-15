@@ -8,11 +8,16 @@ using System.Threading.Tasks;
 
 namespace Chesscape.Chess
 {
-    public class King : Piece
+    public class King : Piece, ICastleable
     {
         //TODO: Implement king
+
+        private bool _Moved;
+
         public King(bool isWhite) : base(isWhite)
         {
+            _Moved = false;
+
             string currentDirectory = Directory.GetCurrentDirectory();
 
             string fullPathW = Path.GetFullPath(Path.Combine(currentDirectory, @"cburnett_pieces\w_king.png"));
@@ -23,9 +28,21 @@ namespace Chesscape.Chess
                 Image.FromFile(fullPathB);
         }
 
+
         public override string ToString()
         {
             return White ?  "K" : "k";
         }
+
+        public bool Moved()
+        {
+            return _Moved;
+        }
+
+        public void MakeIncastleable()
+        {
+            _Moved = true;
+        }
+
     }
 }

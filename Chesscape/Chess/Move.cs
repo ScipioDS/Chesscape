@@ -10,7 +10,6 @@ namespace Chesscape.Chess
 {
     public class Move
     {
-
         private readonly Square from;
         private readonly Square to;
 
@@ -22,13 +21,56 @@ namespace Chesscape.Chess
 
         public void MakeMove()
         {
+            if (from.Piece.GetType().GetInterfaces().Length == 1)
+            {
+                (from.Piece as ICastleable).MakeIncastleable();
+            }
+
+            if (from.Piece.GetType() == typeof(King))
+            {
+                if (to.File - from.File == 2)
+                {
+                    CastleKingside();
+                    return;
+                }
+                else if (to.File - from.File == -2)
+                {
+                    CastleQueenside();
+                    return;
+                }
+            }
+
             //TODO: Check method safety
             Piece toMove = from.Piece;
             to.Piece = toMove;
             from.Piece = null;
         }
 
-        public Square getToSquare() { return to; }
+        private void CastleKingside()
+        {
+            Board board = Board.GetInstance();
+            board.Squares[7][from.File + 1].Piece = new Rook(true);
+
+            (board.Squares[7][from.File + 1].Piece as ICastleable).MakeIncastleable();
+
+            board.Squares[7][from.File + 3].Piece = null;
+            to.Piece = from.Piece;
+            from.Piece = null;
+        }
+        
+        private void CastleQueenside()
+        {
+            Board board = Board.GetInstance();
+            board.Squares[7][from.File - 1].Piece = new Rook(true);
+
+            (board.Squares[7][from.File - 1].Piece as ICastleable).MakeIncastleable();
+
+            board.Squares[7][from.File - 4].Piece = null;
+            to.Piece = from.Piece;
+            from.Piece = null;
+        }
+
+        public Square GetToSquare() { return to; }
 
         public override string ToString()
         {

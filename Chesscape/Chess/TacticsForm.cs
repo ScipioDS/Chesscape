@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chesscape.Chess.Internals;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -10,7 +11,6 @@ namespace Chesscape.Chess
     {
 
         private Board board;
-        public static PictureBox[][] picBoxes = new PictureBox[8][];
 
         public TacticsForm()
         {
@@ -20,9 +20,11 @@ namespace Chesscape.Chess
             Square.SetFileTranslation();
             board = Board.GetInstance();
             board.SetPerspective(true);
-            board.SetBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+            board.SetBoard("rn1qkbnr/pp4pp/2pp1p2/4p3/3P2b1/2N1P2Q/PPPB1PPP/R3KBNR w KQkq - 2 7");
 
             Debug.WriteLine(board);
+            var ELO = new ELO(1500, 1400, true);
+            Debug.WriteLine(ELO.calculatePlayerELO());
 
             Invalidate();
         }

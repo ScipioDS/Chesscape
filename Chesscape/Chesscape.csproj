@@ -48,6 +48,8 @@
   <ItemGroup>
     <Compile Include="Chess\Bishop.cs" />
     <Compile Include="Chess\Board.cs" />
+    <Compile Include="Chess\ICastleable.cs" />
+    <Compile Include="Chess\Internals\ELO.cs" />
     <Compile Include="Chess\King.cs" />
     <Compile Include="Chess\Knight.cs" />
     <Compile Include="Chess\Move.cs" />

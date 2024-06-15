@@ -25,7 +25,6 @@ namespace Chesscape.Chess
         public Point TopLeftCoord { get; set; }
         public Color ColorDraw { get; set; }
         public bool Availabe { get; set; } = false;
-        private PictureBox PiecePic;
 
         /// <summary>
         /// Full identification and definition of a square.
