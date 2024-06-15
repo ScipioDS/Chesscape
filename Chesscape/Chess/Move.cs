@@ -21,12 +21,12 @@ namespace Chesscape.Chess
 
         public void MakeMove()
         {
-            if (from.Piece.GetType().GetInterfaces().Length == 1)
+            if (from.Piece is ICastleable)
             {
                 (from.Piece as ICastleable).MakeIncastleable();
             }
 
-            if (from.Piece.GetType() == typeof(King))
+            if (from.Piece is King)
             {
                 if (to.File - from.File == 2)
                 {

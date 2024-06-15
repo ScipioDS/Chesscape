@@ -7,6 +7,18 @@
       "RelativeMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|solutionrelative:chesscape\\chess\\board.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|C:\\Users\\david\\source\\repos\\ChesscapeProject\\chesscape\\chess\\square.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|solutionrelative:chesscape\\chess\\square.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|C:\\Users\\david\\source\\repos\\ChesscapeProject\\chesscape\\chess\\icastleable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|solutionrelative:chesscape\\chess\\icastleable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|C:\\Users\\david\\source\\repos\\ChesscapeProject\\chesscape\\chess\\move.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|solutionrelative:chesscape\\chess\\move.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|C:\\Users\\david\\source\\repos\\ChesscapeProject\\chesscape\\chess\\rook.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|solutionrelative:chesscape\\chess\\rook.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -15,20 +27,8 @@
       "RelativeMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|solutionrelative:chesscape\\chess\\knight.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|C:\\Users\\david\\source\\repos\\ChesscapeProject\\chesscape\\chess\\move.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|solutionrelative:chesscape\\chess\\move.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|C:\\Users\\david\\source\\repos\\ChesscapeProject\\chesscape\\chess\\king.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|solutionrelative:chesscape\\chess\\king.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|C:\\Users\\david\\source\\repos\\ChesscapeProject\\chesscape\\chess\\icastleable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|solutionrelative:chesscape\\chess\\icastleable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|C:\\Users\\david\\source\\repos\\ChesscapeProject\\chesscape\\chess\\square.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|solutionrelative:chesscape\\chess\\square.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0BC21DEF-3790-41AB-A429-2D4CC32227C3}|Chesscape\\Chesscape.csproj|C:\\Users\\david\\source\\repos\\ChesscapeProject\\chesscape\\chess\\tacticsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -66,7 +66,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "King.cs",
               "DocumentMoniker": "C:\\Users\\david\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\King.cs",
               "RelativeDocumentMoniker": "Chesscape\\Chess\\King.cs",
@@ -74,11 +74,12 @@
               "RelativeToolTip": "Chesscape\\Chess\\King.cs",
               "ViewState": "AQIAABEAAAAAAAAAAAAAACYAAAAaAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-15T14:07:00.935Z"
+              "WhenOpened": "2024-06-15T14:07:00.935Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 2,
               "Title": "ICastleable.cs",
               "DocumentMoniker": "C:\\Users\\david\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\ICastleable.cs",
               "RelativeDocumentMoniker": "Chesscape\\Chess\\ICastleable.cs",
@@ -86,19 +87,21 @@
               "RelativeToolTip": "Chesscape\\Chess\\ICastleable.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAqwA4AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-15T14:06:03.8Z"
+              "WhenOpened": "2024-06-15T14:06:03.8Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 1,
               "Title": "Square.cs",
               "DocumentMoniker": "C:\\Users\\david\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\Square.cs",
               "RelativeDocumentMoniker": "Chesscape\\Chess\\Square.cs",
               "ToolTip": "C:\\Users\\david\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\Square.cs",
               "RelativeToolTip": "Chesscape\\Chess\\Square.cs",
-              "ViewState": "AQIAAAwAAAAAAAAAAAAAABsAAAAAAAAA",
+              "ViewState": "AQIAADcAAAAAAAAAAAAAAEMAAAAVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-15T13:22:19.022Z"
+              "WhenOpened": "2024-06-15T13:22:19.022Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -108,13 +111,14 @@
               "RelativeDocumentMoniker": "Chesscape\\Chess\\Move.cs",
               "ToolTip": "C:\\Users\\david\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\Move.cs",
               "RelativeToolTip": "Chesscape\\Chess\\Move.cs",
-              "ViewState": "AQIAACIAAAAAAAAAAAAAADwAAAAkAAAA",
+              "ViewState": "AQIAABoAAAAAAAAAAAAAADYAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-15T12:41:24.871Z"
+              "WhenOpened": "2024-06-15T12:41:24.871Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "Knight.cs",
               "DocumentMoniker": "C:\\Users\\david\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\Knight.cs",
               "RelativeDocumentMoniker": "Chesscape\\Chess\\Knight.cs",
@@ -122,19 +126,21 @@
               "RelativeToolTip": "Chesscape\\Chess\\Knight.cs",
               "ViewState": "AQIAAB8AAAAAAAAAAAAAAA8AAAAuAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-15T12:15:37.403Z"
+              "WhenOpened": "2024-06-15T12:15:37.403Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "Rook.cs",
               "DocumentMoniker": "C:\\Users\\david\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\Rook.cs",
               "RelativeDocumentMoniker": "Chesscape\\Chess\\Rook.cs",
               "ToolTip": "C:\\Users\\david\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\Rook.cs",
               "RelativeToolTip": "Chesscape\\Chess\\Rook.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACcAAAAOAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAxAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-15T12:10:16.885Z"
+              "WhenOpened": "2024-06-15T12:10:16.885Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -142,9 +148,9 @@
               "Title": "Board.cs",
               "DocumentMoniker": "C:\\Users\\david\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\Board.cs",
               "RelativeDocumentMoniker": "Chesscape\\Chess\\Board.cs",
-              "ToolTip": "C:\\Users\\david\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\Board.cs",
-              "RelativeToolTip": "Chesscape\\Chess\\Board.cs",
-              "ViewState": "AQIAADEBAAAAAAAAAAAowEEBAAARAAAA",
+              "ToolTip": "C:\\Users\\david\\source\\repos\\ChesscapeProject\\Chesscape\\Chess\\Board.cs*",
+              "RelativeToolTip": "Chesscape\\Chess\\Board.cs*",
+              "ViewState": "AQIAAFcBAAAAAAAAAAAIwGkBAAAuAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-06-15T11:59:42.809Z",
               "EditorCaption": ""
@@ -159,7 +165,8 @@
               "RelativeToolTip": "Chesscape\\Chess\\TacticsForm.cs",
               "ViewState": "AQIAACAAAAAAAAAAAAAAADYAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-11T12:08:55.711Z"
+              "WhenOpened": "2024-06-11T12:08:55.711Z",
+              "EditorCaption": ""
             }
           ]
         }

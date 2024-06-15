@@ -312,9 +312,9 @@ namespace Chesscape.Chess
                 Square checking = Squares[rankKing][j];
                 if (j != 0)
                 {
-                    if (PieceStaring(checking)) return false;
                     if (checking.PieceResident())
                         return false;
+                    if (PieceStaring(checking)) return false;
                 }
                 else
                 {
@@ -322,7 +322,6 @@ namespace Chesscape.Chess
                 }
             }
 
-            //reaching this means that there is an error
             return false;
         }
 
@@ -360,13 +359,12 @@ namespace Chesscape.Chess
         private bool CastleHelper(Square checking)
         {
             if (!checking.PieceResident()) return false;
-            else if (checking.Piece.GetType() != typeof(Rook)) return false;
+            else if (!(checking.Piece is Rook)) return false;
             return !(checking.Piece as Rook).Moved();
         }
 
         private bool PieceStaring(Square checking)
         {
-
             checking.Piece = new Pawn(true); // Imitate a piece being placed to get the trajectory.
 
             HashSet<Move> legalsDiag = DiagonalTrajectory(checking);
@@ -379,9 +377,9 @@ namespace Chesscape.Chess
             foreach (Move move in legalsDiag)
             {
                 if (!move.GetToSquare().PieceResident()) continue;
-                bool pieceResidingBlack = !move.GetToSquare().Piece.White;
-                Type ofPieceInSquare = move.GetToSquare().Piece.GetType();
-                if ((typeof(Bishop) == ofPieceInSquare || typeof(Queen) == ofPieceInSquare) && pieceResidingBlack)
+                Piece targetPiece = move.GetToSquare().Piece;
+                bool pieceResidingBlack = !targetPiece.White;
+                if ((targetPiece is Bishop || targetPiece is Queen) && pieceResidingBlack)
                 {
                     return true;
                 }
@@ -390,9 +388,9 @@ namespace Chesscape.Chess
             foreach (Move move in legalsForthRight)
             {
                 if (!move.GetToSquare().PieceResident()) continue;
-                bool pieceResidingBlack = !move.GetToSquare().Piece.White;
-                Type ofPieceInSquare = move.GetToSquare().Piece.GetType();
-                if ((typeof(Rook) == ofPieceInSquare || typeof(Queen) == ofPieceInSquare) && pieceResidingBlack)
+                Piece targetPiece = move.GetToSquare().Piece;
+                bool pieceResidingBlack = !targetPiece.White;
+                if ((targetPiece is Rook || targetPiece is Queen) && pieceResidingBlack)
                 {
                     return true;
                 }
@@ -401,9 +399,9 @@ namespace Chesscape.Chess
             foreach (Move move in legalsG)
             {
                 if (!move.GetToSquare().PieceResident()) continue;
-                bool pieceResidingBlack = !move.GetToSquare().Piece.White;
-                Type ofPieceInSquare = move.GetToSquare().Piece.GetType();
-                if (typeof(Knight) == ofPieceInSquare && pieceResidingBlack)
+                Piece targetPiece = move.GetToSquare().Piece;
+                bool pieceResidingBlack = !targetPiece.White;
+                if (targetPiece is Knight && pieceResidingBlack)
                 {
                     return true;
                 }
@@ -412,9 +410,9 @@ namespace Chesscape.Chess
             foreach (Move move in legalsPawn)
             {
                 if (!move.GetToSquare().PieceResident()) continue;
-                bool pieceResidingBlack = !move.GetToSquare().Piece.White;
-                Type ofPieceInSquare = move.GetToSquare().Piece.GetType();
-                if (typeof(Pawn) == ofPieceInSquare && pieceResidingBlack)
+                Piece targetPiece = move.GetToSquare().Piece;
+                bool pieceResidingBlack = !targetPiece.White;
+                if (targetPiece is Pawn && pieceResidingBlack)
                 {
                     return true;
                 }
@@ -504,7 +502,7 @@ namespace Chesscape.Chess
 
             foreach (Move i in LegalMoves)
             {
-                i.GetToSquare().Availabe = false;
+                i.GetToSquare().Available = false;
             }
 
             LegalMoves = null;
@@ -549,7 +547,7 @@ namespace Chesscape.Chess
                 g.DrawImage(SelectedPiece.GetImage(), new Point(Cursor.X - 32, Cursor.Y - 32));
                 foreach (Move i in LegalMoves)
                 {
-                    i.GetToSquare().Availabe = true;
+                    i.GetToSquare().Available = true;
                 }
             }
         }

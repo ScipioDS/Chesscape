@@ -24,7 +24,7 @@ namespace Chesscape.Chess
         //Drawing attributes
         public Point TopLeftCoord { get; set; }
         public Color ColorDraw { get; set; }
-        public bool Availabe { get; set; } = false;
+        public bool Available { get; set; } = false;
 
         /// <summary>
         /// Full identification and definition of a square.
@@ -104,10 +104,10 @@ namespace Chesscape.Chess
 
             SetImage(g);
 
-            if (Availabe)
+            if (Available)
             {
-                using (Brush fillSquare = new SolidBrush(Color.LightBlue))
-                    g.FillEllipse(fillSquare, TopLeftCoord.X, TopLeftCoord.Y, size, size);
+                using (Brush fillSquare = new SolidBrush(Color.FromArgb(70, 255, 255, 255)))
+                    g.FillEllipse(fillSquare, TopLeftCoord.X + size / 2.75f, TopLeftCoord.Y + size / 2.75f, size / 4, size / 4);
             }
         }
     }
