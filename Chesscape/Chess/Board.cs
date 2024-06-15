@@ -196,7 +196,7 @@ namespace Chesscape.Chess
             int File = source.File;
             int Rank = source.GetRankPhysical();
             //eden cekor napred
-            if (checkValid(Rank - 1, File))
+            if (checkValid(Rank - 1, File) && !Squares[Rank-1][File].PieceResident())
             {
                 AppendMove(source, Squares[Rank - 1][File], legalMoves);
             }
