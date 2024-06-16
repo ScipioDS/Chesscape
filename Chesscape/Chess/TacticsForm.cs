@@ -20,7 +20,7 @@ namespace Chesscape.Chess
             Square.SetFileTranslation();
             board = Board.GetInstance();
             board.SetPerspective(true);
-            board.SetBoard("rn1qkbnr/pp4pp/2pp1p2/4p3/3P2b1/2N1P2Q/PPPB1PPP/R3KBNR w KQkq - 2 7");
+            board.SetBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
             Debug.WriteLine(board);
             var ELO = new ELO(1500, 1400, true);
