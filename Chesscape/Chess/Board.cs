@@ -29,6 +29,7 @@ namespace Chesscape.Chess
         public bool WhiteToPlay { get; set; }
         //Legal moves
         private HashSet<Move> LegalMoves { get; set; }
+        private string previous_setup {  get; set; }
 
 
         //DRAWING ATTRIBUTES
@@ -194,23 +195,27 @@ namespace Chesscape.Chess
             HashSet<Move> legalMoves = new HashSet<Move>();
             int File = source.File;
             int Rank = source.GetRankPhysical();
+            if(Rank== 6 && Squares[Rank - 1][File].PieceResident())
+            {
+                return legalMoves;
+            }
             //eden cekor napred
             if (CheckValid(Rank - 1, File) && !Squares[Rank - 1][File].PieceResident())
             {
                 AppendMove(source, Squares[Rank - 1][File], legalMoves);
             }
             //provervit dali e na staring line, pa aku e go dodavat i to
-            if (Rank == 6 && CheckValid(Rank - 2, File))
+            if (Rank >= 6 && CheckValid(Rank - 2, File))
             {
                 AppendMove(source, Squares[Rank - 2][File], legalMoves);
             }
             //diagonalno od levo(ms?) provervit za capture
-            if (CheckValid(File - 1, Rank - 1) && File != 1 && Squares[Rank - 1][File - 1].PieceResident())
+            if (CheckValid(File - 1, Rank - 1)&& Squares[Rank - 1][File - 1].PieceResident())
             {
                 AppendMove(source, Squares[Rank - 1][File - 1], legalMoves);
             }
             //diagonalno od desno(ne sum sig) provervit za capture
-            if (CheckValid(Rank - 1, File + 1) && File != 1 && Squares[Rank - 1][File + 1].PieceResident())
+            if (CheckValid(Rank - 1, File + 1)&& Squares[Rank - 1][File + 1].PieceResident())
             {
                 AppendMove(source, Squares[Rank - 1][File + 1], legalMoves);
             }
@@ -252,6 +257,30 @@ namespace Chesscape.Chess
             }
 
             return legalMoves;
+        }
+        public Piece checkForPromotion()
+        {
+            int tempRank = 0;
+            String piece="a";
+            for(int i = 0; i < 7; i++)
+            {
+                if (Squares[tempRank][i].Piece != null)
+                {
+                     piece = Squares[tempRank][i].Piece.ToString().ToLower();
+                }
+                if (Squares[tempRank][i].PieceResident() && piece.Equals("p"))
+                {
+                    Promotion tmp = new Promotion();
+                    if (tmp.ShowDialog() == DialogResult.OK) {
+                        return tmp.piece;
+                    }
+                    else
+                    {
+                        return new Pawn(true);
+                    }
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -495,8 +524,18 @@ namespace Chesscape.Chess
             if (moves.Contains(square) && FromSquare != null)
             {
                 //map move onto board
+                previous_setup = ToFEN();
                 new Move(FromSquare, square).MakeMove();
-
+                Piece tmp = checkForPromotion();
+                if (tmp != null)
+                {
+                    if (tmp.ToString().ToLower().Equals("p"))
+                    {
+                        Rollback();
+                        return;
+                    }
+                    square.Piece = tmp;
+                }
                 FromSquare = null;
             }
 
@@ -504,10 +543,55 @@ namespace Chesscape.Chess
             {
                 i.GetToSquare().Available = false;
             }
-
             LegalMoves = null;
             this.SelectedPiece = null;
         }
+        public void Rollback()
+        {
+            SetBoard(previous_setup);
+        }
+        public string ToFEN()
+        {
+            StringBuilder fen = new StringBuilder();
+
+            for (int i = 0; i < 8; ++i)
+            {
+                int emptyCount = 0;
+                for (int j = 0; j < 8; ++j)
+                {
+                    var piece = Squares[i][j].Piece;
+                    if (piece == null)
+                    {
+                        emptyCount++;
+                    }
+                    else
+                    {
+                        if (emptyCount > 0)
+                        {
+                            fen.Append(emptyCount);
+                            emptyCount = 0;
+                        }
+                        fen.Append(piece.ToString());
+                    }
+                }
+                if (emptyCount > 0)
+                {
+                    fen.Append(emptyCount);
+                }
+                if (i < 7)
+                {
+                    fen.Append('/');
+                }
+            }
+            string activeColor = "w"; // 'w' for white to move, 'b' for black to move
+            string castlingAvailability = "KQkq"; // Modify based on actual castling rights
+            string enPassantTarget = "-"; // Modify based on actual en passant target square
+            int halfmoveClock = 0; // Number of halfmoves since the last capture or pawn move
+            int fullmoveNumber = 1;
+            fen.Append($" {activeColor} {castlingAvailability} {enPassantTarget} {halfmoveClock} {fullmoveNumber}");
+            return fen.ToString();
+        }
+
 
         /// <summary>
         /// Finds the square over which a point (the cursor) is located.
