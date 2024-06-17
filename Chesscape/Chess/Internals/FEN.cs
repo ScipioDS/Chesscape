@@ -27,6 +27,47 @@ namespace Chesscape.Chess.Internals
 
             //TODO: Add available castling rights;
         }
+        public static string ToFEN(Square [][]Squares)
+        {
+            StringBuilder fen = new StringBuilder();
+
+            for (int i = 0; i < 8; ++i)
+            {
+                int emptyCount = 0;
+                for (int j = 0; j < 8; ++j)
+                {
+                    var piece = Squares[i][j].Piece;
+                    if (piece == null)
+                    {
+                        emptyCount++;
+                    }
+                    else
+                    {
+                        if (emptyCount > 0)
+                        {
+                            fen.Append(emptyCount);
+                            emptyCount = 0;
+                        }
+                        fen.Append(piece.ToString());
+                    }
+                }
+                if (emptyCount > 0)
+                {
+                    fen.Append(emptyCount);
+                }
+                if (i < 7)
+                {
+                    fen.Append('/');
+                }
+            }
+            string activeColor = "w"; // 'w' for white to move, 'b' for black to move
+            string castlingAvailability = "KQkq"; // Modify based on actual castling rights
+            string enPassantTarget = "-"; // Modify based on actual en passant target square
+            int halfmoveClock = 0; // Number of halfmoves since the last capture or pawn move
+            int fullmoveNumber = 1;
+            fen.Append($" {activeColor} {castlingAvailability} {enPassantTarget} {halfmoveClock} {fullmoveNumber}");
+            return fen.ToString();
+        }
 
         /// <summary>
         /// Gets the first part of FEN string, and using that, translates the string to pieces on the board.
