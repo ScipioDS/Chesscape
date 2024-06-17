@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TacticsForm));
             this.SuspendLayout();
             // 
             // TacticsForm
@@ -36,9 +37,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1487, 773);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "TacticsForm";
-            this.Text = "TacticsForm";
+            this.Text = "Chesscape";
             this.Load += new System.EventHandler(this.TacticsForm_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.TacticsForm_Paint);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TacticsForm_MouseDown);
