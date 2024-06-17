@@ -524,7 +524,7 @@ namespace Chesscape.Chess
             if (moves.Contains(square) && FromSquare != null)
             {
                 //map move onto board
-                previous_setup = ToFEN();
+                previous_setup = FEN.ToFEN(Squares);
                 new Move(FromSquare, square).MakeMove();
                 Piece tmp = checkForPromotion();
                 if (tmp != null)
@@ -551,47 +551,7 @@ namespace Chesscape.Chess
         {
             SetBoard(previous_setup);
         }
-        public string ToFEN()
-        {
-            StringBuilder fen = new StringBuilder();
-
-            for (int i = 0; i < 8; ++i)
-            {
-                int emptyCount = 0;
-                for (int j = 0; j < 8; ++j)
-                {
-                    var piece = Squares[i][j].Piece;
-                    if (piece == null)
-                    {
-                        emptyCount++;
-                    }
-                    else
-                    {
-                        if (emptyCount > 0)
-                        {
-                            fen.Append(emptyCount);
-                            emptyCount = 0;
-                        }
-                        fen.Append(piece.ToString());
-                    }
-                }
-                if (emptyCount > 0)
-                {
-                    fen.Append(emptyCount);
-                }
-                if (i < 7)
-                {
-                    fen.Append('/');
-                }
-            }
-            string activeColor = "w"; // 'w' for white to move, 'b' for black to move
-            string castlingAvailability = "KQkq"; // Modify based on actual castling rights
-            string enPassantTarget = "-"; // Modify based on actual en passant target square
-            int halfmoveClock = 0; // Number of halfmoves since the last capture or pawn move
-            int fullmoveNumber = 1;
-            fen.Append($" {activeColor} {castlingAvailability} {enPassantTarget} {halfmoveClock} {fullmoveNumber}");
-            return fen.ToString();
-        }
+       
 
 
         /// <summary>
