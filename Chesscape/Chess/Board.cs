@@ -262,7 +262,7 @@ namespace Chesscape.Chess
         {
             int tempRank = 0;
             String piece="a";
-            for(int i = 0; i < 7; i++)
+            for(int i = 0; i < 8; i++)
             {
                 if (Squares[tempRank][i].Piece != null)
                 {
@@ -532,6 +532,7 @@ namespace Chesscape.Chess
                     if (tmp.ToString().ToLower().Equals("p"))
                     {
                         Rollback();
+                        FromSquare = null;
                         return;
                     }
                     square.Piece = tmp;
