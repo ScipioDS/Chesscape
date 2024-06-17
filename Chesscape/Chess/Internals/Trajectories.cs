@@ -8,14 +8,12 @@ namespace Chesscape.Chess
 {
     public class Trajectories
     {
-        public Trajectories(Square[][] squares)
-        {
-            Trajectories.squares = squares;
-        }
 
-        private static Square[][] squares { get; set; }
+        
+        
         public static HashSet<Move> PawnTrajectory(Square source)
         {
+            Square [] [] squares=Board.GetInstance().Squares;
             HashSet<Move> legalMoves = new HashSet<Move>();
             int File = source.File;
             int Rank = source.GetRankPhysical();
@@ -47,6 +45,7 @@ namespace Chesscape.Chess
         }
         public static HashSet<Move> KingTrajectory(Square source)
         {
+            Square[][] squares = Board.GetInstance().Squares;
             HashSet<Move> legalMoves = new HashSet<Move>();
 
             int File = source.File;
@@ -80,6 +79,7 @@ namespace Chesscape.Chess
         }
         public static bool CanCastleQueenside(Square ofKing)
         {
+            Square[][] squares = Board.GetInstance().Squares;
             if ((ofKing.Piece as ICastleable).Moved()) return false;
 
             int rankKing = ofKing.GetRankPhysical();
@@ -104,6 +104,7 @@ namespace Chesscape.Chess
         }
         public static bool CanCastleKingside(Square ofKing)
         {
+            Square[][] squares = Board.GetInstance().Squares;
             if ((ofKing.Piece as ICastleable).Moved()) return false;
 
             int rankKing = ofKing.GetRankPhysical();
@@ -130,6 +131,7 @@ namespace Chesscape.Chess
 
         public static bool CastleHelper(Square checking)
         {
+            Square[][] squares = Board.GetInstance().Squares;
             if (!checking.PieceResident()) return false;
             else if (!(checking.Piece is Rook)) return false;
             return !(checking.Piece as Rook).Moved();
@@ -137,6 +139,7 @@ namespace Chesscape.Chess
 
         public static bool PieceStaring(Square checking)
         {
+            Square[][] squares = Board.GetInstance().Squares;
             checking.Piece = new Pawn(true); // Imitate a piece being placed to get the trajectory.
 
             HashSet<Move> legalsDiag = DiagonalTrajectory(checking);
@@ -185,6 +188,7 @@ namespace Chesscape.Chess
         }
         public static HashSet<Move> DiagonalTrajectory(Square source)
         {
+            Square[][] squares = Board.GetInstance().Squares;
             HashSet<Move> legalMoves = new HashSet<Move>();
 
             // bottom right
@@ -215,6 +219,7 @@ namespace Chesscape.Chess
         }
         public static HashSet<Move> GTrajectory(Square source)
         {
+            Square[][] squares = Board.GetInstance().Squares;
             HashSet<Move> legalMoves = new HashSet<Move>();
             int File = source.File;
             int Rank = source.GetRankPhysical();
@@ -239,6 +244,7 @@ namespace Chesscape.Chess
         }
         public static HashSet<Move> ForthrightTrajectory(Square source)
         {
+            Square[][] squares = Board.GetInstance().Squares;
             HashSet<Move> legalMoves = new HashSet<Move>();
 
             int sJ = source.File;
@@ -285,6 +291,7 @@ namespace Chesscape.Chess
         }
         private static bool AppendMove(Square source, Square target, HashSet<Move> fill)
         {
+            Square[][] squares = Board.GetInstance().Squares;
             if ((target.PieceResident() && (source.Piece.White != target.Piece.White)) || !target.PieceResident())
             {
                 return fill.Add(new Move(source, target));

@@ -102,7 +102,6 @@ namespace Chesscape.Chess
         public void SetBoard(string FENString)
         {
             FEN.Translate(FENString);
-            Trajectories = new Trajectories(Squares);
         }
 
         //----------------------------------LEGAL MOVE LOGIC METHODS----------------------------------

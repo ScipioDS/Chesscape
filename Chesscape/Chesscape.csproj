@@ -65,7 +65,7 @@
       <DependentUpon>TacticsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Chess\Internals\FEN.cs" />
-    <Compile Include="Chess\Trajectoriescs.cs" />
+    <Compile Include="Chess\Internals\Trajectories.cs" />
     <Compile Include="Menu\Menu.cs">
       <SubType>Form</SubType>
     </Compile>
