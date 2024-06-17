@@ -28,72 +28,81 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.lb1 = new System.Windows.Forms.ListBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.queen_btn = new System.Windows.Forms.Button();
+            this.bishop_btn = new System.Windows.Forms.Button();
+            this.rook_btn = new System.Windows.Forms.Button();
+            this.knight_btn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button1
+            // queen_btn
             // 
-            this.button1.Location = new System.Drawing.Point(62, 147);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 41);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "OK";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.button1_MouseClick);
+            this.queen_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.queen_btn.BackgroundImage = global::Chesscape.Properties.Resources.w_queen;
+            this.queen_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.queen_btn.Location = new System.Drawing.Point(12, 12);
+            this.queen_btn.Name = "queen_btn";
+            this.queen_btn.Size = new System.Drawing.Size(86, 87);
+            this.queen_btn.TabIndex = 4;
+            this.queen_btn.UseVisualStyleBackColor = false;
+            this.queen_btn.Click += new System.EventHandler(this.queen_btn_Click);
             // 
-            // button2
+            // bishop_btn
             // 
-            this.button2.Location = new System.Drawing.Point(333, 147);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 41);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Cancel";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.bishop_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.bishop_btn.BackgroundImage = global::Chesscape.Properties.Resources.w_bishop;
+            this.bishop_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.bishop_btn.Location = new System.Drawing.Point(104, 12);
+            this.bishop_btn.Name = "bishop_btn";
+            this.bishop_btn.Size = new System.Drawing.Size(86, 87);
+            this.bishop_btn.TabIndex = 5;
+            this.bishop_btn.UseVisualStyleBackColor = false;
+            this.bishop_btn.Click += new System.EventHandler(this.bishop_btn_Click);
             // 
-            // lb1
+            // rook_btn
             // 
-            this.lb1.FormattingEnabled = true;
-            this.lb1.ItemHeight = 16;
-            this.lb1.Location = new System.Drawing.Point(165, 28);
-            this.lb1.Name = "lb1";
-            this.lb1.Size = new System.Drawing.Size(120, 100);
-            this.lb1.TabIndex = 2;
+            this.rook_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.rook_btn.BackgroundImage = global::Chesscape.Properties.Resources.w_rook;
+            this.rook_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.rook_btn.Location = new System.Drawing.Point(196, 12);
+            this.rook_btn.Name = "rook_btn";
+            this.rook_btn.Size = new System.Drawing.Size(86, 87);
+            this.rook_btn.TabIndex = 6;
+            this.rook_btn.UseVisualStyleBackColor = false;
+            this.rook_btn.Click += new System.EventHandler(this.rook_btn_Click);
             // 
-            // label1
+            // knight_btn
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(141, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(173, 16);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Please choose a new piece";
+            this.knight_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.knight_btn.BackgroundImage = global::Chesscape.Properties.Resources.w_knight;
+            this.knight_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.knight_btn.Location = new System.Drawing.Point(288, 12);
+            this.knight_btn.Name = "knight_btn";
+            this.knight_btn.Size = new System.Drawing.Size(86, 87);
+            this.knight_btn.TabIndex = 7;
+            this.knight_btn.UseVisualStyleBackColor = false;
+            this.knight_btn.Click += new System.EventHandler(this.knight_btn_Click);
             // 
             // Promotion
             // 
-            this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(487, 234);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.lb1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.ClientSize = new System.Drawing.Size(384, 109);
+            this.ControlBox = false;
+            this.Controls.Add(this.knight_btn);
+            this.Controls.Add(this.rook_btn);
+            this.Controls.Add(this.bishop_btn);
+            this.Controls.Add(this.queen_btn);
             this.Name = "Promotion";
-            this.Text = "Promotion";
+            this.Text = "Choose your fighter";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ListBox lb1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button queen_btn;
+        private System.Windows.Forms.Button bishop_btn;
+        private System.Windows.Forms.Button rook_btn;
+        private System.Windows.Forms.Button knight_btn;
     }
 }

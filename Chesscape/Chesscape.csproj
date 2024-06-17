@@ -144,5 +144,14 @@
   <ItemGroup>
     <None Include="Chess\cburnett_pieces\b_pawn.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Chess\cburnett_pieces\t_bishop.png" />
+    <Content Include="Chess\cburnett_pieces\t_king.png" />
+    <Content Include="Chess\cburnett_pieces\t_knight.png" />
+    <Content Include="Chess\cburnett_pieces\t_pawn.png" />
+    <Content Include="Chess\cburnett_pieces\t_queen.png" />
+    <Content Include="Chess\cburnett_pieces\t_rook.png" />
+    <Content Include="Chess\cburnett_pieces\w_rook.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

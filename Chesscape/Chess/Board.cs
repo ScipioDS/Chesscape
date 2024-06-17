@@ -529,12 +529,6 @@ namespace Chesscape.Chess
                 Piece tmp = checkForPromotion();
                 if (tmp != null)
                 {
-                    if (tmp.ToString().ToLower().Equals("p"))
-                    {
-                        Rollback();
-                        FromSquare = null;
-                        return;
-                    }
                     square.Piece = tmp;
                 }
                 FromSquare = null;
