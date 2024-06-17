@@ -30,6 +30,7 @@ namespace Chesscape.Chess
         //Legal moves
         private HashSet<Move> LegalMoves { get; set; }
         private string previous_setup {  get; set; }
+        private Trajectories Trajectories { get; set; }
 
 
         //DRAWING ATTRIBUTES
@@ -101,6 +102,7 @@ namespace Chesscape.Chess
         public void SetBoard(string FENString)
         {
             FEN.Translate(FENString);
+            Trajectories = new Trajectories(Squares);
         }
 
         //----------------------------------LEGAL MOVE LOGIC METHODS----------------------------------
@@ -594,42 +596,42 @@ namespace Chesscape.Chess
         /// <summary>
         /// Adds a duplicate of the piece over which the cursor is to selected piece. To be used with move
         /// </summary>
-        public void Select(Point point)
+       public void Select(Point point)
+{
+    Square square = GetSquare(point);
+
+    if (square.Piece != null)
+    {
+        string piece = square.Piece.ToString().ToLower();
+        switch (piece)
         {
-            Square square = GetSquare(point);
-
-            if (square.Piece != null)
-            {
-                string piece = square.Piece.ToString().ToLower();
-                switch (piece)
-                {
-                    case "p":
-                        LegalMoves = PawnTrajectory(square);
-                        break;
-                    case "q":
-                        LegalMoves = ForthrightTrajectory(square);
-                        LegalMoves.UnionWith(DiagonalTrajectory(square));
-                        break;
-                    case "k":
-                        LegalMoves = KingTrajectory(square);
-                        break;
-                    case "r":
-                        LegalMoves = ForthrightTrajectory(square);
-                        break;
-                    case "n":
-                        LegalMoves = GTrajectory(square);
-                        break;
-                    case "b":
-                        LegalMoves = DiagonalTrajectory(square);
-                        break;
-                }
-                
-                this.SelectedPiece = square.Piece;
-                FromSquare = square;
-            }
-
-            this.Cursor = point;
+            case "p":
+                LegalMoves = Trajectories.PawnTrajectory(square);
+                break;
+            case "q":
+                LegalMoves = Trajectories.ForthrightTrajectory(square);
+                LegalMoves.UnionWith(Trajectories.DiagonalTrajectory(square));
+                break;
+            case "k":
+                LegalMoves = Trajectories.KingTrajectory(square); 
+                break;
+            case "r":
+                LegalMoves = Trajectories.ForthrightTrajectory(square);
+                break;
+            case "n":
+                LegalMoves = Trajectories.GTrajectory(square);
+                break;
+            case "b":
+                LegalMoves = Trajectories.DiagonalTrajectory(square);
+                break;
         }
+        
+        this.SelectedPiece = square.Piece;
+        FromSquare = square;
+    }
+
+    this.Cursor = point;
+}
 
     }
 }
