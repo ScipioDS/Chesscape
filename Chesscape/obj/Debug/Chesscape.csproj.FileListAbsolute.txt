@@ -39,3 +39,6 @@ C:\Users\ncvet\Source\Repos\Chesscape\Chesscape\obj\Debug\Chesscape.csproj.CoreC
 C:\Users\ncvet\Source\Repos\Chesscape\Chesscape\obj\Debug\Chesscape.exe
 C:\Users\ncvet\Source\Repos\Chesscape\Chesscape\obj\Debug\Chesscape.pdb
 C:\Users\ncvet\Source\Repos\Chesscape\Chesscape\obj\Debug\Chesscape.Promotion.resources
+C:\Users\Skipio\source\repos\ChesscapeProject\Chesscape\obj\Debug\Chesscape.Promotion.resources
+C:\Users\Skipio\source\repos\ChesscapeProject\Chesscape\obj\Debug\Chesscape.Users.Register.resources
+C:\Users\Skipio\source\repos\ChesscapeProject\Chesscape\obj\Debug\Chesscape.Menu.resources
