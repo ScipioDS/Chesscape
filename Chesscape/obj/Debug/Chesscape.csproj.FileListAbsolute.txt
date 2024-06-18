@@ -39,3 +39,4 @@ C:\Users\ncvet\Source\Repos\Chesscape\Chesscape\obj\Debug\Chesscape.csproj.CoreC
 C:\Users\ncvet\Source\Repos\Chesscape\Chesscape\obj\Debug\Chesscape.exe
 C:\Users\ncvet\Source\Repos\Chesscape\Chesscape\obj\Debug\Chesscape.pdb
 C:\Users\ncvet\Source\Repos\Chesscape\Chesscape\obj\Debug\Chesscape.Promotion.resources
+C:\Users\david\Source\Repos\Chesscape\Chesscape\obj\Debug\Chesscape.Promotion.resources

@@ -26,6 +26,11 @@ namespace Chesscape.Chess
                 Image.FromFile(fullPathB);
         }
 
+        public override string FENNotation()
+        {
+            return White ? "P" : "p";
+
+        }
 
         public override string ToString()
         {

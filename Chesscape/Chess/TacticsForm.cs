@@ -20,9 +20,9 @@ namespace Chesscape.Chess
             Square.SetFileTranslation();
             board = Board.GetInstance();
             board.SetPerspective(true);
-            board.SetBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+            board.SetBoard("rnbqk1nr/pppp1ppp/8/4p3/1b2P3/3P4/PPP2PPP/RNBQKBNR w KQkq - 1 3");
+            board.PreviousSetup = FEN.ToFEN(board.Squares);
 
-            Debug.WriteLine(board);
             var ELO = new ELO(1500, 1400, true);
             Debug.WriteLine(ELO.calculatePlayerELO());
 
@@ -38,13 +38,16 @@ namespace Chesscape.Chess
         {
 
         }
+
         private void TacticsForm_MouseDown(object sender, MouseEventArgs e)
         {
             board.Select(e.Location);
+            Invalidate();
         }
         private void TacticsForm_MouseUp(object sender, MouseEventArgs e)
         {
             board.MakeMove(e.Location);
+            Invalidate();
         }
         private void TacticsForm_MouseMove(object sender, MouseEventArgs e)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,21 +24,22 @@ namespace Chesscape.Chess.Internals
 
             single.WhiteToPlay = parts[1].Equals("w");
 
-            single.EnPassantTarget = parts[3].Equals("-") ? null : Board.PositionToSquare(parts[3]);
+            //single.EnPassantTarget = parts[3].Equals("-") ? null : Board.PositionToSquare(parts[3]);
 
             //TODO: Add available castling rights;
         }
-        public static string ToFEN(Square [][]Squares)
+
+
+        public static string ToFEN(Square[][] Squares)
         {
             StringBuilder fen = new StringBuilder();
 
             for (int i = 0; i < 8; ++i)
             {
                 int emptyCount = 0;
-                for (int j = 0; j < 8; ++j)
-                {
-                    var piece = Squares[i][j].Piece;
-                    if (piece == null)
+                for (int j = 0; j < 8; ++j) {
+                
+                    if (!Squares[i][j].PieceResident())
                     {
                         emptyCount++;
                     }
@@ -48,7 +50,7 @@ namespace Chesscape.Chess.Internals
                             fen.Append(emptyCount);
                             emptyCount = 0;
                         }
-                        fen.Append(piece.ToString());
+                        fen.Append(Squares[i][j].Piece.FENNotation());
                     }
                 }
                 if (emptyCount > 0)
@@ -60,12 +62,15 @@ namespace Chesscape.Chess.Internals
                     fen.Append('/');
                 }
             }
+
+
             string activeColor = "w"; // 'w' for white to move, 'b' for black to move
-            string castlingAvailability = "KQkq"; // Modify based on actual castling rights
+            string castlingAvailability = "KQkq";
             string enPassantTarget = "-"; // Modify based on actual en passant target square
             int halfmoveClock = 0; // Number of halfmoves since the last capture or pawn move
             int fullmoveNumber = 1;
             fen.Append($" {activeColor} {castlingAvailability} {enPassantTarget} {halfmoveClock} {fullmoveNumber}");
+            Debug.WriteLine(fen);
             return fen.ToString();
         }
 
@@ -132,7 +137,14 @@ namespace Chesscape.Chess.Internals
                             break;
                         default:
                             int forward = int.Parse(char.ToString(checkEl)) - 1;
-                            j += forward;
+                            int k = j;
+                            j += forward++;
+                            while(forward != 0)
+                            {
+                                onto.Squares[7 - i][k].Piece = null;
+                                k++;
+                                forward--;
+                            }
                             break;
                     }
 

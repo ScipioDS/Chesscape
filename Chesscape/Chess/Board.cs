@@ -1,7 +1,10 @@
 ﻿using Chesscape.Chess.Internals;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 
@@ -21,14 +24,15 @@ namespace Chesscape.Chess
         private static Board SingleBoard = null;
         //Board matrix
         public Square[][] Squares { get; set; }
-        //En passant target square
+        //En passant target justMoved
         public Square EnPassantTarget { get; set; }
         //Turn
         public bool WhiteToPlay { get; set; }
-        //Legal moves
+        //Legal moveTo
         private HashSet<Move> LegalMoves { get; set; }
-        private string previous_setup { get; set; }
-        private Trajectories Trajectories { get; set; }
+        public bool BlackKingInCheck { get; set; }
+        public bool WhiteKingInCheck { get; set; }
+        public string PreviousSetup { get; set; }
 
 
         //DRAWING ATTRIBUTES
@@ -45,6 +49,10 @@ namespace Chesscape.Chess
         /// </summary>
         private Board()
         {
+
+            BlackKingInCheck = false;
+            WhiteKingInCheck = true;
+
             Squares = new Square[8][];
             for (int i = 7; i >= 0; --i)
             {
@@ -52,7 +60,6 @@ namespace Chesscape.Chess
                 for (int j = 0; j < 8; ++j)
                 {
                     Squares[i][j] = new Square((byte)(7 - i), (byte)j, null);
-
                 }
             }
         }
@@ -65,7 +72,7 @@ namespace Chesscape.Chess
         }
 
         /// <summary>
-        /// Board perspective drawing logic. Sets the basis square colors from which the board will be drawn.
+        /// Board perspective drawing logic. Sets the basis justMoved colors from which the board will be drawn.
         /// </summary>
         /// <param name="white">Pass true if the board perspective is from the white player.</param>
         public void SetPerspective(bool white)
@@ -102,39 +109,7 @@ namespace Chesscape.Chess
             FEN.Translate(FENString);
         }
 
-        //----------------------------------LEGAL MOVE LOGIC METHODS----------------------------------
-
-        /// <summary>
-        /// Computes legal moves that a rook would have (straight line moves)
-        /// This is not to be used only by moves for rooks, Queens can reuse this.
-        /// </summary>
-        /// <param name="source">A square containing a piece.</param>
-        /// <returns>A set containing legal moves that a rook would have.</returns>
-
-
-
-        /// <summary>
-        /// Computes the legal moves a knight would have for a given square.
-        /// </summary>
-        /// <param name="source">A square containing a piece.</param>
-        /// <returns>>A set containing legal moves for a knight.</returns>
-
-
-        /// <summary>
-        /// Computes the legal moves a pawn would have for a given square.
-        /// </summary>
-        /// <param name="source">A square containing a piece.</param>
-        /// <returns>A set containing legal moves for a pawn.</returns>
-
-
-        /// <summary>
-        /// Computes the legal moves a bishop would have for a given square.
-        /// This is not to be used only by moves for bishop, Queens can reuse this.
-        /// </summary>
-        /// <param name="source">A square containing a piece.</param>
-        /// <returns>A set containing legal moves for a bishop.</returns>
-
-        public Piece checkForPromotion()
+        public Piece CheckForPromotion()
         {
             int tempRank = 0;
             String piece = "a";
@@ -160,40 +135,24 @@ namespace Chesscape.Chess
             return null;
         }
 
-        /// <summary>
-        /// Computes the legal moves a king would have for a given square.
-        /// </summary>
-        /// <param name="source">A square containing a piece.</param>
-        /// <returns>A set containing legal moves for a king.</returns>
-
-
         //----------------------------------UTILITY METHODS----------------------------------
 
-        /// <summary>
-        /// Checks if your king can castle queenside.
-        /// </summary>
-        /// <param name="ofKing">Square of the king the player wants to castle.</param>
-        /// <returns>Return true iff you can castle queenside.</returns>
-
-
-        /// <summary>
-        /// Checks if your king can castle kingside.
-        /// </summary>
-        /// <param name="ofKing">Square of the king the player wants to castle.</param>
-        /// <returns>Return true iff you can castle kingside.</returns>
-
-
-
-
-
-        /// <summary>
-        /// Utility method to append legal moves to a set. To be called inside trajectory method loops.
-        /// </summary>
-        /// <param name="source">The source square in which the piece resides.</param>
-        /// <param name="target">The target square to which the piece will move.</param>
-        /// <param name="fill">A set that is filled with all legal moves from a given square.</param>
-        /// <returns>True iff we dont encounter a blockade for the trajectory, false otherwise.</returns>
-
+        public Square KingSquare(bool white)
+        {
+            Square ofKing = null;
+            for(byte i = 0; i < 8; ++i)
+            {
+                for (byte j = 0; j < 8; ++j)
+                {
+                    if (Squares[i][j].PieceResident() && Squares[i][j].Piece is King && (Squares[i][j].Piece.White == white))
+                    {
+                        ofKing = Squares[i][j]; break;
+                    }
+                }
+                if (ofKing != null) break;
+            }
+            return ofKing;
+        }
 
         /// <summary>
         /// Only for debugging purposes. To be called with Debug.WriteLine(board.ToString());
@@ -215,10 +174,46 @@ namespace Chesscape.Chess
             return sb.ToString();
         }
 
+        public void Rollback()
+        {
+            SetBoard(PreviousSetup);
+        }
+
+        private void BlackCheckSequence(Square justMoved)
+        {
+            Select(new Point(justMoved.TopLeftCoord.X, justMoved.TopLeftCoord.Y));
+
+            List<Square> kingResides =
+            LegalMoves
+            .Select(move => move.GetToSquare())
+            .Where(sq => (sq.PieceResident() && sq.Piece is King && !sq.Piece.White))
+            .ToList();
+
+            BlackKingInCheck = kingResides.Count == 1;
+
+            if (BlackKingInCheck) kingResides[0].KingChecked(true);
+            else RemoveCheckFromBlack();
+        }
+
+        public void RemoveCheckFromBlack()
+        {
+            for (byte i = 0; i < 8; ++i)
+            {
+                for (byte j = 0; j < 8; ++j)
+                {
+                    if (Squares[i][j].InCheckBlack())
+                    {
+                        BlackKingInCheck = false;
+                        Squares[i][j].KingChecked(false);
+                    }
+                }
+            }
+        }
+
         /// <summary>
-        /// Returns the square in the Board matrix with the position passed as an argument
+        /// Returns the justMoved in the Board matrix with the position passed as an argument
         /// </summary>
-        /// <param name="position">A formally defined square position.</param>
+        /// <param name="position">A formally defined justMoved position.</param>
         /// <returns>A Square object on the board matrix.</returns>
         public static Square PositionToSquare(string position)
         {
@@ -231,30 +226,37 @@ namespace Chesscape.Chess
         //----------------------------------DRAWING METHODS----------------------------------
 
         /// <summary>
-        /// Physically displaces a piece from one square to another on the chessboard.
+        /// Physically displaces a piece from one justMoved to another on the chessboard.
         /// </summary>
-        /// <param name="point">Point used to find the square which we are moving to.</param>
+        /// <param name="point">Point used to find the justMoved which we are moving to.</param>
         public void MakeMove(Point point)
         {
-            Square square = GetSquare(point);
-
-            List<Square> moves = new List<Square>();
             if (LegalMoves == null) return;
+
+            Square square = GetSquare(point);
+            List<Square> moveTo = new List<Square>();
+
+            string beforePosSquareMove = null;
+
             foreach (Move i in LegalMoves)
             {
-                moves.Add(i.GetToSquare());
+                moveTo.Add(i.GetToSquare()); 
             }
 
-            if (moves.Contains(square) && FromSquare != null)
+            if (moveTo.Contains(square) && FromSquare != null)
             {
                 //map move onto board
-                previous_setup = FEN.ToFEN(Squares);
-                new Move(FromSquare, square).MakeMove();
-                Piece tmp = checkForPromotion();
+                new Move(FromSquare, square).MakeMove(false);
+                Piece tmp = CheckForPromotion();
                 if (tmp != null)
                 {
                     square.Piece = tmp;
                 }
+
+                Debug.WriteLine(FromSquare.TopLeftCoord + " " + square.TopLeftCoord);
+
+                beforePosSquareMove = FromSquare.TopLeftCoord.ToString();
+             
                 FromSquare = null;
             }
 
@@ -262,15 +264,17 @@ namespace Chesscape.Chess
             {
                 i.GetToSquare().Available = false;
             }
+
+            if (beforePosSquareMove != null)
+            WhiteKingInCheck = beforePosSquareMove.Equals(square.TopLeftCoord.ToString());
+
             LegalMoves = null;
             this.SelectedPiece = null;
         }
-        public void Rollback()
-        {
-            SetBoard(previous_setup);
-        }
+
+
         public void CheckForRooks(Square Rook1)
-        {  
+        {
             Square Rook2 = null;
             int counter = 1;
             for (int i = 0; i < 8; i++)
@@ -280,7 +284,7 @@ namespace Chesscape.Chess
                     if (Squares[i][j].PieceResident())
                     {
                         Piece targetPiece = Squares[i][j].Piece;
-                        if (Squares[i][j].Piece.ToString().ToLower().Equals("r") && targetPiece.White && Squares[i][j].ToString()!=Rook1.ToString())
+                        if (Squares[i][j].Piece.ToString().ToLower().Equals("r") && targetPiece.White && Squares[i][j].ToString() != Rook1.ToString())
                         {
                             counter++;
                             Rook2 = Squares[i][j];
@@ -306,6 +310,8 @@ namespace Chesscape.Chess
                 }
             }
         }
+
+
         public void CheckForKnigths(Square knight1)
         {
             Square knight2 = null;
@@ -340,17 +346,16 @@ namespace Chesscape.Chess
                     knight1.Piece.setFile(knight1.GetFileChar(knight1.File));
                     knight1.Piece.setAddFile();
                     knight2.Piece.setAddFile();
-                    int xd = 0;
                 }
             }
 
         }
 
         /// <summary>
-        /// Finds the square over which a point (the cursor) is located.
+        /// Finds the justMoved over which a point (the cursor) is located.
         /// </summary>
-        /// <param name="point">Point used to find the square which we are moving to.</param>
-        /// <returns>The square where we want to place the piece we have picked up.</returns>
+        /// <param name="point">Point used to find the justMoved which we are moving to.</param>
+        /// <returns>The justMoved where we want to place the piece we have picked up.</returns>
         public Square GetSquare(Point point)
         {
             int iI = 0, jJ = 0;
@@ -372,10 +377,10 @@ namespace Chesscape.Chess
         }
 
         /// <summary>
-        /// Method that calls upon each square to draw itself.
+        /// Method that calls upon each justMoved to draw itself.
         /// </summary>
         /// <param name="g">Graphics object obtained form Paint method arguments in TacticsForm.cs</param>
-        /// <param name="topLeft">The top left point of the square itself.</param>
+        /// <param name="topLeft">The top left point of the justMoved itself.</param>
         public void DrawAllComponents(Graphics g)
         {
             Array.ForEach(Squares, rank => Array.ForEach(rank, square => square.Draw(g, SQUARE_SIZE)));
@@ -401,7 +406,7 @@ namespace Chesscape.Chess
 
             if (square.Piece != null)
             {
-                string piece = square.Piece.ToString().ToLower();
+                string piece = square.Piece.FENNotation().ToLower();
                 switch (piece)
                 {
                     case "p":

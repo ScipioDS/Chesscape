@@ -26,6 +26,8 @@ namespace Chesscape.Chess
         /// <returns>A letter (string) denoting this piece. Ex. "P" is a white pawn, "p" is a black pawn.</returns>
         public abstract override string ToString();
 
+        public abstract string FENNotation();
+
         public Image GetImage()
         {
             return PieceImage;

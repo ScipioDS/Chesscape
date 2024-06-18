@@ -1,10 +1,6 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using Chesscape.Chess.Internals;
+using System.Runtime;
+using System.Windows.Forms;
 
 namespace Chesscape.Chess
 {
@@ -16,10 +12,10 @@ namespace Chesscape.Chess
         public Move(Square from, Square to)
         {
             this.from = from;
-            this.to =   to;
+            this.to = to;
         }
 
-        public void MakeMove()
+        public void MakeMove(bool pretend)
         {
             if (from.Piece is ICastleable)
             {
@@ -40,10 +36,15 @@ namespace Chesscape.Chess
                 }
             }
 
-            //TODO: Check method safety
             Piece toMove = from.Piece;
             to.Piece = toMove;
             from.Piece = null;
+
+            if (!pretend)
+            {
+                Board b = Board.GetInstance();
+                b.PreviousSetup = FEN.ToFEN(b.Squares);
+            }
         }
 
         private void CastleKingside()
@@ -57,7 +58,7 @@ namespace Chesscape.Chess
             to.Piece = from.Piece;
             from.Piece = null;
         }
-        
+
         private void CastleQueenside()
         {
             Board board = Board.GetInstance();
@@ -78,7 +79,10 @@ namespace Chesscape.Chess
 
             // Safety measure if MakeMove() is called before ToString(), since the from square might be null
             Square squareInString = from.PieceResident() ? from : to;
-            return to.PieceResident() ? $"{squareInString.Piece}x{to}" : $"{squareInString.Piece}{to}";
+
+            string fixPieceNotation = squareInString.Piece.ToString().Substring(0, 1).ToUpper() + squareInString.Piece.ToString().Substring(1);
+
+            return to.PieceResident() ? $"{fixPieceNotation}x{to}" : $"{fixPieceNotation}{to}";
         }
     }
 }

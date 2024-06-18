@@ -1,22 +1,23 @@
-﻿using System;
+﻿using Chesscape.Chess.Internals;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chesscape.Chess
 {
     public class Trajectories
     {
 
-        
-        
         public static HashSet<Move> PawnTrajectory(Square source)
         {
-            Square [] [] squares=Board.GetInstance().Squares;
+            Square[][] squares = Board.GetInstance().Squares;
             HashSet<Move> legalMoves = new HashSet<Move>();
+            HashSet<Square> IllegalKingMoves = new HashSet<Square>();
+
             int File = source.File;
             int Rank = source.GetRankPhysical();
+
             if (Rank == 6 && squares[Rank - 1][File].PieceResident())
             {
                 return legalMoves;
@@ -43,6 +44,8 @@ namespace Chesscape.Chess
             }
             return legalMoves;
         }
+
+
         public static HashSet<Move> KingTrajectory(Square source)
         {
             Square[][] squares = Board.GetInstance().Squares;
@@ -59,13 +62,17 @@ namespace Chesscape.Chess
             {
                 int newRank = Rank + kingMoves[i, 0];
                 int newFile = File + kingMoves[i, 1];
+
+
                 if (CheckValid(newRank, newFile))
                 {
-                    AppendMove(source, squares[newRank][newFile], legalMoves);
+                    Square sq = squares[newRank][newFile];
+                    if (!AroundBlackKing().Contains(sq) && !AllIllegalForPlayer().Contains(sq))
+                        AppendMove(source, squares[newRank][newFile], legalMoves);
                 }
             }
 
-            if (Trajectories.CanCastleKingside(source))
+            if (CanCastleKingside(source))
             {
                 legalMoves.Add(new Move(source, squares[Rank][File + 2]));
             }
@@ -74,13 +81,16 @@ namespace Chesscape.Chess
                 legalMoves.Add(new Move(source, squares[Rank][File - 2]));
             }
 
-
             return legalMoves;
         }
+
+
         public static bool CanCastleQueenside(Square ofKing)
         {
-            Square[][] squares = Board.GetInstance().Squares;
+            Board b = Board.GetInstance();
+            Square[][] squares = b.Squares;
             if ((ofKing.Piece as ICastleable).Moved()) return false;
+            if (b.WhiteKingInCheck) return false;
 
             int rankKing = ofKing.GetRankPhysical();
             int fileKing = ofKing.File;
@@ -92,20 +102,25 @@ namespace Chesscape.Chess
                 {
                     if (checking.PieceResident())
                         return false;
+
                     if (PieceStaring(checking)) return false;
                 }
                 else
                 {
-                    return Trajectories.CastleHelper(checking);
+                    return CastleHelper(checking);
                 }
             }
 
             return false;
         }
+
+
         public static bool CanCastleKingside(Square ofKing)
         {
-            Square[][] squares = Board.GetInstance().Squares;
+            Board b = Board.GetInstance();
+            Square[][] squares = b.Squares;
             if ((ofKing.Piece as ICastleable).Moved()) return false;
+            if (b.WhiteKingInCheck) return false;
 
             int rankKing = ofKing.GetRankPhysical();
             int fileKing = ofKing.File;
@@ -121,7 +136,7 @@ namespace Chesscape.Chess
                 }
                 else
                 {
-                    return Trajectories.CastleHelper(checking);
+                    return CastleHelper(checking);
                 }
             }
 
@@ -129,25 +144,35 @@ namespace Chesscape.Chess
             return false;
         }
 
+
         public static bool CastleHelper(Square checking)
         {
-            Square[][] squares = Board.GetInstance().Squares;
             if (!checking.PieceResident()) return false;
             else if (!(checking.Piece is Rook)) return false;
             return !(checking.Piece as Rook).Moved();
         }
 
+
+
         public static bool PieceStaring(Square checking)
         {
-            Square[][] squares = Board.GetInstance().Squares;
-            checking.Piece = new Pawn(true); // Imitate a piece being placed to get the trajectory.
+            bool imitate = false;
+
+            if (!checking.PieceResident())
+            {
+                checking.Piece = new Pawn(true); // imitate a piece being placed to get the trajectory if square is without a piece.
+                imitate = true;
+            }
 
             HashSet<Move> legalsDiag = DiagonalTrajectory(checking);
             HashSet<Move> legalsForthRight = ForthrightTrajectory(checking);
             HashSet<Move> legalsG = GTrajectory(checking);
             HashSet<Move> legalsPawn = PawnTrajectory(checking);
 
-            checking.Piece = null;
+            if (imitate)
+            {
+                checking.Piece = null;
+            }
 
             foreach (Move move in legalsDiag)
             {
@@ -182,10 +207,21 @@ namespace Chesscape.Chess
                 }
             }
 
-
+            foreach (Move move in legalsPawn)
+            {
+                if (!move.GetToSquare().PieceResident()) continue;
+                Piece targetPiece = move.GetToSquare().Piece;
+                bool pieceResidingBlack = !targetPiece.White;
+                if (targetPiece is Pawn && pieceResidingBlack)
+                {
+                    return true;
+                }
+            }
 
             return false;
         }
+
+
         public static HashSet<Move> DiagonalTrajectory(Square source)
         {
             Square[][] squares = Board.GetInstance().Squares;
@@ -217,6 +253,8 @@ namespace Chesscape.Chess
 
             return legalMoves;
         }
+
+
         public static HashSet<Move> GTrajectory(Square source)
         {
             Square[][] squares = Board.GetInstance().Squares;
@@ -242,6 +280,8 @@ namespace Chesscape.Chess
             }
             return legalMoves;
         }
+
+
         public static HashSet<Move> ForthrightTrajectory(Square source)
         {
             Square[][] squares = Board.GetInstance().Squares;
@@ -285,16 +325,121 @@ namespace Chesscape.Chess
 
             return legalMoves;
         }
+
+
         private static bool CheckValid(int row, int col)
         {
             return row >= 0 && row < 8 && col >= 0 && col < 8;
         }
+
+        private static HashSet<Square> AroundBlackKing()
+        {
+            HashSet<Square> nearby = new HashSet<Square>();
+            Board b = Board.GetInstance();
+
+            Square ofKing = b.KingSquare(false);
+
+            int row = ofKing.GetRankPhysical();
+            int col = ofKing.File;
+
+
+            for (int i = row - 1; i <= row + 1; i++)
+            {
+                for (int j = col - 1; j <= col + 1; j++)
+                {
+                    if (CheckValid(i, j))
+                    {
+                        nearby.Add(b.Squares[i][j]);
+                    }
+                }
+            }
+
+            foreach (var item in nearby)
+            {
+                Debug.WriteLine(item);
+            }
+
+            return nearby;
+        }
+
+        private static HashSet<Square> AllIllegalForPlayer()
+        {
+
+            HashSet<Square> retval = new HashSet<Square>();
+            Board b = Board.GetInstance();
+            for (int i = 0; i < 8; ++i)
+            {
+                for (int j = 0; j < 8; ++j)
+                {
+                    HashSet<Square> currentlyAppend = new HashSet<Square>();
+                    Square square = b.Squares[i][j];
+                    if (square.PieceResident() && !square.Piece.White)
+                    {
+                        string piece = square.Piece.FENNotation().ToLower();
+                        switch (piece)
+                        {
+                            case "p":
+                                if (CheckValid(i + 1, j + 1))
+                                {
+                                    currentlyAppend.Add(b.Squares[i + 1][j+1]);
+                                }
+                                if (CheckValid(i + 1, j - 1))
+                                {
+                                    currentlyAppend.Add(b.Squares[i + 1][j-1]);
+                                }
+                                break;
+                            case "q":
+                                currentlyAppend = Trajectories.ForthrightTrajectory(square).Select(sq => sq.GetToSquare()).ToHashSet();
+                                currentlyAppend.UnionWith(Trajectories.DiagonalTrajectory(square).Select(sq => sq.GetToSquare()).ToHashSet());
+                                break;
+                            case "k":
+                                break;
+                            case "r":
+                                currentlyAppend = Trajectories.ForthrightTrajectory(square).Select(sq => sq.GetToSquare()).ToHashSet();
+                                break;
+                            case "n":
+                                currentlyAppend = Trajectories.GTrajectory(square).Select(sq => sq.GetToSquare()).ToHashSet();
+                                break;
+                            case "b":
+                                currentlyAppend = Trajectories.DiagonalTrajectory(square).Select(sq => sq.GetToSquare()).ToHashSet();
+                                break;
+                        }
+                        retval.UnionWith(currentlyAppend);
+                    }
+                }
+            }
+            return retval;
+        }
+
+
+
         private static bool AppendMove(Square source, Square target, HashSet<Move> fill)
         {
-            Square[][] squares = Board.GetInstance().Squares;
+            Board inst = Board.GetInstance();
             if ((target.PieceResident() && (source.Piece.White != target.Piece.White)) || !target.PieceResident())
             {
-                return fill.Add(new Move(source, target));
+                Move toValidate = new Move(source, target);
+                if (inst.WhiteKingInCheck)
+                {
+                    toValidate.MakeMove(true);
+                    target.Invisible = true;
+                    inst.WhiteKingInCheck = false;
+                    if (!PieceStaring(inst.KingSquare(true)))
+                    {
+                        inst.WhiteKingInCheck = true;
+                        inst.Rollback();
+                        target.Invisible = false;
+                        return fill.Add(toValidate);
+                    }
+                    else
+                    {
+                        inst.WhiteKingInCheck = true;
+                        inst.Rollback();
+                        target.Invisible = false;
+                        return false;
+                    }
+                }
+                else return fill.Add(toValidate);
             }
             return false;
         }

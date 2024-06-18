@@ -23,6 +23,12 @@ namespace Chesscape.Chess
                 Image.FromFile(fullPathB);
         }
 
+        public override string FENNotation()
+        {
+            return White ? "N" : "n";
+
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

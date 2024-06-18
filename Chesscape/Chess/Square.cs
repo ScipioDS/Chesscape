@@ -16,7 +16,7 @@ namespace Chesscape.Chess
     {
         //Logic attributes
         public readonly byte File;
-        private readonly byte RankLogical;
+        public readonly byte RankLogical;
         public Piece Piece;
         public readonly static Dictionary<int, char> NumericToFile = new Dictionary<int, char>();
         public readonly static Dictionary<char, int> FileToNumeric = new Dictionary<char, int>();
@@ -25,6 +25,8 @@ namespace Chesscape.Chess
         public Point TopLeftCoord { get; set; }
         public Color ColorDraw { get; set; }
         public bool Available { get; set; } = false;
+        private bool InCheck;
+        public bool Invisible{ get; set; }
 
         /// <summary>
         /// Full identification and definition of a square.
@@ -37,6 +39,8 @@ namespace Chesscape.Chess
             Trace.Assert(File <= 7 && RankLogical >= 0); // insurance the File is in the range [0, 7]
             Trace.Assert(RankLogical <= 7 && RankLogical >= 0); // insurance the Rank is in the range [0, 7]
 
+            this.Invisible = false;
+            this.InCheck = false;
             this.File = File; // the file is indexed by j in the board matrix (columns)
             this.RankLogical = RankLogical; // the rank is indexed by i in the board matrix (rows)
             this.Piece = Piece;
@@ -88,12 +92,28 @@ namespace Chesscape.Chess
         /// </summary>
         public void SetImage(Graphics g)
         {
-            if (Piece == null) return;
+            if (Piece == null || Invisible) return;
             g.DrawImage(Piece.GetImage(), TopLeftCoord);
         }
+
+        public void KingChecked(bool state)
+        {
+            InCheck = state;
+        }
+
+        public bool InCheckBlack()
+        {
+            return InCheck;
+        }
+
         public char GetFileChar(int index)
         {
             return NumericToFile[index];
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ToString().Equals(obj.ToString());
         }
 
         /// <summary>
@@ -103,7 +123,15 @@ namespace Chesscape.Chess
         /// <param name="size">Width and height of a square.</param>
         public void Draw(Graphics g, int size)
         {
-            using (Brush fillSquare = new SolidBrush(ColorDraw))
+
+            Color preference = ColorDraw;
+
+            if (InCheck)
+            {
+                preference = Color.IndianRed;
+            }
+
+            using (Brush fillSquare = new SolidBrush(preference))
                 g.FillRectangle(fillSquare, TopLeftCoord.X, TopLeftCoord.Y, size, size);
 
             SetImage(g);

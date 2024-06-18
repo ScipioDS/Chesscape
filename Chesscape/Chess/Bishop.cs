@@ -53,5 +53,10 @@ namespace Chesscape.Chess
         {
             throw new NotImplementedException();
         }
+
+        public override string FENNotation()
+        {
+            return White ? "B" : "b";
+        }
     }
 }

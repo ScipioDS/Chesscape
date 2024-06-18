@@ -12,7 +12,6 @@ namespace Chesscape.Chess
     {
 
         private bool _Moved;
-        
 
         public Rook(bool isWhite) : base(isWhite)
         {
@@ -51,8 +50,6 @@ namespace Chesscape.Chess
             return _Moved;
         }
 
-        
-
 
         public void MakeIncastleable()
         {
@@ -84,6 +81,12 @@ namespace Chesscape.Chess
         public override void setAddRank()
         {
             this.addRank = true;
+        }
+
+        public override string FENNotation()
+        {
+            return White ? "R" : "r";
+
         }
     }
 }

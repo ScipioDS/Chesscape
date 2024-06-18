@@ -1,6 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Chesscape",
+    "\\Chesscape\\Chess",
+    "\\Chesscape\\Chess\\Internals",
+    "\\Chesscape\\Menu"
   ],
+  "SelectedNode": "\\Chesscape\\Chess\\Board.cs",
   "PreviewInSolutionExplorer": false
 }

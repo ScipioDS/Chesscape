@@ -51,6 +51,12 @@ namespace Chesscape.Chess
             throw new NotImplementedException();
         }
 
+        public override string FENNotation()
+        {
+            return White ? "Q" : "q";
+
+        }
+
         public override void setAddRank()
         {
             throw new NotImplementedException();
