@@ -26,11 +26,32 @@ namespace Chesscape.Chess
             return White ? "B" : "b";
         }
 
+
         public override Image GetImageT()
         {
             string currentDirectory = Directory.GetCurrentDirectory();
             string fullPathT = Path.GetFullPath(Path.Combine(currentDirectory, @"cburnett_pieces\t_bishop.png"));
             return Image.FromFile(fullPathT);
+        }
+
+        public override void setFile(char file)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void setRank(int rank)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void setAddFile()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void setAddRank()
+        {
+            throw new NotImplementedException();
         }
     }
 }

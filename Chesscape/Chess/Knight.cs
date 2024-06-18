@@ -25,14 +25,47 @@ namespace Chesscape.Chess
 
         public override string ToString()
         {
-            return White ? "N" : "n";
+            StringBuilder sb = new StringBuilder();
+            sb.Append(White ? "N" : "n");
+            if (this.addRank)
+            {
+                sb.Append(this.Rank);
+                this.addRank = false;
+            }
+            else if (this.addFile)
+            {
+                sb.Append(this.File);
+                this.addFile = false;
+            }
+            return sb.ToString();
         }
+
 
         public override Image GetImageT()
         {
             string currentDirectory = Directory.GetCurrentDirectory();
             string fullPathT = Path.GetFullPath(Path.Combine(currentDirectory, @"cburnett_pieces\t_knight.png"));
             return Image.FromFile(fullPathT);
+        }
+
+        public override void setFile(char file)
+        {
+            this.File = file;
+        }
+
+        public override void setRank(int rank)
+        {
+            this.Rank = rank;
+        }
+
+        public override void setAddFile()
+        {
+            this.addFile = true;
+        }
+
+        public override void setAddRank()
+        {
+           this.addRank = true;
         }
     }
 }
