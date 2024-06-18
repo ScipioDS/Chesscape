@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Win32;
 using System.Drawing;
 
 namespace Chesscape.Chess
@@ -7,6 +8,10 @@ namespace Chesscape.Chess
     {
         public bool White { get; set; }
         protected Image PieceImage;
+        public bool addRank {  get; set; }
+        public bool addFile { get; set; }
+        public char File {  get; set; }
+        public int Rank { get; set; }
 
         protected Piece(bool isWhite)
         {
@@ -25,6 +30,10 @@ namespace Chesscape.Chess
         {
             return PieceImage;
         }
+        public abstract void setFile(char file);
+        public abstract void setRank(int rank);
+        public abstract void setAddFile();
+        public abstract void setAddRank();
 
         public abstract Image GetImageT();
     }

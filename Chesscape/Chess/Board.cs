@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Chesscape.Chess.Internals;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Chesscape.Chess.Internals;
 
 
 namespace Chesscape.Chess
@@ -29,7 +27,7 @@ namespace Chesscape.Chess
         public bool WhiteToPlay { get; set; }
         //Legal moves
         private HashSet<Move> LegalMoves { get; set; }
-        private string previous_setup {  get; set; }
+        private string previous_setup { get; set; }
         private Trajectories Trajectories { get; set; }
 
 
@@ -112,48 +110,7 @@ namespace Chesscape.Chess
         /// </summary>
         /// <param name="source">A square containing a piece.</param>
         /// <returns>A set containing legal moves that a rook would have.</returns>
-        public HashSet<Move> ForthrightTrajectory(Square source)
-        {
-            HashSet<Move> legalMoves = new HashSet<Move>();
 
-            int sJ = source.File;
-            int sI = source.GetRankPhysical();
-
-            //up
-            for (int i = source.GetRankPhysical() - 1; i >= 0; --i)
-            {
-                if (!AppendMove(source, Squares[i][sJ], legalMoves)
-                    ||
-                    (Squares[i][sJ].Piece != null && source.Piece.White != Squares[i][sJ].Piece.White)) break;
-            }
-
-            //down
-            for (int i = source.GetRankPhysical() + 1; i < 8; ++i)
-            {
-                if (!AppendMove(source, Squares[i][sJ], legalMoves)
-                    ||
-                    (Squares[i][sJ].Piece != null && source.Piece.White != Squares[i][sJ].Piece.White)) break;
-            }
-
-            //left
-            for (int j = source.File - 1; j >= 0; --j)
-            {
-                if (!AppendMove(source, Squares[sI][j], legalMoves)
-                    ||
-                    (Squares[sI][j].Piece != null && source.Piece.White != Squares[sI][j].Piece.White)) break;
-            }
-
-            //right
-            for (int j = source.File + 1; j < 8; ++j)
-            {
-                if (!AppendMove(source, Squares[sI][j], legalMoves)
-                    ||
-                    (Squares[sI][j].Piece != null && source.Piece.White != Squares[sI][j].Piece.White)) break;
-
-            }
-
-            return legalMoves;
-        }
 
 
         /// <summary>
@@ -161,67 +118,14 @@ namespace Chesscape.Chess
         /// </summary>
         /// <param name="source">A square containing a piece.</param>
         /// <returns>>A set containing legal moves for a knight.</returns>
-        private HashSet<Move> GTrajectory(Square source)
-        {
-            HashSet<Move> legalMoves = new HashSet<Move>();
-            int File = source.File;
-            int Rank = source.GetRankPhysical();
-            int[,] knightMoves = new int[,]
-            {
-                { 2, 1 }, { 2, -1 }, { -2, 1 }, { -2, -1 },
-                { 1, 2 }, { 1, -2 }, { -1, 2 }, { -1, -2 }
-            };
-            //site vo edna pa neka bucit, neznam so tocno da pisam ovde
-            //osvem deka site mozni 8 nasoki gi provervit i gi vrakat
-            //tie so se legalni
-            for (int i = 0; i < knightMoves.Length / 2; i++)
-            {
-                int newRank = Rank + knightMoves[i, 0];
-                int newFile = File + knightMoves[i, 1];
-                if (CheckValid(newRank, newFile))
-                {
-                    AppendMove(source, Squares[newRank][newFile], legalMoves);
-                }
-            }
-            return legalMoves;
-        }
+
 
         /// <summary>
         /// Computes the legal moves a pawn would have for a given square.
         /// </summary>
         /// <param name="source">A square containing a piece.</param>
         /// <returns>A set containing legal moves for a pawn.</returns>
-        public HashSet<Move> PawnTrajectory(Square source)
-        {
-            HashSet<Move> legalMoves = new HashSet<Move>();
-            int File = source.File;
-            int Rank = source.GetRankPhysical();
-            if(Rank== 6 && Squares[Rank - 1][File].PieceResident())
-            {
-                return legalMoves;
-            }
-            //eden cekor napred
-            if (CheckValid(Rank - 1, File) && !Squares[Rank - 1][File].PieceResident())
-            {
-                AppendMove(source, Squares[Rank - 1][File], legalMoves);
-            }
-            //provervit dali e na staring line, pa aku e go dodavat i to
-            if (Rank >= 6 && CheckValid(Rank - 2, File))
-            {
-                AppendMove(source, Squares[Rank - 2][File], legalMoves);
-            }
-            //diagonalno od levo(ms?) provervit za capture
-            if (CheckValid(File - 1, Rank - 1)&& Squares[Rank - 1][File - 1].PieceResident())
-            {
-                AppendMove(source, Squares[Rank - 1][File - 1], legalMoves);
-            }
-            //diagonalno od desno(ne sum sig) provervit za capture
-            if (CheckValid(Rank - 1, File + 1)&& Squares[Rank - 1][File + 1].PieceResident())
-            {
-                AppendMove(source, Squares[Rank - 1][File + 1], legalMoves);
-            }
-            return legalMoves;
-        }
+
 
         /// <summary>
         /// Computes the legal moves a bishop would have for a given square.
@@ -229,50 +133,22 @@ namespace Chesscape.Chess
         /// </summary>
         /// <param name="source">A square containing a piece.</param>
         /// <returns>A set containing legal moves for a bishop.</returns>
-        public HashSet<Move> DiagonalTrajectory(Square source)
-        {
-            HashSet<Move> legalMoves = new HashSet<Move>();
 
-            // bottom right
-            for (int i = source.GetRankPhysical() + 1, j = source.File + 1; i < 8 && j < 8; ++i, ++j)
-            {
-                if (!AppendMove(source, Squares[i][j], legalMoves) || (Squares[i][j].Piece != null && source.Piece.White != Squares[i][j].Piece.White)) break;
-            }
-
-            // top right
-            for (int i = source.GetRankPhysical() - 1, j = source.File + 1; i >= 0 && j < 8; --i, ++j)
-            {
-                if (!AppendMove(source, Squares[i][j], legalMoves) || (Squares[i][j].Piece != null && source.Piece.White != Squares[i][j].Piece.White)) break;
-            }
-
-            //top left
-            for (int i = source.GetRankPhysical() - 1, j = source.File - 1; i >= 0 && j >= 0; --i, --j)
-            {
-                if (!AppendMove(source, Squares[i][j], legalMoves) || (Squares[i][j].Piece != null && source.Piece.White != Squares[i][j].Piece.White)) break;
-            }
-
-            //bottom left
-            for (int i = source.GetRankPhysical() + 1, j = source.File - 1; i < 8 && j >= 0; ++i, --j)
-            {
-                if (!AppendMove(source, Squares[i][j], legalMoves) || (Squares[i][j].Piece != null && source.Piece.White != Squares[i][j].Piece.White)) break;
-            }
-
-            return legalMoves;
-        }
         public Piece checkForPromotion()
         {
             int tempRank = 0;
-            String piece="a";
-            for(int i = 0; i < 8; i++)
+            String piece = "a";
+            for (int i = 0; i < 8; i++)
             {
                 if (Squares[tempRank][i].Piece != null)
                 {
-                     piece = Squares[tempRank][i].Piece.ToString().ToLower();
+                    piece = Squares[tempRank][i].Piece.ToString().ToLower();
                 }
                 if (Squares[tempRank][i].PieceResident() && piece.Equals("p"))
                 {
                     Promotion tmp = new Promotion();
-                    if (tmp.ShowDialog() == DialogResult.OK) {
+                    if (tmp.ShowDialog() == DialogResult.OK)
+                    {
                         return tmp.piece;
                     }
                     else
@@ -289,39 +165,7 @@ namespace Chesscape.Chess
         /// </summary>
         /// <param name="source">A square containing a piece.</param>
         /// <returns>A set containing legal moves for a king.</returns>
-        public HashSet<Move> KingTrajectory(Square source)
-        {
-            HashSet<Move> legalMoves = new HashSet<Move>();
 
-            int File = source.File;
-            int Rank = source.GetRankPhysical();
-            int[,] kingMoves = new int[,]
-            {
-                { 1, 0 }, { 1, 1 }, { 1, -1 }, { -1, 0 }, { -1, 1 }, { -1, -1 }, { 0, 1 }, { 0, -1 }
-            };
-
-            for (int i = 0; i < kingMoves.GetLength(0); i++)
-            {
-                int newRank = Rank + kingMoves[i, 0];
-                int newFile = File + kingMoves[i, 1];
-                if (CheckValid(newRank, newFile))
-                {
-                    AppendMove(source, Squares[newRank][newFile], legalMoves);
-                }
-            }
-            
-            if (CanCastleKingside(source))
-            {
-                legalMoves.Add(new Move(source, Squares[Rank][File + 2]));
-            }
-            if (CanCastleQueenside(source))
-            {
-                legalMoves.Add(new Move(source, Squares[Rank][File - 2]));
-            }
-
-
-            return legalMoves;
-        }
 
         //----------------------------------UTILITY METHODS----------------------------------
 
@@ -330,126 +174,17 @@ namespace Chesscape.Chess
         /// </summary>
         /// <param name="ofKing">Square of the king the player wants to castle.</param>
         /// <returns>Return true iff you can castle queenside.</returns>
-        private bool CanCastleQueenside(Square ofKing)
-        {
-            if ((ofKing.Piece as ICastleable).Moved()) return false;
 
-            int rankKing = ofKing.GetRankPhysical();
-            int fileKing = ofKing.File;
-
-            for (int j = fileKing - 1; j >= 0; --j)
-            {
-                Square checking = Squares[rankKing][j];
-                if (j != 0)
-                {
-                    if (checking.PieceResident())
-                        return false;
-                    if (PieceStaring(checking)) return false;
-                }
-                else
-                {
-                    return CastleHelper(checking);
-                }
-            }
-
-            return false;
-        }
 
         /// <summary>
         /// Checks if your king can castle kingside.
         /// </summary>
         /// <param name="ofKing">Square of the king the player wants to castle.</param>
         /// <returns>Return true iff you can castle kingside.</returns>
-        private bool CanCastleKingside(Square ofKing)
-        {
-            if ((ofKing.Piece as ICastleable).Moved()) return false;
 
-            int rankKing = ofKing.GetRankPhysical();
-            int fileKing = ofKing.File;
 
-            for (int j = fileKing + 1; j < 8; ++j)
-            {
-                Square checking = Squares[rankKing][j];
-                if (j != 7)
-                {
-                    if (checking.PieceResident())
-                        return false;
-                    if (PieceStaring(checking)) return false;
-                }
-                else
-                {
-                    return CastleHelper(checking);
-                }
-            }
 
-            //reaching this means that there is an error
-            return false;
-        }
 
-        private bool CastleHelper(Square checking)
-        {
-            if (!checking.PieceResident()) return false;
-            else if (!(checking.Piece is Rook)) return false;
-            return !(checking.Piece as Rook).Moved();
-        }
-
-        private bool PieceStaring(Square checking)
-        {
-            checking.Piece = new Pawn(true); // Imitate a piece being placed to get the trajectory.
-
-            HashSet<Move> legalsDiag = DiagonalTrajectory(checking);
-            HashSet<Move> legalsForthRight = ForthrightTrajectory(checking);
-            HashSet<Move> legalsG = GTrajectory(checking);
-            HashSet<Move> legalsPawn = PawnTrajectory(checking);
-
-            checking.Piece = null;
-
-            foreach (Move move in legalsDiag)
-            {
-                if (!move.GetToSquare().PieceResident()) continue;
-                Piece targetPiece = move.GetToSquare().Piece;
-                bool pieceResidingBlack = !targetPiece.White;
-                if ((targetPiece is Bishop || targetPiece is Queen) && pieceResidingBlack)
-                {
-                    return true;
-                }
-            }
-
-            foreach (Move move in legalsForthRight)
-            {
-                if (!move.GetToSquare().PieceResident()) continue;
-                Piece targetPiece = move.GetToSquare().Piece;
-                bool pieceResidingBlack = !targetPiece.White;
-                if ((targetPiece is Rook || targetPiece is Queen) && pieceResidingBlack)
-                {
-                    return true;
-                }
-            }
-
-            foreach (Move move in legalsG)
-            {
-                if (!move.GetToSquare().PieceResident()) continue;
-                Piece targetPiece = move.GetToSquare().Piece;
-                bool pieceResidingBlack = !targetPiece.White;
-                if (targetPiece is Knight && pieceResidingBlack)
-                {
-                    return true;
-                }
-            }
-
-            foreach (Move move in legalsPawn)
-            {
-                if (!move.GetToSquare().PieceResident()) continue;
-                Piece targetPiece = move.GetToSquare().Piece;
-                bool pieceResidingBlack = !targetPiece.White;
-                if (targetPiece is Pawn && pieceResidingBlack)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
 
         /// <summary>
         /// Utility method to append legal moves to a set. To be called inside trajectory method loops.
@@ -458,19 +193,7 @@ namespace Chesscape.Chess
         /// <param name="target">The target square to which the piece will move.</param>
         /// <param name="fill">A set that is filled with all legal moves from a given square.</param>
         /// <returns>True iff we dont encounter a blockade for the trajectory, false otherwise.</returns>
-        private bool AppendMove(Square source, Square target, HashSet<Move> fill)
-        {
-            if ((target.PieceResident() && (source.Piece.White != target.Piece.White)) || !target.PieceResident())
-            {
-                return fill.Add(new Move(source, target));
-            }
-            return false;
-        }
 
-        private static bool CheckValid(int row, int col)
-        {
-            return row >= 0 && row < 8 && col >= 0 && col < 8;
-        }
 
         /// <summary>
         /// Only for debugging purposes. To be called with Debug.WriteLine(board.ToString());
@@ -546,8 +269,82 @@ namespace Chesscape.Chess
         {
             SetBoard(previous_setup);
         }
-       
+        public void CheckForRooks(Square Rook1)
+        {  
+            Square Rook2 = null;
+            int counter = 1;
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (Squares[i][j].PieceResident())
+                    {
+                        Piece targetPiece = Squares[i][j].Piece;
+                        if (Squares[i][j].Piece.ToString().ToLower().Equals("r") && targetPiece.White && Squares[i][j].ToString()!=Rook1.ToString())
+                        {
+                            counter++;
+                            Rook2 = Squares[i][j];
+                        }
+                    }
+                }
+            }
+            if (counter == 2)
+            {
+                if (Rook1.File == Rook2.File)
+                {
+                    Rook1.Piece.setRank(Rook1.GetRankPhysical());
+                    Rook2.Piece.setRank(Rook2.GetRankPhysical());
+                    Rook1.Piece.setAddRank();
+                    Rook2.Piece.setAddRank();
+                }
+                else
+                {
+                    Rook2.Piece.setFile(Rook2.GetFileChar(Rook2.File));
+                    Rook1.Piece.setFile(Rook1.GetFileChar(Rook1.File));
+                    Rook1.Piece.setAddFile();
+                    Rook2.Piece.setAddFile();
+                }
+            }
+        }
+        public void CheckForKnigths(Square knight1)
+        {
+            Square knight2 = null;
+            int counter = 1;
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (Squares[i][j].PieceResident())
+                    {
+                        Piece targetPiece = Squares[i][j].Piece;
+                        if (Squares[i][j].Piece.ToString().ToLower().Equals("n") && targetPiece.White && Squares[i][j].ToString() != knight1.ToString())
+                        {
+                            counter++;
+                            knight2 = Squares[i][j];
+                        }
+                    }
+                }
+            }
+            if (counter == 2)
+            {
+                if (knight1.File == knight2.File)
+                {
+                    knight1.Piece.setRank(knight1.GetRankPhysical());
+                    knight2.Piece.setRank(knight2.GetRankPhysical());
+                    knight1.Piece.setAddRank();
+                    knight2.Piece.setAddRank();
+                }
+                else
+                {
+                    knight2.Piece.setFile(knight2.GetFileChar(knight2.File));
+                    knight1.Piece.setFile(knight1.GetFileChar(knight1.File));
+                    knight1.Piece.setAddFile();
+                    knight2.Piece.setAddFile();
+                    int xd = 0;
+                }
+            }
 
+        }
 
         /// <summary>
         /// Finds the square over which a point (the cursor) is located.
@@ -585,9 +382,12 @@ namespace Chesscape.Chess
             if (SelectedPiece != null)
             {
                 g.DrawImage(SelectedPiece.GetImageT(), new Point(Cursor.X - 32, Cursor.Y - 32));
-                foreach (Move i in LegalMoves)
+                if (LegalMoves != null)
                 {
-                    i.GetToSquare().Available = true;
+                    foreach (Move i in LegalMoves)
+                    {
+                        i.GetToSquare().Available = true;
+                    }
                 }
             }
         }
@@ -595,42 +395,44 @@ namespace Chesscape.Chess
         /// <summary>
         /// Adds a duplicate of the piece over which the cursor is to selected piece. To be used with move
         /// </summary>
-       public void Select(Point point)
-{
-    Square square = GetSquare(point);
-
-    if (square.Piece != null)
-    {
-        string piece = square.Piece.ToString().ToLower();
-        switch (piece)
+        public void Select(Point point)
         {
-            case "p":
-                LegalMoves = Trajectories.PawnTrajectory(square);
-                break;
-            case "q":
-                LegalMoves = Trajectories.ForthrightTrajectory(square);
-                LegalMoves.UnionWith(Trajectories.DiagonalTrajectory(square));
-                break;
-            case "k":
-                LegalMoves = Trajectories.KingTrajectory(square); 
-                break;
-            case "r":
-                LegalMoves = Trajectories.ForthrightTrajectory(square);
-                break;
-            case "n":
-                LegalMoves = Trajectories.GTrajectory(square);
-                break;
-            case "b":
-                LegalMoves = Trajectories.DiagonalTrajectory(square);
-                break;
-        }
-        
-        this.SelectedPiece = square.Piece;
-        FromSquare = square;
-    }
+            Square square = GetSquare(point);
 
-    this.Cursor = point;
-}
+            if (square.Piece != null)
+            {
+                string piece = square.Piece.ToString().ToLower();
+                switch (piece)
+                {
+                    case "p":
+                        LegalMoves = Trajectories.PawnTrajectory(square);
+                        break;
+                    case "q":
+                        LegalMoves = Trajectories.ForthrightTrajectory(square);
+                        LegalMoves.UnionWith(Trajectories.DiagonalTrajectory(square));
+                        break;
+                    case "k":
+                        LegalMoves = Trajectories.KingTrajectory(square);
+                        break;
+                    case "r":
+                        CheckForRooks(square);
+                        LegalMoves = Trajectories.ForthrightTrajectory(square);
+                        break;
+                    case "n":
+                        CheckForKnigths(square);
+                        LegalMoves = Trajectories.GTrajectory(square);
+                        break;
+                    case "b":
+                        LegalMoves = Trajectories.DiagonalTrajectory(square);
+                        break;
+                }
+
+                this.SelectedPiece = square.Piece;
+                FromSquare = square;
+            }
+
+            this.Cursor = point;
+        }
 
     }
 }

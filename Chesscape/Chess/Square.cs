@@ -91,6 +91,10 @@ namespace Chesscape.Chess
             if (Piece == null) return;
             g.DrawImage(Piece.GetImage(), TopLeftCoord);
         }
+        public char GetFileChar(int index)
+        {
+            return NumericToFile[index];
+        }
 
         /// <summary>
         /// Drawing logic of a square.

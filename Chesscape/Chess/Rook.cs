@@ -12,6 +12,7 @@ namespace Chesscape.Chess
     {
 
         private bool _Moved;
+        
 
         public Rook(bool isWhite) : base(isWhite)
         {
@@ -25,17 +26,33 @@ namespace Chesscape.Chess
             PieceImage = isWhite ? Image.FromFile(fullPathW)
                 :
                 Image.FromFile(fullPathB);
+            addFile = false;
+            addRank = false;
         }
 
         public override string ToString()
         {
-            return White ? "R" : "r";
+            StringBuilder sb = new StringBuilder();
+            sb.Append(White ? "R" : "r");
+            if (this.addRank)
+            {
+                sb.Append(this.Rank);
+                this.addRank = false;
+            }
+            else if (this.addFile) { 
+                sb.Append(this.File);
+                this.addFile = false;
+            }
+            return sb.ToString();
         }
 
         public bool Moved()
         {
             return _Moved;
         }
+
+        
+
 
         public void MakeIncastleable()
         {
@@ -47,6 +64,26 @@ namespace Chesscape.Chess
             string currentDirectory = Directory.GetCurrentDirectory();
             string fullPathT = Path.GetFullPath(Path.Combine(currentDirectory, @"cburnett_pieces\t_rook.png"));
             return Image.FromFile(fullPathT);
+        }
+
+        public override void setFile(char file)
+        {
+            this.File= file;
+        }
+
+        public override void setRank(int rank)
+        {
+            this.Rank = rank;
+        }
+
+        public override void setAddFile()
+        {
+            this.addFile = true;
+        }
+
+        public override void setAddRank()
+        {
+            this.addRank = true;
         }
     }
 }

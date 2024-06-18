@@ -29,6 +29,7 @@ namespace Chesscape.Chess
         }
 
 
+
         public override string ToString()
         {
             return White ?  "K" : "k";
@@ -49,6 +50,26 @@ namespace Chesscape.Chess
             string currentDirectory = Directory.GetCurrentDirectory();
             string fullPathT = Path.GetFullPath(Path.Combine(currentDirectory, @"cburnett_pieces\t_king.png"));
             return Image.FromFile(fullPathT);
+        }
+
+        public override void setFile(char file)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void setRank(int rank)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void setAddFile()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void setAddRank()
+        {
+            throw new NotImplementedException();
         }
     }
 }
