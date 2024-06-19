@@ -138,8 +138,8 @@ namespace Chesscape.Chess
 
             if (Available)
             {
-                using (Brush fillSquare = new SolidBrush(Color.FromArgb(70, 255, 255, 255)))
-                    g.FillEllipse(fillSquare, TopLeftCoord.X + size / 2.75f, TopLeftCoord.Y + size / 2.75f, size / 4, size / 4);
+                using (Brush fillSquare = new SolidBrush(Color.FromArgb(80, 0, 0, 0)))
+                    g.FillEllipse(fillSquare, TopLeftCoord.X + size/ 3.4f, TopLeftCoord.Y + size / 3.4f, size / 2.5f, size / 2.5f);
             }
         }
     }

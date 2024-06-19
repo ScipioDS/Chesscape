@@ -42,7 +42,6 @@ namespace Chesscape.Chess
         private void TacticsForm_MouseDown(object sender, MouseEventArgs e)
         {
             board.Select(e.Location);
-            Invalidate();
         }
         private void TacticsForm_MouseUp(object sender, MouseEventArgs e)
         {

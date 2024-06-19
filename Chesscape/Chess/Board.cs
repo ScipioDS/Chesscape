@@ -85,11 +85,11 @@ namespace Chesscape.Chess
                 {
                     if (white)
                     {
-                        SingleBoard.Squares[i][j].ColorDraw = Color.FromArgb(255, 173, 189, 143);
+                        SingleBoard.Squares[i][j].ColorDraw = Color.FromArgb(255, 232, 235, 239);
                     }
                     else
                     {
-                        SingleBoard.Squares[i][j].ColorDraw = Color.FromArgb(255, 111, 143, 114);
+                        SingleBoard.Squares[i][j].ColorDraw = Color.FromArgb(255, 125, 135, 150);
                     }
 
                     SingleBoard.Squares[i][j].TopLeftCoord = new Point(x_incrementer, y_incrementer);
@@ -140,7 +140,7 @@ namespace Chesscape.Chess
         public Square KingSquare(bool white)
         {
             Square ofKing = null;
-            for(byte i = 0; i < 8; ++i)
+            for (byte i = 0; i < 8; ++i)
             {
                 for (byte j = 0; j < 8; ++j)
                 {
@@ -179,7 +179,7 @@ namespace Chesscape.Chess
             SetBoard(PreviousSetup);
         }
 
-        private void BlackCheckSequence(Square justMoved)
+        private void CheckScan(Square justMoved)
         {
             Select(new Point(justMoved.TopLeftCoord.X, justMoved.TopLeftCoord.Y));
 
@@ -209,6 +209,7 @@ namespace Chesscape.Chess
                 }
             }
         }
+
 
         /// <summary>
         /// Returns the justMoved in the Board matrix with the position passed as an argument
@@ -240,7 +241,7 @@ namespace Chesscape.Chess
 
             foreach (Move i in LegalMoves)
             {
-                moveTo.Add(i.GetToSquare()); 
+                moveTo.Add(i.GetToSquare());
             }
 
             if (moveTo.Contains(square) && FromSquare != null)
@@ -256,7 +257,7 @@ namespace Chesscape.Chess
                 Debug.WriteLine(FromSquare.TopLeftCoord + " " + square.TopLeftCoord);
 
                 beforePosSquareMove = FromSquare.TopLeftCoord.ToString();
-             
+
                 FromSquare = null;
             }
 
@@ -266,7 +267,7 @@ namespace Chesscape.Chess
             }
 
             if (beforePosSquareMove != null)
-            WhiteKingInCheck = beforePosSquareMove.Equals(square.TopLeftCoord.ToString());
+                WhiteKingInCheck = beforePosSquareMove.Equals(square.TopLeftCoord.ToString());
 
             LegalMoves = null;
             this.SelectedPiece = null;
@@ -331,6 +332,7 @@ namespace Chesscape.Chess
                     }
                 }
             }
+
             if (counter == 2)
             {
                 if (knight1.File == knight2.File)
@@ -434,10 +436,11 @@ namespace Chesscape.Chess
 
                 this.SelectedPiece = square.Piece;
                 FromSquare = square;
+
+
+                this.Cursor = point;
             }
 
-            this.Cursor = point;
         }
-
     }
 }
