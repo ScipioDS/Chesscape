@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 
 namespace Chesscape.Chess
@@ -109,27 +110,15 @@ namespace Chesscape.Chess
             FEN.Translate(FENString);
         }
 
-        public Piece CheckForPromotion()
+        public Piece CheckForPromotion(Square check)
         {
-            int tempRank = 0;
-            String piece = "a";
-            for (int i = 0; i < 8; i++)
+            if(check.GetRankPhysical() == 0)
             {
-                if (Squares[tempRank][i].Piece != null)
+                Promotion tmp = new Promotion();
+                if(tmp.ShowDialog() == DialogResult.OK)
                 {
-                    piece = Squares[tempRank][i].Piece.ToString().ToLower();
-                }
-                if (Squares[tempRank][i].PieceResident() && piece.Equals("p"))
-                {
-                    Promotion tmp = new Promotion();
-                    if (tmp.ShowDialog() == DialogResult.OK)
-                    {
-                        return tmp.piece;
-                    }
-                    else
-                    {
-                        return new Pawn(true);
-                    }
+                    
+                    return tmp.piece;
                 }
             }
             return null;
@@ -248,10 +237,14 @@ namespace Chesscape.Chess
             {
                 //map move onto board
                 new Move(FromSquare, square).MakeMove(false);
-                Piece tmp = CheckForPromotion();
-                if (tmp != null)
+                if (square.Piece.ToString().ToLower().Equals("p"))
                 {
-                    square.Piece = tmp;
+                    Piece tmp = CheckForPromotion(square);
+                    if (tmp != null)
+                    {
+                        square.Piece = tmp;
+                        PreviousSetup = FEN.ToFEN(Squares);
+                    }
                 }
 
                 Debug.WriteLine(FromSquare.TopLeftCoord + " " + square.TopLeftCoord);
