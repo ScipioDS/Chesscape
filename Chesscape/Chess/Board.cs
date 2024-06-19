@@ -166,7 +166,7 @@ namespace Chesscape.Chess
             {
                 for (int j = 0; j < 8; ++j)
                 {
-                    string toAppend = Squares[i][j].Piece == null ? "#" : Squares[i][j].Piece.ToString();
+                    string toAppend = Squares[i][j].Piece == null ? "#" : Squares[i][j].Piece.FENNotation();
                     sb.Append(" ").Append(toAppend);
                 }
                 sb.Append("\n");

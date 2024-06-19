@@ -1,8 +1,5 @@
-﻿using Chesscape.Chess.Internals;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace Chesscape.Chess
 {
@@ -15,7 +12,6 @@ namespace Chesscape.Chess
         {
             Square[][] squares = Board.GetInstance().Squares;
             HashSet<Move> legalMoves = new HashSet<Move>();
-            HashSet<Square> IllegalKingMoves = new HashSet<Square>();
 
             int File = source.File;
             int Rank = source.GetRankPhysical();
@@ -68,6 +64,8 @@ namespace Chesscape.Chess
 
                 if (CheckValid(newRank, newFile))
                 {
+                    Debug.WriteLine("KING : " + source.PieceResident());
+                    Debug.WriteLine(Board.GetInstance());
                     Square sq = squares[newRank][newFile];
                     if (!AroundBlackKing().Contains(sq) && (!AllIllegalNoFrills().Contains(sq)))
                         AppendMove(source, squares[newRank][newFile], legalMoves);
@@ -174,6 +172,8 @@ namespace Chesscape.Chess
             //left
             for (int j = source.File - 1; j >= 0; --j)
             {
+
+                Debug.WriteLine(Board.GetInstance());
                 if (!AppendMove(source, squares[sI][j], legalMoves)
                     ||
                     (squares[sI][j].Piece != null && source.Piece.White != squares[sI][j].Piece.White)) break;
@@ -198,76 +198,6 @@ namespace Chesscape.Chess
         {
             return row >= 0 && row < 8 && col >= 0 && col < 8;
         }
-        
-
-        //WARNING: METHOD IS UNSAFE, DO NOT CALL UNLESS CHECKING FUNCTIONALITY
-        public static bool PieceStaring(Square checking)
-        {
-            bool imitate = false;
-
-            if (!checking.PieceResident())
-            {
-                checking.Piece = new Pawn(true); // imitate a piece being placed to get the trajectory if square is without a piece.
-                imitate = true;
-            }
-
-            HashSet<Move> legalsDiag = DiagonalTrajectory(checking);
-            HashSet<Move> legalsForthRight = ForthrightTrajectory(checking);
-            HashSet<Move> legalsG = GTrajectory(checking);
-            HashSet<Move> legalsPawn = PawnTrajectory(checking);
-
-            if (imitate)
-            {
-                checking.Piece = null;
-            }
-
-            foreach (Move move in legalsDiag)
-            {
-                if (!move.GetToSquare().PieceResident()) continue;
-                Piece targetPiece = move.GetToSquare().Piece;
-                bool pieceResidingBlack = !targetPiece.White;
-                if ((targetPiece is Bishop || targetPiece is Queen) && pieceResidingBlack)
-                {
-                    return true;
-                }
-            }
-
-            foreach (Move move in legalsForthRight)
-            {
-                if (!move.GetToSquare().PieceResident()) continue;
-                Piece targetPiece = move.GetToSquare().Piece;
-                bool pieceResidingBlack = !targetPiece.White;
-                if ((targetPiece is Rook || targetPiece is Queen) && pieceResidingBlack)
-                {
-                    return true;
-                }
-            }
-
-            foreach (Move move in legalsG)
-            {
-                if (!move.GetToSquare().PieceResident()) continue;
-                Piece targetPiece = move.GetToSquare().Piece;
-                bool pieceResidingBlack = !targetPiece.White;
-                if (targetPiece is Knight && pieceResidingBlack)
-                {
-                    return true;
-                }
-            }
-
-            foreach (Move move in legalsPawn)
-            {
-                if (!move.GetToSquare().PieceResident()) continue;
-                Piece targetPiece = move.GetToSquare().Piece;
-                bool pieceResidingBlack = !targetPiece.White;
-                if (targetPiece is Pawn && pieceResidingBlack)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
 
         public static bool CanCastleQueenside(Square ofKing)
         {
@@ -279,6 +209,8 @@ namespace Chesscape.Chess
             int rankKing = ofKing.GetRankPhysical();
             int fileKing = ofKing.File;
 
+            HashSet<Square> keepSet = AllIllegalNoFrills();
+
             for (int j = fileKing - 1; j >= 0; --j)
             {
                 Square checking = squares[rankKing][j];
@@ -287,7 +219,7 @@ namespace Chesscape.Chess
                     if (checking.PieceResident())
                         return false;
 
-                    if (PieceStaring(checking)) return false;
+                    if (keepSet.Contains(checking)) return false;
                 }
                 else
                 {
@@ -303,11 +235,14 @@ namespace Chesscape.Chess
         {
             Board b = Board.GetInstance();
             Square[][] squares = b.Squares;
+            Debug.WriteLine(b);
             if ((ofKing.Piece as ICastleable).Moved()) return false;
             if (b.WhiteKingInCheck) return false;
 
             int rankKing = ofKing.GetRankPhysical();
             int fileKing = ofKing.File;
+
+            HashSet<Square> keepSet = AllIllegalNoFrills();
 
             for (int j = fileKing + 1; j < 8; ++j)
             {
@@ -316,7 +251,7 @@ namespace Chesscape.Chess
                 {
                     if (checking.PieceResident())
                         return false;
-                    if (AllIllegalNoFrills().Contains(checking)) return false;
+                    if (keepSet.Contains(checking)) return false;
                 }
                 else
                 {

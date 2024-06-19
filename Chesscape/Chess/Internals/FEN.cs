@@ -22,11 +22,16 @@ namespace Chesscape.Chess.Internals
 
             SquareSetup(parts[0], single);
 
+            string castleRights = parts[2];
+
+            if (castleRights.Equals("-"))
+            {
+                (Board.GetInstance().KingSquare(true).Piece as ICastleable).MakeIncastleable();
+            }
+
             single.WhiteToPlay = parts[1].Equals("w");
 
-            //single.EnPassantTarget = parts[3].Equals("-") ? null : Board.PositionToSquare(parts[3]);
-
-            //TODO: Add available castling rights;
+            single.EnPassantTarget = parts[3].Equals("-") ? null : Board.PositionToSquare(parts[3]);
         }
 
 
@@ -65,7 +70,19 @@ namespace Chesscape.Chess.Internals
 
 
             string activeColor = "w"; // 'w' for white to move, 'b' for black to move
-            string castlingAvailability = "KQkq";
+            string castlingAvailability = "";
+            if (Squares[7][7].PieceResident() && Squares[7][7].Piece is Rook && !(Squares[7][7].Piece as ICastleable).Moved())
+            {
+                castlingAvailability += "K";
+            }
+            if (Squares[7][0].PieceResident() && Squares[7][0].Piece is Rook && !(Squares[7][0].Piece as ICastleable).Moved())
+            {
+                castlingAvailability += "Q";
+            }
+            if ((Board.GetInstance().KingSquare(true).Piece as ICastleable).Moved())
+            {
+                castlingAvailability = "-";
+            }
             string enPassantTarget = "-"; // Modify based on actual en passant target square
             int halfmoveClock = 0; // Number of halfmoves since the last capture or pawn move
             int fullmoveNumber = 1;

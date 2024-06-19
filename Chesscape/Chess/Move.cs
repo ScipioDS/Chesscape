@@ -1,4 +1,5 @@
 ﻿using Chesscape.Chess.Internals;
+using System.Diagnostics;
 using System.Runtime;
 using System.Windows.Forms;
 
@@ -27,24 +28,21 @@ namespace Chesscape.Chess
                 if (to.File - from.File == 2)
                 {
                     CastleKingside();
-                    return;
                 }
                 else if (to.File - from.File == -2)
                 {
                     CastleQueenside();
-                    return;
+                } else
+                {
+                    StdMoveRoutine();
                 }
             }
-
-            Piece toMove = from.Piece;
-            to.Piece = toMove;
-            from.Piece = null;
-
-            if (!pretend)
+            else
             {
-                Board b = Board.GetInstance();
-                b.PreviousSetup = FEN.ToFEN(b.Squares);
+                StdMoveRoutine();
             }
+
+            StorePosition(pretend);
         }
 
         private void CastleKingside()
@@ -67,7 +65,24 @@ namespace Chesscape.Chess
             (board.Squares[7][from.File - 1].Piece as ICastleable).MakeIncastleable();
 
             board.Squares[7][from.File - 4].Piece = null;
+            board.Squares[7][from.File - 3].Piece = null;
             to.Piece = from.Piece;
+            from.Piece = null;
+        }
+
+        private void StorePosition(bool pretend)
+        {
+            if (!pretend)
+            {
+                Board b = Board.GetInstance();
+                b.PreviousSetup = FEN.ToFEN(b.Squares);
+            }
+        }
+
+        private void StdMoveRoutine()
+        {
+            Piece toMove = from.Piece;
+            to.Piece = toMove;
             from.Piece = null;
         }
 
