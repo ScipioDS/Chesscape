@@ -441,7 +441,7 @@ namespace Chesscape.Chess
         }
 
 
-        public static HashSet<Square> DiagonalTrajectoryNoFrills(Square source)
+        private static HashSet<Square> DiagonalTrajectoryNoFrills(Square source)
         {
             Square[][] squares = Board.GetInstance().Squares;
             HashSet<Square> legalMoves = new HashSet<Square>();
@@ -473,7 +473,7 @@ namespace Chesscape.Chess
             return legalMoves;
         }
 
-        public static HashSet<Square> ForthrightTrajectoryNoFrills(Square source)
+        private static HashSet<Square> ForthrightTrajectoryNoFrills(Square source)
         {
             Square[][] squares = Board.GetInstance().Squares;
             HashSet<Square> legalMoves = new HashSet<Square>();
@@ -517,7 +517,7 @@ namespace Chesscape.Chess
             return legalMoves;
         }
 
-        public static HashSet<Square> GTrajectoryNoFrills(Square source)
+        private static HashSet<Square> GTrajectoryNoFrills(Square source)
         {
             Square[][] squares = Board.GetInstance().Squares;
             HashSet<Square> legalMoves = new HashSet<Square>();
