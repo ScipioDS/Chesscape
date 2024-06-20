@@ -223,6 +223,7 @@ namespace Chesscape.Chess
             }
 
             string preloadCheckPos = null;
+            
 
             if (moveTo.Contains(square) && FromSquare != null)
             {
@@ -237,6 +238,7 @@ namespace Chesscape.Chess
                     {
                         square.Piece = tmp;
                         PreviousSetup = FEN.ToFEN(Squares);
+                        
                     }
                 }
 
