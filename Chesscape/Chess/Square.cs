@@ -101,7 +101,7 @@ namespace Chesscape.Chess
             InCheck = state;
         }
 
-        public bool InCheckBlack()
+        public bool IsInCheck()
         {
             return InCheck;
         }

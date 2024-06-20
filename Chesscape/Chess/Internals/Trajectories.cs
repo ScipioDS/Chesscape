@@ -1,16 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Chesscape.Chess
 {
     public class Trajectories
     {
 
+        private static readonly Board single = Board.GetInstance();
+        private static HashSet<Square> fastIllegalSet = new HashSet<Square>(); 
+
         //----------------------------------------------Addition Trajectories----------------------------------------------
 
         public static HashSet<Move> PawnTrajectory(Square source)
         {
-            Square[][] squares = Board.GetInstance().Squares;
+            Square[][] squares = single.Squares;
             HashSet<Move> legalMoves = new HashSet<Move>();
 
             int File = source.File;
@@ -43,10 +47,10 @@ namespace Chesscape.Chess
             return legalMoves;
         }
 
-
         public static HashSet<Move> KingTrajectory(Square source)
         {
-            Square[][] squares = Board.GetInstance().Squares;
+
+            Square[][] squares = single.Squares;
             HashSet<Move> legalMoves = new HashSet<Move>();
 
             int File = source.File;
@@ -61,13 +65,10 @@ namespace Chesscape.Chess
                 int newRank = Rank + kingMoves[i, 0];
                 int newFile = File + kingMoves[i, 1];
 
-
                 if (CheckValid(newRank, newFile))
                 {
-                    Debug.WriteLine("KING : " + source.PieceResident());
-                    Debug.WriteLine(Board.GetInstance());
-                    Square sq = squares[newRank][newFile];
-                    if (!AroundBlackKing().Contains(sq) && (!AllIllegalNoFrills().Contains(sq)))
+                    Square checking = squares[newRank][newFile];
+                    if (!fastIllegalSet.Contains(checking))
                         AppendMove(source, squares[newRank][newFile], legalMoves);
                 }
             }
@@ -87,7 +88,8 @@ namespace Chesscape.Chess
 
         public static HashSet<Move> DiagonalTrajectory(Square source)
         {
-            Square[][] squares = Board.GetInstance().Squares;
+
+            Square[][] squares = single.Squares;
             HashSet<Move> legalMoves = new HashSet<Move>();
 
             // bottom right
@@ -120,10 +122,12 @@ namespace Chesscape.Chess
 
         public static HashSet<Move> GTrajectory(Square source)
         {
-            Square[][] squares = Board.GetInstance().Squares;
+            Square[][] squares = single.Squares;
             HashSet<Move> legalMoves = new HashSet<Move>();
+
             int File = source.File;
             int Rank = source.GetRankPhysical();
+
             int[,] knightMoves = new int[,]
             {
                 { 2, 1 }, { 2, -1 }, { -2, 1 }, { -2, -1 },
@@ -147,7 +151,7 @@ namespace Chesscape.Chess
 
         public static HashSet<Move> ForthrightTrajectory(Square source)
         {
-            Square[][] squares = Board.GetInstance().Squares;
+            Square[][] squares = single.Squares;
             HashSet<Move> legalMoves = new HashSet<Move>();
 
             int sJ = source.File;
@@ -172,8 +176,6 @@ namespace Chesscape.Chess
             //left
             for (int j = source.File - 1; j >= 0; --j)
             {
-
-                Debug.WriteLine(Board.GetInstance());
                 if (!AppendMove(source, squares[sI][j], legalMoves)
                     ||
                     (squares[sI][j].Piece != null && source.Piece.White != squares[sI][j].Piece.White)) break;
@@ -185,7 +187,6 @@ namespace Chesscape.Chess
                 if (!AppendMove(source, squares[sI][j], legalMoves)
                     ||
                     (squares[sI][j].Piece != null && source.Piece.White != squares[sI][j].Piece.White)) break;
-
             }
 
             return legalMoves;
@@ -193,6 +194,10 @@ namespace Chesscape.Chess
 
         //----------------------------------------------Utility----------------------------------------------
 
+        public static void PreloadIllegalOfBlack()
+        {
+            fastIllegalSet = AllIllegalNoFrills(); fastIllegalSet.UnionWith(AroundBlackKing());
+        }
 
         private static bool CheckValid(int row, int col)
         {
@@ -201,15 +206,11 @@ namespace Chesscape.Chess
 
         public static bool CanCastleQueenside(Square ofKing)
         {
-            Board b = Board.GetInstance();
-            Square[][] squares = b.Squares;
+            Square[][] squares = single.Squares;
             if ((ofKing.Piece as ICastleable).Moved()) return false;
-            if (b.WhiteKingInCheck) return false;
 
             int rankKing = ofKing.GetRankPhysical();
             int fileKing = ofKing.File;
-
-            HashSet<Square> keepSet = AllIllegalNoFrills();
 
             for (int j = fileKing - 1; j >= 0; --j)
             {
@@ -219,7 +220,7 @@ namespace Chesscape.Chess
                     if (checking.PieceResident())
                         return false;
 
-                    if (keepSet.Contains(checking)) return false;
+                    if (fastIllegalSet.Contains(checking)) return false;
                 }
                 else
                 {
@@ -233,16 +234,11 @@ namespace Chesscape.Chess
 
         public static bool CanCastleKingside(Square ofKing)
         {
-            Board b = Board.GetInstance();
-            Square[][] squares = b.Squares;
-            Debug.WriteLine(b);
+            Square[][] squares = single.Squares;
             if ((ofKing.Piece as ICastleable).Moved()) return false;
-            if (b.WhiteKingInCheck) return false;
 
             int rankKing = ofKing.GetRankPhysical();
             int fileKing = ofKing.File;
-
-            HashSet<Square> keepSet = AllIllegalNoFrills();
 
             for (int j = fileKing + 1; j < 8; ++j)
             {
@@ -251,7 +247,7 @@ namespace Chesscape.Chess
                 {
                     if (checking.PieceResident())
                         return false;
-                    if (keepSet.Contains(checking)) return false;
+                    if (AllIllegalNoFrills().Contains(checking)) return false;
                 }
                 else
                 {
@@ -263,7 +259,6 @@ namespace Chesscape.Chess
             return false;
         }
 
-
         public static bool CastleHelper(Square checking)
         {
             if (!checking.PieceResident()) return false;
@@ -274,9 +269,8 @@ namespace Chesscape.Chess
         private static HashSet<Square> AroundBlackKing()
         {
             HashSet<Square> nearby = new HashSet<Square>();
-            Board b = Board.GetInstance();
 
-            Square ofKing = b.KingSquare(false);
+            Square ofKing = single.KingSquare(false);
 
             int row = ofKing.GetRankPhysical();
             int col = ofKing.File;
@@ -288,14 +282,9 @@ namespace Chesscape.Chess
                 {
                     if (CheckValid(i, j))
                     {
-                        nearby.Add(b.Squares[i][j]);
+                        nearby.Add(single.Squares[i][j]);
                     }
                 }
-            }
-
-            foreach (var item in nearby)
-            {
-                Debug.WriteLine(item);
             }
 
             return nearby;
@@ -303,23 +292,27 @@ namespace Chesscape.Chess
 
         private static bool AppendMove(Square source, Square target, HashSet<Move> fill)
         {
-            Board inst = Board.GetInstance();
-            Move toValidate = new Move(source, target);
             if ((target.PieceResident() && (source.Piece.White != target.Piece.White)) || !target.PieceResident())
             {
+                Move toValidate = new Move(source, target);
+
                 bool result = false;
                 toValidate.MakeMove(true);
                 target.Invisible = true;
-                if (!AllIllegalNoFrills().Contains(inst.KingSquare(true)))
+
+                if (!AllIllegalNoFrills().Contains(single.KingSquare(true)))
                 {
                     result = true;
                 }
-                inst.Rollback();
+
+                single.Rollback();
                 target.Invisible = false;
+
                 if (result)
                 {
                     fill.Add(toValidate);
                 }
+
                 return result;
             }
             return false;
@@ -330,13 +323,12 @@ namespace Chesscape.Chess
         private static HashSet<Square> AllIllegalNoFrills()
         {
             HashSet<Square> retval = new HashSet<Square>();
-            Board b = Board.GetInstance();
             for (int i = 0; i < 8; ++i)
             {
                 for (int j = 0; j < 8; ++j)
                 {
                     HashSet<Square> currentlyAppend = new HashSet<Square>();
-                    Square square = b.Squares[i][j];
+                    Square square = single.Squares[i][j];
                     if (square.PieceResident() && !square.Piece.White)
                     {
                         string piece = square.Piece.FENNotation().ToLower();
@@ -345,11 +337,11 @@ namespace Chesscape.Chess
                             case "p":
                                 if (CheckValid(i + 1, j + 1))
                                 {
-                                    currentlyAppend.Add(b.Squares[i + 1][j + 1]);
+                                    currentlyAppend.Add(single.Squares[i + 1][j + 1]);
                                 }
                                 if (CheckValid(i + 1, j - 1))
                                 {
-                                    currentlyAppend.Add(b.Squares[i + 1][j - 1]);
+                                    currentlyAppend.Add(single.Squares[i + 1][j - 1]);
                                 }
                                 break;
                             case "q":
@@ -378,31 +370,31 @@ namespace Chesscape.Chess
 
         private static HashSet<Square> DiagonalTrajectoryNoFrills(Square source)
         {
-            Square[][] squares = Board.GetInstance().Squares;
+            Square[][] squares = single.Squares;
             HashSet<Square> legalMoves = new HashSet<Square>();
 
             // bottom right
             for (int i = source.GetRankPhysical() + 1, j = source.File + 1; i < 8 && j < 8; ++i, ++j)
             {
-                if (!AppendNoFrills(source, squares[i][j], legalMoves) || (squares[i][j].Piece != null && source.Piece.White != squares[i][j].Piece.White)) break;
+                if (!AppendNoFrills(source, squares[i][j], legalMoves) || (squares[i][j].PieceResident() && source.Piece.White != squares[i][j].Piece.White)) break;
 
             }
             // top right
             for (int i = source.GetRankPhysical() - 1, j = source.File + 1; i >= 0 && j < 8; --i, ++j)
             {
-                if (!AppendNoFrills(source, squares[i][j], legalMoves) || (squares[i][j].Piece != null && source.Piece.White != squares[i][j].Piece.White)) break;
+                if (!AppendNoFrills(source, squares[i][j], legalMoves) || (squares[i][j].PieceResident() && source.Piece.White != squares[i][j].Piece.White)) break;
             }
 
             //top left
             for (int i = source.GetRankPhysical() - 1, j = source.File - 1; i >= 0 && j >= 0; --i, --j)
             {
-                if (!AppendNoFrills(source, squares[i][j], legalMoves) || (squares[i][j].Piece != null && source.Piece.White != squares[i][j].Piece.White)) break;
+                if (!AppendNoFrills(source, squares[i][j], legalMoves) || (squares[i][j].PieceResident() && source.Piece.White != squares[i][j].Piece.White)) break;
             }
 
             //bottom left
             for (int i = source.GetRankPhysical() + 1, j = source.File - 1; i < 8 && j >= 0; ++i, --j)
             {
-                if (!AppendNoFrills(source, squares[i][j], legalMoves) || (squares[i][j].Piece != null && source.Piece.White != squares[i][j].Piece.White)) break;
+                if (!AppendNoFrills(source, squares[i][j], legalMoves) || (squares[i][j].PieceResident() && source.Piece.White != squares[i][j].Piece.White)) break;
             }
 
             return legalMoves;
@@ -410,7 +402,7 @@ namespace Chesscape.Chess
 
         private static HashSet<Square> ForthrightTrajectoryNoFrills(Square source)
         {
-            Square[][] squares = Board.GetInstance().Squares;
+            Square[][] squares = single.Squares;
             HashSet<Square> legalMoves = new HashSet<Square>();
 
             int sJ = source.File;
@@ -421,7 +413,7 @@ namespace Chesscape.Chess
             {
                 if (!AppendNoFrills(source, squares[i][sJ], legalMoves)
                     ||
-                    (squares[i][sJ].Piece != null && source.Piece.White != squares[i][sJ].Piece.White)) break;
+                    (squares[i][sJ].PieceResident() && source.Piece.White != squares[i][sJ].Piece.White)) break;
             }
 
             //down
@@ -429,7 +421,7 @@ namespace Chesscape.Chess
             {
                 if (!AppendNoFrills(source, squares[i][sJ], legalMoves)
                     ||
-                    (squares[i][sJ].Piece != null && source.Piece.White != squares[i][sJ].Piece.White)) break;
+                    (squares[i][sJ].PieceResident() && source.Piece.White != squares[i][sJ].Piece.White)) break;
             }
 
             //left
@@ -437,7 +429,7 @@ namespace Chesscape.Chess
             {
                 if (!AppendNoFrills(source, squares[sI][j], legalMoves)
                     ||
-                    (squares[sI][j].Piece != null && source.Piece.White != squares[sI][j].Piece.White)) break;
+                    (squares[sI][j].PieceResident() && source.Piece.White != squares[sI][j].Piece.White)) break;
             }
 
             //right
@@ -445,7 +437,7 @@ namespace Chesscape.Chess
             {
                 if (!AppendNoFrills(source, squares[sI][j], legalMoves)
                     ||
-                    (squares[sI][j].Piece != null && source.Piece.White != squares[sI][j].Piece.White)) break;
+                    (squares[sI][j].PieceResident() && source.Piece.White != squares[sI][j].Piece.White)) break;
 
             }
 
@@ -454,10 +446,12 @@ namespace Chesscape.Chess
 
         private static HashSet<Square> GTrajectoryNoFrills(Square source)
         {
-            Square[][] squares = Board.GetInstance().Squares;
+            Square[][] squares = single.Squares;
             HashSet<Square> legalMoves = new HashSet<Square>();
+
             int File = source.File;
             int Rank = source.GetRankPhysical();
+
             int[,] knightMoves = new int[,]
             {
                 { 2, 1 }, { 2, -1 }, { -2, 1 }, { -2, -1 },
@@ -482,10 +476,9 @@ namespace Chesscape.Chess
 
         private static bool AppendNoFrills(Square source, Square target, HashSet<Square> fill)
         {
-            if (target.PieceResident() || !target.PieceResident())
-            {
+            if ((target.PieceResident() && (source.Piece.White != target.Piece.White)) || !target.PieceResident())
                 return fill.Add(target);
-            }
+
             return false;
         }
     }

@@ -34,7 +34,11 @@ namespace Chesscape.Chess.Internals
             single.EnPassantTarget = parts[3].Equals("-") ? null : Board.PositionToSquare(parts[3]);
         }
 
-
+        /// <summary>
+        /// Translates a Square matrix from the board into a functional FEN string.
+        /// </summary>
+        /// <param name="Squares">A Square matrix from the single Board object.</param>
+        /// <returns>A Forsyth-Edwards Notation string.<returns>
         public static string ToFEN(Square[][] Squares)
         {
             StringBuilder fen = new StringBuilder();
@@ -68,9 +72,10 @@ namespace Chesscape.Chess.Internals
                 }
             }
 
+            string activeColor = "w";
 
-            string activeColor = "w"; // 'w' for white to move, 'b' for black to move
             string castlingAvailability = "";
+
             if (Squares[7][7].PieceResident() && Squares[7][7].Piece is Rook && !(Squares[7][7].Piece as ICastleable).Moved())
             {
                 castlingAvailability += "K";
@@ -83,11 +88,11 @@ namespace Chesscape.Chess.Internals
             {
                 castlingAvailability = "-";
             }
-            string enPassantTarget = "-"; // Modify based on actual en passant target square
-            int halfmoveClock = 0; // Number of halfmoves since the last capture or pawn move
-            int fullmoveNumber = 1;
+
+            string enPassantTarget = "-"; // relevant
+            int halfmoveClock = 0; // irellevant
+            int fullmoveNumber = 1; // irellevant
             fen.Append($" {activeColor} {castlingAvailability} {enPassantTarget} {halfmoveClock} {fullmoveNumber}");
-            Debug.WriteLine(fen);
             return fen.ToString();
         }
 

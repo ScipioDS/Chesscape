@@ -18,6 +18,7 @@ namespace Chesscape.Chess
 
         public void MakeMove(bool pretend)
         {
+
             if (from.Piece is ICastleable)
             {
                 (from.Piece as ICastleable).MakeIncastleable();

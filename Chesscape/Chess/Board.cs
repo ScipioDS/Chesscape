@@ -30,7 +30,7 @@ namespace Chesscape.Chess
         public bool WhiteToPlay { get; set; }
         //Legal moveTo
         private HashSet<Move> LegalMoves { get; set; }
-        public bool BlackKingInCheck { get; set; }
+        public bool KingInCheck { get; set; }
         public bool WhiteKingInCheck { get; set; }
         public string PreviousSetup { get; set; }
 
@@ -50,8 +50,8 @@ namespace Chesscape.Chess
         private Board()
         {
 
-            BlackKingInCheck = false;
-            WhiteKingInCheck = true;
+            KingInCheck = false;
+            WhiteKingInCheck = false;
 
             Squares = new Square[8][];
             for (int i = 7; i >= 0; --i)
@@ -179,32 +179,23 @@ namespace Chesscape.Chess
             SetBoard(PreviousSetup);
         }
 
+        //TODO: adapt for usage to remove red squares (king checked highlight, or keep it)
         private void CheckScan(Square justMoved)
         {
-            Select(new Point(justMoved.TopLeftCoord.X, justMoved.TopLeftCoord.Y));
-
-            List<Square> kingResides =
-            LegalMoves
-            .Select(move => move.GetToSquare())
-            .Where(sq => (sq.PieceResident() && sq.Piece is King && !sq.Piece.White))
-            .ToList();
-
-            BlackKingInCheck = kingResides.Count == 1;
-
-            if (BlackKingInCheck) kingResides[0].KingChecked(true);
-            else RemoveCheckFromBlack();
+            throw new NotImplementedException();
         }
 
-        public void RemoveCheckFromBlack()
+        public void RemoveCheck()
         {
             for (byte i = 0; i < 8; ++i)
             {
                 for (byte j = 0; j < 8; ++j)
                 {
-                    if (Squares[i][j].InCheckBlack())
+                    if (Squares[i][j].IsInCheck())
                     {
-                        BlackKingInCheck = false;
+                        KingInCheck = false;
                         Squares[i][j].KingChecked(false);
+                        return;
                     }
                 }
             }
@@ -237,15 +228,17 @@ namespace Chesscape.Chess
             Square square = GetSquare(point);
             List<Square> moveTo = new List<Square>();
 
-            string beforePosSquareMove = null;
-
             foreach (Move i in LegalMoves)
             {
                 moveTo.Add(i.GetToSquare());
             }
 
+            string preloadCheckPos = null;
+
             if (moveTo.Contains(square) && FromSquare != null)
             {
+                preloadCheckPos = FromSquare.ToString();
+
                 //map move onto board
                 new Move(FromSquare, square).MakeMove(false);
                 Piece tmp = CheckForPromotion();
@@ -253,10 +246,6 @@ namespace Chesscape.Chess
                 {
                     square.Piece = tmp;
                 }
-
-                Debug.WriteLine(FromSquare.TopLeftCoord + " " + square.TopLeftCoord);
-
-                beforePosSquareMove = FromSquare.TopLeftCoord.ToString();
 
                 FromSquare = null;
             }
@@ -266,8 +255,8 @@ namespace Chesscape.Chess
                 i.GetToSquare().Available = false;
             }
 
-            if (beforePosSquareMove != null)
-                WhiteKingInCheck = beforePosSquareMove.Equals(square.TopLeftCoord.ToString());
+            if (preloadCheckPos != null && !preloadCheckPos.Equals(square.ToString()))
+                Trajectories.PreloadIllegalOfBlack();
 
             LegalMoves = null;
             this.SelectedPiece = null;
