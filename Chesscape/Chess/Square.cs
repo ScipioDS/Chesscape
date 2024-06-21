@@ -61,6 +61,10 @@ namespace Chesscape.Chess
         /// </summary>
         public static void SetFileTranslation()
         {
+            if(NumericToFile.Count > 0)
+            {
+                return;
+            }
             for (char i = 'a'; i <= 'h'; ++i)
             {
                 NumericToFile.Add((i - 'a'), i);

@@ -33,7 +33,7 @@ namespace Chesscape.Chess.Internals
         ///     Calculates the new ELO of the player using the standar ELO calc formula.
         /// </summary>
         /// <returns> INT value, new player ELO </returns>
-        public double calculatePlayerELO ()
+        public int calculatePlayerELO ()
         {
             //Expected score
             var E_B = 1 / (1 + Math.Pow(10, (puzzleELO - playerELO) / 400.0));
@@ -42,7 +42,15 @@ namespace Chesscape.Chess.Internals
                 return (int)Math.Round(playerELO + K * (1 - E_B));
             } else
             {
-                return (int)Math.Round(playerELO + K * (0 - E_B));
+                var newELO = (int)Math.Round(playerELO + K * (0 - E_B));
+                if (newELO == playerELO)
+                {
+                    return newELO-1;
+                }
+                else
+                {
+                    return newELO;
+                }
             }
         }
     }

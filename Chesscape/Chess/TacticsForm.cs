@@ -12,7 +12,7 @@ namespace Chesscape.Chess
 
         private Board board;
 
-        public TacticsForm()
+        public TacticsForm(Puzzle.Puzzle puzzle)
         {
             InitializeComponent();
             DoubleBuffered = true;
@@ -20,11 +20,8 @@ namespace Chesscape.Chess
             Square.SetFileTranslation();
             board = Board.GetInstance();
             board.SetPerspective(true);
-            board.SetBoard("rn1qkbnr/ppp2ppp/3p4/4p3/2b1P3/5N1P/PPPP1PP1/RNBQK2R w KQkq - 0 5");
+            board.SetBoard(puzzle.getFEN());
             board.PreviousSetup = FEN.ToFEN(board.Squares);
-
-            var ELO = new ELO(1500, 1400, true);
-            Debug.WriteLine(ELO.calculatePlayerELO());
 
             Invalidate();
         }
@@ -46,6 +43,8 @@ namespace Chesscape.Chess
         private void TacticsForm_MouseUp(object sender, MouseEventArgs e)
         {
             board.MakeMove(e.Location);
+
+            // TODO CHECK MOVES => IF CORRECT DialogResult.Yes / ELSE IF TOO MANY MOVES DialogResult.No
             Invalidate();
         }
         private void TacticsForm_MouseMove(object sender, MouseEventArgs e)

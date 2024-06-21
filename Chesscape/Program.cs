@@ -17,7 +17,7 @@ namespace Chesscape
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new TacticsForm());
+            Application.Run(new Menu());
         }
     }
 }
