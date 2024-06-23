@@ -1,4 +1,6 @@
 ﻿using Chesscape.Chess.Internals;
+using Chesscape.Chess.Internals;
+using Chesscape.Chess.Internals;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -248,6 +250,23 @@ namespace Chesscape.Chess
                 //map move onto board
                 player_Move = new Move(FromSquare, square);
                 currentplayermove.Append(player_Move);
+                if (knight_rook_check(next_move, next_move.Substring(0, 1)))
+                {
+                    currentplayermove = new StringBuilder();
+                    currentplayermove.Append(player_Move.ToString().Substring(0,1));
+                    currentplayermove.Append(FromSquare.GetFileChar(FromSquare.File));
+                    currentplayermove.Append(player_Move.ToString().Substring(1,player_Move.ToString().Length-1));
+                }
+                if (FromSquare.Piece.ToString().ToLower().Equals("p"))
+                {
+                    Piece check = CheckForPromotion(square);
+                    if (check != null)
+                    {
+                        currentplayermove.Append("/" +check.ToString());
+                        square.Piece=check;
+                        
+                    }
+                }
                 if (currentplayermove.ToString().Equals(next_move))
                 {
                     player_Move.MakeMove(false);
@@ -287,18 +306,6 @@ namespace Chesscape.Chess
                     MessageBox.Show("Wrong Move! Try again.");
                     return;
                 }
-                if (square.Piece.ToString().ToLower().Equals("p"))
-                {
-                    Piece tmp = CheckForPromotion(square);
-                    if (tmp != null)
-                    {
-                        square.Piece = tmp;
-                        PreviousSetup = FEN.ToFEN(Squares);
-
-                    }
-                }
-                FromSquare = null;
-                
             }
 
             foreach (Move i in LegalMoves)
@@ -313,9 +320,26 @@ namespace Chesscape.Chess
             LegalMoves = null;
             this.SelectedPiece = null;
         }
+        public bool knight_rook_check(string move,string piece)
+        {
+            if ((piece.ToLower().Equals("r") || piece.ToLower().Equals("n")) && char.IsLetter(move[1]) && char.IsLetter(move[2]) && !move[1].Equals('x'))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public void BlackMove(string move)
         {
             string piece = getPiece(move.Substring(0,1));
+            bool edge_case = false;
+            string special_char = "";
+            if(knight_rook_check(move,piece))
+            {
+
+            }
             string square = move.Substring(move.Length-2);
             Piece blackpiece = null;
             Square toMove = null;
