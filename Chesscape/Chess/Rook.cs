@@ -50,6 +50,11 @@ namespace Chesscape.Chess
             return _Moved;
         }
 
+        public override void refresh()
+        {
+            this.addFile = false;
+            this.addRank= false;
+        }
 
         public void MakeIncastleable()
         {

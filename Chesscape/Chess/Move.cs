@@ -1,6 +1,7 @@
 ﻿using Chesscape.Chess.Internals;
 using System.Diagnostics;
 using System.Runtime;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Chesscape.Chess
@@ -86,6 +87,7 @@ namespace Chesscape.Chess
             to.Piece = toMove;
             from.Piece = null;
         }
+        
 
         public Square GetToSquare() { return to; }
 
@@ -94,11 +96,31 @@ namespace Chesscape.Chess
             //TODO: Check if an identical piece can make the same move, this would change the notation. This applies to Knights and Rooks ONLY. (VERY IMPORTANT)
 
             // Safety measure if MakeMove() is called before ToString(), since the from square might be null
-            Square squareInString = from.PieceResident() ? from : to;
-
-            string fixPieceNotation = squareInString.Piece.ToString().Substring(0, 1).ToUpper() + squareInString.Piece.ToString().Substring(1);
-
-            return to.PieceResident() ? $"{fixPieceNotation}x{to}" : $"{fixPieceNotation}{to}";
+           StringBuilder sb= new StringBuilder();
+            if (from.Piece.ToString().ToLower().Equals("p"))
+            {
+                sb.Append(to.ToString());
+                if (to.PieceResident())
+                {
+                    sb.Append("x");
+                    return sb.ToString();
+                }
+                return sb.ToString();
+            }
+            else
+            {
+                sb.Append(from.Piece.ToString());
+            }
+            if (to.PieceResident())
+            {
+                sb.Append("x");
+                sb.Append(to.ToString());
+            }
+            else
+            {
+                sb.Append(to.ToString());
+            }
+           return sb.ToString();
         }
     }
 }

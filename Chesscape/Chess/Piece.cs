@@ -36,7 +36,7 @@ namespace Chesscape.Chess
         public abstract void setRank(int rank);
         public abstract void setAddFile();
         public abstract void setAddRank();
-
+        public abstract void refresh();
         public abstract Image GetImageT();
     }
 }

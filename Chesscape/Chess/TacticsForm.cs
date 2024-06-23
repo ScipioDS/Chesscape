@@ -22,7 +22,8 @@ namespace Chesscape.Chess
             board.SetPerspective(true);
             board.SetBoard(puzzle.getFEN());
             board.PreviousSetup = FEN.ToFEN(board.Squares);
-
+            board.SetPuzzle(puzzle);
+            board.setForm(this);
             Invalidate();
         }
 

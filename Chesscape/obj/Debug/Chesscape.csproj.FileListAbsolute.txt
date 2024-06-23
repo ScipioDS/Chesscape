@@ -43,3 +43,5 @@ C:\Users\david\Source\Repos\Chesscape\Chesscape\obj\Debug\Chesscape.Promotion.re
 C:\Users\Skipio\source\repos\ChesscapeProject\Chesscape\obj\Debug\Chesscape.Menu.resources
 C:\Users\Skipio\source\repos\ChesscapeProject\Chesscape\obj\Debug\Chesscape.Promotion.resources
 C:\Users\Skipio\source\repos\ChesscapeProject\Chesscape\obj\Debug\Chesscape.Users.Register.resources
+C:\Users\ncvet\source\repos\Chesscape\Chesscape\obj\Debug\Chesscape.Menu.resources
+C:\Users\ncvet\source\repos\Chesscape\Chesscape\obj\Debug\Chesscape.Users.Register.resources

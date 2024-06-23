@@ -19,12 +19,34 @@ namespace Chesscape.Puzzle
         string FEN {  get; set; }
         string[] moves {  get; set; } 
         int puzzleELO {  get; set; }
-        public bool checkMove()
+        int current_move { get; set; } = 0;
+        
+        public string GetNextMove()
         {
-            throw new NotImplementedException();
+            if (!check_pointer()) { 
+                return moves[current_move];
+            }
+            else {
+                return "GAME OVER";
+            }
+        }
+        public bool check_pointer()
+        {
+            if(current_move >= moves.Length)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public void increment()
+        {
+            current_move++;
         }
 
-        public string[] getMoves() {  throw new NotImplementedException(); }
+        
         public string getFEN() { return FEN;}
         public int getPuzzleELO() {  return puzzleELO;}
         

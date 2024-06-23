@@ -36,12 +36,10 @@ namespace Chesscape.Chess
             if (this.addRank)
             {
                 sb.Append(this.Rank);
-                this.addRank = false;
             }
             else if (this.addFile)
             {
                 sb.Append(this.File);
-                this.addFile = false;
             }
             return sb.ToString();
         }
@@ -67,6 +65,12 @@ namespace Chesscape.Chess
         public override void setAddFile()
         {
             this.addFile = true;
+        }
+
+        public override void refresh()
+        {
+            this.addRank = false;
+            this.addFile = false;
         }
 
         public override void setAddRank()

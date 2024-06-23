@@ -26,6 +26,10 @@ namespace Chesscape.Chess
             return White ? "B" : "b";
         }
 
+        public override void refresh()
+        {
+            throw new NotImplementedException();
+        }
 
         public override Image GetImageT()
         {

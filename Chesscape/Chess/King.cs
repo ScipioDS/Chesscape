@@ -34,6 +34,11 @@ namespace Chesscape.Chess
 
         }
 
+        public override void refresh()
+        {
+            throw new NotImplementedException();
+        }
+
         public override string ToString()
         {
             return White ?  "K" : "k";

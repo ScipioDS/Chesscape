@@ -34,6 +34,8 @@ namespace Chesscape.Chess
         public bool KingInCheck { get; set; }
         public bool WhiteKingInCheck { get; set; }
         public string PreviousSetup { get; set; }
+        public Chesscape.Puzzle.Puzzle currentPuzzle { get; set; }
+        public TacticsForm tf { get; set; }
 
 
         //DRAWING ATTRIBUTES
@@ -63,6 +65,14 @@ namespace Chesscape.Chess
                     Squares[i][j] = new Square((byte)(7 - i), (byte)j, null);
                 }
             }
+        }
+        public void SetPuzzle(Puzzle.Puzzle puzzle)
+        {
+            this.currentPuzzle = puzzle;
+        }
+        public void setForm(TacticsForm tf)
+        {
+            this.tf = tf;
         }
 
         public static Board GetInstance()
@@ -221,16 +231,62 @@ namespace Chesscape.Chess
             {
                 moveTo.Add(i.GetToSquare());
             }
-
-            string preloadCheckPos = null;
             
 
+            string preloadCheckPos = null;
+            StringBuilder currentplayermove=new StringBuilder();
+            Move player_Move = null;
+            string next_move=currentPuzzle.GetNextMove();
+            if (next_move.Contains("+") || next_move.Contains("#"))
+            {
+                next_move = next_move.Substring(0,next_move.Length-1);
+            }
             if (moveTo.Contains(square) && FromSquare != null)
             {
                 preloadCheckPos = FromSquare.ToString();
 
                 //map move onto board
-                new Move(FromSquare, square).MakeMove(false);
+                player_Move = new Move(FromSquare, square);
+                currentplayermove.Append(player_Move);
+                if (currentplayermove.ToString().Equals(next_move))
+                {
+                    player_Move.MakeMove(false);
+                    currentPuzzle.increment();
+                    foreach (Move i in LegalMoves)
+                    {
+                        i.GetToSquare().Available = false;
+                    }
+
+                    if (preloadCheckPos != null && !preloadCheckPos.Equals(square.ToString()))
+                        Trajectories.PreloadIllegalOfBlack();
+                    LegalMoves = null;
+                    this.SelectedPiece = null;
+                    FromSquare = null;
+                    next_move=currentPuzzle.GetNextMove();
+                    if(next_move.Equals("GAME OVER"))
+                    {
+                        MessageBox.Show("Puzzle Completed! Good Job!");
+                        tf.Close();
+                        return;
+                    }
+                    BlackMove(next_move);
+                    currentPuzzle.increment();
+                    return;
+                }
+                else
+                {
+                    foreach (Move i in LegalMoves)
+                    {
+                        i.GetToSquare().Available = false;
+                    }
+
+                    if (preloadCheckPos != null && !preloadCheckPos.Equals(square.ToString()))
+                        Trajectories.PreloadIllegalOfBlack();
+                    LegalMoves = null;
+                    this.SelectedPiece = null;
+                    MessageBox.Show("Wrong Move! Try again.");
+                    return;
+                }
                 if (square.Piece.ToString().ToLower().Equals("p"))
                 {
                     Piece tmp = CheckForPromotion(square);
@@ -238,11 +294,11 @@ namespace Chesscape.Chess
                     {
                         square.Piece = tmp;
                         PreviousSetup = FEN.ToFEN(Squares);
-                        
+
                     }
                 }
-
                 FromSquare = null;
+                
             }
 
             foreach (Move i in LegalMoves)
@@ -252,10 +308,76 @@ namespace Chesscape.Chess
 
             if (preloadCheckPos != null && !preloadCheckPos.Equals(square.ToString()))
                 Trajectories.PreloadIllegalOfBlack();
-
+            
+            
             LegalMoves = null;
             this.SelectedPiece = null;
         }
+        public void BlackMove(string move)
+        {
+            string piece = move.Substring(0, 1);
+            string square = move.Substring(move.Length-2);
+            Piece blackpiece = null;
+            Square toMove = null;
+            for(int i= 0; i < 8; i++)
+            {
+                for(int j = 0; j < 8; j++)
+                {
+                    if (Squares[i][j].PieceResident())
+                    {
+                        if (!Squares[i][j].Piece.White && Squares[i][j].Piece.ToString().ToLower().Equals(piece.ToLower()))
+                        {
+                            HashSet<Move> LegalMoves = null;
+                            switch (piece.ToLower())
+                            {
+                                case "q":
+                                    LegalMoves = Trajectories.ForthrightTrajectory(Squares[i][j]);
+                                    LegalMoves.UnionWith(Trajectories.DiagonalTrajectory(Squares[i][j]));
+                                    break;
+                                case "k":
+                                    LegalMoves = Trajectories.KingTrajectory(Squares[i][j]);
+                                    blackpiece = Squares[i][j].Piece;
+                                    Squares[i][j].Piece = null;
+                                    break;
+                                case "r":
+                                    CheckForRooks(Squares[i][j]);
+                                    LegalMoves = Trajectories.ForthrightTrajectory(Squares[i][j]);
+                                    break;
+                                case "n":
+                                    CheckForKnigths(Squares[i][j]);
+                                    LegalMoves = Trajectories.GTrajectory(Squares[i][j]);
+                                    break;
+                                case "b":
+                                    LegalMoves = Trajectories.DiagonalTrajectory(Squares[i][j]);
+                                    break;
+                                default:
+                                    LegalMoves = Trajectories.PawnTrajectory(Squares[i][j]);
+                                    break;
+                            }
+                            if (LegalMoves != null)
+                            {
+                                foreach (Move tmp in LegalMoves)
+                                {
+                                    if (tmp.ToString().Equals(move.ToLower()))
+                                    {
+                                        blackpiece = Squares[i][j].Piece;
+                                        Squares[i][j].Piece = null;
+                                        break;
+                                    }
+                                }                           
+                              }
+                        }
+                    }
+                    if (Squares[i][j].ToString().Equals(square))
+                    {
+                        toMove=Squares[i][j];
+                    }
+                }
+            }
+            toMove.Piece= blackpiece;
+            PreviousSetup = FEN.ToFEN(Squares);
+        }
+        
 
 
         public void CheckForRooks(Square Rook1)
