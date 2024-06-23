@@ -101,7 +101,7 @@ namespace Chesscape.Chess
             {
                 if (to.PieceResident())
                 {
-                    sb.Append(from.ToString());
+                    sb.Append(from.GetFileChar(from.File));
                     sb.Append("x");
                     sb.Append(to.ToString());
                     return sb.ToString();

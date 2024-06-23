@@ -315,7 +315,7 @@ namespace Chesscape.Chess
         }
         public void BlackMove(string move)
         {
-            string piece = move.Substring(0, 1);
+            string piece = getPiece(move.Substring(0,1));
             string square = move.Substring(move.Length-2);
             Piece blackpiece = null;
             Square toMove = null;
@@ -331,11 +331,12 @@ namespace Chesscape.Chess
                             switch (piece.ToLower())
                             {
                                 case "q":
-                                    LegalMoves = Trajectories.ForthrightTrajectory(Squares[i][j]);
-                                    LegalMoves.UnionWith(Trajectories.DiagonalTrajectory(Squares[i][j]));
+                                    blackpiece = Squares[i][j].Piece;
+                                    Squares[i][j].Piece = null;
+                                    LegalMoves = null;
                                     break;
                                 case "k":
-                                    LegalMoves = Trajectories.KingTrajectory(Squares[i][j]);
+                                    LegalMoves = null;
                                     blackpiece = Squares[i][j].Piece;
                                     Squares[i][j].Piece = null;
                                     break;
@@ -350,8 +351,13 @@ namespace Chesscape.Chess
                                 case "b":
                                     LegalMoves = Trajectories.DiagonalTrajectory(Squares[i][j]);
                                     break;
-                                default:
-                                    LegalMoves = Trajectories.PawnTrajectory(Squares[i][j]);
+                                case "p":
+                                    string piece_square=Squares[i][j].ToString().Substring(0,1);
+                                    string to_find = move.Substring(0, 1);
+                                    if (piece_square.Equals(to_find)){
+                                        blackpiece=Squares[i][j].Piece;
+                                        Squares[i][j].Piece = null;
+                                    }
                                     break;
                             }
                             if (LegalMoves != null)
@@ -374,15 +380,36 @@ namespace Chesscape.Chess
                     }
                 }
             }
-            if (blackpiece == null)
-            {
-                blackpiece = new Pawn(false);
-            }
             toMove.Piece= blackpiece;
             PreviousSetup = FEN.ToFEN(Squares);
         }
         
-
+        public string getPiece(string move)
+        {
+            string to_return = "";
+            switch (move.ToLower())
+            {
+                case "q":
+                    to_return = "q";
+                    break;
+                case "k":
+                    to_return = "k";
+                    break;
+                case "r":
+                    to_return = "r";
+                    break;
+                case "n":
+                    to_return = "n";
+                    break;
+                case "b":
+                    to_return = "b";
+                    break;
+                default:
+                    to_return = "p";
+                    break;
+            }
+            return to_return;
+        }
 
         public void CheckForRooks(Square Rook1)
         {
