@@ -374,6 +374,10 @@ namespace Chesscape.Chess
                     }
                 }
             }
+            if (blackpiece == null)
+            {
+                blackpiece = new Pawn(false);
+            }
             toMove.Piece= blackpiece;
             PreviousSetup = FEN.ToFEN(Squares);
         }

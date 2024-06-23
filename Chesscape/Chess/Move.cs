@@ -99,12 +99,14 @@ namespace Chesscape.Chess
            StringBuilder sb= new StringBuilder();
             if (from.Piece.ToString().ToLower().Equals("p"))
             {
-                sb.Append(to.ToString());
                 if (to.PieceResident())
                 {
+                    sb.Append(from.ToString());
                     sb.Append("x");
+                    sb.Append(to.ToString());
                     return sb.ToString();
                 }
+                sb.Append(to.ToString());
                 return sb.ToString();
             }
             else
