@@ -264,7 +264,6 @@ namespace Chesscape.Chess
                     {
                         currentplayermove.Append("/" +check.ToString());
                         square.Piece=check;
-                        
                     }
                 }
                 if (currentplayermove.ToString().Equals(next_move))
@@ -334,17 +333,20 @@ namespace Chesscape.Chess
         public void BlackMove(string move)
         {
             string piece = getPiece(move.Substring(0,1));
-            bool edge_case = false;
-            string special_char = "";
+            bool rook_knight_check = false;
             if(knight_rook_check(move,piece))
             {
-
+                rook_knight_check = true;
             }
             string square = move.Substring(move.Length-2);
             Piece blackpiece = null;
             Square toMove = null;
             for(int i= 0; i < 8; i++)
             {
+                if(blackpiece!=null && toMove != null)
+                {
+                    break;
+                }
                 for(int j = 0; j < 8; j++)
                 {
                     if (Squares[i][j].PieceResident())
@@ -365,11 +367,9 @@ namespace Chesscape.Chess
                                     Squares[i][j].Piece = null;
                                     break;
                                 case "r":
-                                    CheckForRooks(Squares[i][j]);
                                     LegalMoves = Trajectories.ForthrightTrajectory(Squares[i][j]);
                                     break;
                                 case "n":
-                                    CheckForKnigths(Squares[i][j]);
                                     LegalMoves = Trajectories.GTrajectory(Squares[i][j]);
                                     break;
                                 case "b":
@@ -388,11 +388,27 @@ namespace Chesscape.Chess
                             {
                                 foreach (Move tmp in LegalMoves)
                                 {
-                                    if (tmp.ToString().Equals(move.ToLower()))
+                                    if (rook_knight_check)
                                     {
-                                        blackpiece = Squares[i][j].Piece;
-                                        Squares[i][j].Piece = null;
-                                        break;
+                                        StringBuilder currentplayermove = new StringBuilder();
+                                        currentplayermove.Append(tmp.ToString().Substring(0, 1));
+                                        currentplayermove.Append(tmp.GetFromSquare().GetFileChar(tmp.GetFromSquare().File));
+                                        currentplayermove.Append(tmp.ToString().Substring(1, tmp.ToString().Length - 1));
+                                        if (currentplayermove.ToString().Equals(move.ToLower()))
+                                        {
+                                            blackpiece = Squares[i][j].Piece;
+                                            Squares[i][j].Piece = null;
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (tmp.ToString().Equals(move.ToLower()))
+                                        {
+                                            blackpiece = Squares[i][j].Piece;
+                                            Squares[i][j].Piece = null;
+                                            break;
+                                        }
                                     }
                                 }                           
                               }
@@ -404,6 +420,7 @@ namespace Chesscape.Chess
                     }
                 }
             }
+            rook_knight_check = false;
             toMove.Piece= blackpiece;
             PreviousSetup = FEN.ToFEN(Squares);
         }

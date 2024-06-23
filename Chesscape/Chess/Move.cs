@@ -90,6 +90,7 @@ namespace Chesscape.Chess
         
 
         public Square GetToSquare() { return to; }
+        public Square GetFromSquare( ) { return from; }
 
         public override string ToString()
         {
