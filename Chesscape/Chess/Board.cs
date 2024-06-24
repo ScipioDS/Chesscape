@@ -226,10 +226,6 @@ namespace Chesscape.Chess
         public void MakeMove(Point point)
         {
             if (LegalMoves == null) return;
-            if (EnPassantTarget != null)
-            {
-                EnPassantTarget = null;
-            }
             Square square = GetSquare(point);
             List<Square> moveTo = new List<Square>();
 
@@ -303,6 +299,10 @@ namespace Chesscape.Chess
                     }
                     BlackMove(next_move);
                     currentPuzzle.increment();
+                    if (EnPassantTarget != null)
+                    {
+                        EnPassantTarget = null;
+                    }
                     return;
                 }
                 else
@@ -319,6 +319,10 @@ namespace Chesscape.Chess
                     if (promotion)
                     {
                         FromSquare.Piece = new Pawn(true);
+                    }
+                    if (EnPassantTarget != null)
+                    {
+                        EnPassantTarget = null;
                     }
                     MessageBox.Show("Wrong Move! Try again.");
                     return;
