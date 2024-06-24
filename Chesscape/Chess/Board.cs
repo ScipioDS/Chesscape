@@ -68,6 +68,7 @@ namespace Chesscape.Chess
                 }
             }
         }
+        
         public void SetPuzzle(Puzzle.Puzzle puzzle)
         {
             this.currentPuzzle = puzzle;
@@ -225,7 +226,10 @@ namespace Chesscape.Chess
         public void MakeMove(Point point)
         {
             if (LegalMoves == null) return;
-
+            if (EnPassantTarget != null)
+            {
+                EnPassantTarget = null;
+            }
             Square square = GetSquare(point);
             List<Square> moveTo = new List<Square>();
 
@@ -233,6 +237,7 @@ namespace Chesscape.Chess
             {
                 moveTo.Add(i.GetToSquare());
             }
+            bool promotion = false;
             
 
             string preloadCheckPos = null;
@@ -253,22 +258,27 @@ namespace Chesscape.Chess
                 if (knight_rook_check(next_move, next_move.Substring(0, 1)))
                 {
                     currentplayermove = new StringBuilder();
-                    currentplayermove.Append(player_Move.ToString().Substring(0,1));
+                    currentplayermove.Append(player_Move.ToString().Substring(0, 1));
                     currentplayermove.Append(FromSquare.GetFileChar(FromSquare.File));
-                    currentplayermove.Append(player_Move.ToString().Substring(1,player_Move.ToString().Length-1));
+                    currentplayermove.Append(player_Move.ToString().Substring(1, player_Move.ToString().Length - 1));
                 }
                 if (FromSquare.Piece.ToString().ToLower().Equals("p"))
                 {
                     Piece check = CheckForPromotion(square);
                     if (check != null)
                     {
-                        currentplayermove.Append("/" +check.ToString());
-                        square.Piece=check;
+                        currentplayermove.Append("/" + check.ToString());
+                        FromSquare.Piece = check;
+                        promotion = true;
                     }
                 }
                 if (currentplayermove.ToString().Equals(next_move))
                 {
                     player_Move.MakeMove(false);
+                    if (square.Piece.ToString().ToLower().Equals("p"))
+                    {
+                        EnPassantCheck(square);
+                    }
                     currentPuzzle.increment();
                     foreach (Move i in LegalMoves)
                     {
@@ -280,12 +290,16 @@ namespace Chesscape.Chess
                     LegalMoves = null;
                     this.SelectedPiece = null;
                     FromSquare = null;
-                    next_move=currentPuzzle.GetNextMove();
-                    if(next_move.Equals("GAME OVER"))
+                    next_move = currentPuzzle.GetNextMove();
+                    if (next_move.Equals("GAME OVER"))
                     {
                         MessageBox.Show("Puzzle Completed! Good Job!");
                         tf.Close();
                         return;
+                    }
+                    if (next_move.Contains("+") || next_move.Contains("#"))
+                    {
+                        next_move = next_move.Substring(0,next_move.Length-1);
                     }
                     BlackMove(next_move);
                     currentPuzzle.increment();
@@ -302,6 +316,10 @@ namespace Chesscape.Chess
                         Trajectories.PreloadIllegalOfBlack();
                     LegalMoves = null;
                     this.SelectedPiece = null;
+                    if (promotion)
+                    {
+                        FromSquare.Piece = new Pawn(true);
+                    }
                     MessageBox.Show("Wrong Move! Try again.");
                     return;
                 }
@@ -423,6 +441,27 @@ namespace Chesscape.Chess
             rook_knight_check = false;
             toMove.Piece= blackpiece;
             PreviousSetup = FEN.ToFEN(Squares);
+            if (piece.Equals("p"))
+            {
+                EnPassantCheck(toMove);
+            }
+        }
+        public void EnPassantCheck(Square check)
+        {
+            if (Squares[check.File][check.GetRankPhysical() - 1].PieceResident())
+            {
+                if (Squares[check.File][check.GetRankPhysical() - 1].Piece.ToString().ToLower().Equals("p"))
+                {
+                    EnPassantTarget = check;
+                }
+            }
+            if (Squares[check.File][check.GetRankPhysical() + 1].PieceResident())
+            {
+                if (Squares[check.File][check.GetRankPhysical() + 1].Piece.ToString().ToLower().Equals("p"))
+                {
+                    EnPassantTarget = check;
+                }
+            }
         }
         
         public string getPiece(string move)

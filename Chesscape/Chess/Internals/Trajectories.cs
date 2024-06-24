@@ -44,6 +44,19 @@ namespace Chesscape.Chess
             {
                 AppendMove(source, squares[Rank - 1][File + 1], legalMoves);
             }
+            if (single.EnPassantTarget!=null)
+            {
+                if (single.EnPassantTarget.GetRankPhysical() == source.GetRankPhysical()) {
+                    if (single.EnPassantTarget.File == source.File - 1)
+                    {
+                        AppendMove(source, squares[Rank - 1][File - 1], legalMoves);
+                    }
+                    else if (single.EnPassantTarget.File == source.File + 1)
+                    {
+                        AppendMove(source, squares[Rank - 1][File + 1], legalMoves);
+                    }
+                }
+            }
             return legalMoves;
         }
 
