@@ -12,4 +12,3 @@ r4r2/5p2/2b2P1k/3nq3/p1n1N2P/P5Q1/1Pp1p1P1/2K4R w - - 1 0
 Qg7+ Kh5 g4#
 2b3rk/1p1p3p/1Pn1p3/pNQ1np2/P3q3/7P/6R1/6RK w - - 1 0
 Nd6 Qf3 Nf7+ Nxf7 Qc3+ Nfe5 Qxf3
-

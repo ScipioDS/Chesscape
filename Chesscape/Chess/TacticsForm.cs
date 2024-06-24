@@ -11,6 +11,7 @@ namespace Chesscape.Chess
     {
 
         private Board board;
+        private Puzzle.Puzzle currentPuzzle {  get; set; }
 
         public TacticsForm(Puzzle.Puzzle puzzle)
         {
@@ -24,6 +25,7 @@ namespace Chesscape.Chess
             board.PreviousSetup = FEN.ToFEN(board.Squares);
             board.SetPuzzle(puzzle);
             board.setForm(this);
+            this.currentPuzzle = puzzle;
             Invalidate();
         }
 
@@ -52,6 +54,20 @@ namespace Chesscape.Chess
         {
             board.Cursor = e.Location;
             Invalidate();
+        }
+        public void updateMoves()
+        {
+            lb1.Items.Clear();
+            List<string> moves=currentPuzzle.getpastmoves();
+            foreach(string s in moves)
+            {
+                lb1.Items.Add(s);
+            }
+        }
+
+        private void timerforBlackMove_Tick(object sender, EventArgs e)
+        {
+
         }
     }
 }

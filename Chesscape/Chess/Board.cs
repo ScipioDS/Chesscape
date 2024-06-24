@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
@@ -223,7 +224,7 @@ namespace Chesscape.Chess
         /// Physically displaces a piece from one justMoved to another on the chessboard.
         /// </summary>
         /// <param name="point">Point used to find the justMoved which we are moving to.</param>
-        public void MakeMove(Point point)
+        public async void MakeMove(Point point)
         {
             if (LegalMoves == null) return;
             Square square = GetSquare(point);
@@ -286,9 +287,11 @@ namespace Chesscape.Chess
                     LegalMoves = null;
                     this.SelectedPiece = null;
                     FromSquare = null;
+                    await Task.Delay(750);
                     next_move = currentPuzzle.GetNextMove();
                     if (next_move.Equals("GAME OVER"))
                     {
+                        tf.updateMoves();
                         MessageBox.Show("Puzzle Completed! Good Job!");
                         tf.DialogResult = DialogResult.Yes;
                         return;
@@ -303,6 +306,7 @@ namespace Chesscape.Chess
                     {
                         EnPassantTarget = null;
                     }
+                    tf.updateMoves();
                     return;
                 }
                 else

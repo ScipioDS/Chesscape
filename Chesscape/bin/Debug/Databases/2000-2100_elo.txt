@@ -34,4 +34,3 @@ Nf6 Bh6 Qxh6 Qxh6 Rxh6 Kg7 Nxh7
 Qxh6+ Kxh6 hxg6+ Kg7 Rh7+ Kg8 g7 Qe8 Rh8+
 3r2k1/1p2r1p1/pq4Bp/8/4n3/P3n3/1PP3PP/2QRR2K w - - 1 0
 Rxd8+ Qxd8 Qxe3
-

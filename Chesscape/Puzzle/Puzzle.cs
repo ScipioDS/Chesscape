@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chesscape.Chess;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,12 +15,14 @@ namespace Chesscape.Puzzle
             FEN = fEN;
             this.moves = moves;
             this.puzzleELO = puzzleELO;
+            pastmoves = new List<string>();
         }
 
         string FEN {  get; set; }
         string[] moves {  get; set; } 
         int puzzleELO {  get; set; }
         int current_move { get; set; } = 0;
+        List<string> pastmoves { get; set; }
         
         public string GetNextMove()
         {
@@ -43,8 +46,14 @@ namespace Chesscape.Puzzle
         }
         public void increment()
         {
+            pastmoves.Add(moves[current_move]);
             current_move++;
         }
+        public List<string> getpastmoves()
+        {
+            return pastmoves;
+        }
+        
 
         
         public string getFEN() { return FEN;}

@@ -28,8 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TacticsForm));
+            this.lb1 = new System.Windows.Forms.ListBox();
+            this.timerforBlackMove = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
+            // 
+            // lb1
+            // 
+            this.lb1.FormattingEnabled = true;
+            this.lb1.ItemHeight = 16;
+            this.lb1.Location = new System.Drawing.Point(819, 65);
+            this.lb1.Name = "lb1";
+            this.lb1.Size = new System.Drawing.Size(251, 276);
+            this.lb1.TabIndex = 0;
+            // 
+            // timerforBlackMove
+            // 
+            this.timerforBlackMove.Interval = 1000;
+            this.timerforBlackMove.Tick += new System.EventHandler(this.timerforBlackMove_Tick);
             // 
             // TacticsForm
             // 
@@ -37,6 +54,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1487, 773);
+            this.Controls.Add(this.lb1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "TacticsForm";
@@ -51,5 +69,8 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.ListBox lb1;
+        private System.Windows.Forms.Timer timerforBlackMove;
     }
 }
