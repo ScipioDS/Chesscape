@@ -290,7 +290,7 @@ namespace Chesscape.Chess
                     if (next_move.Equals("GAME OVER"))
                     {
                         MessageBox.Show("Puzzle Completed! Good Job!");
-                        tf.Close();
+                        tf.DialogResult = DialogResult.Yes;
                         return;
                     }
                     if (next_move.Contains("+") || next_move.Contains("#"))
