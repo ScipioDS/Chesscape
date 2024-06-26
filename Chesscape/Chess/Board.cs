@@ -295,7 +295,7 @@ namespace Chesscape.Chess
                     SelectedPiece = null;
                     FromSquare = null;
 
-                    await Task.Delay(110);
+                    await Task.Delay(200);
                     next_move = currentPuzzle.GetNextMove();
 
                     if (next_move.Equals("GAME OVER"))
