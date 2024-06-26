@@ -10,32 +10,33 @@ namespace Chesscape.Puzzle
 {
     public class Puzzle
     {
-        public Puzzle(string fEN, string[] moves, int puzzleELO)
+        public Puzzle(string FEN, string[] Moves, int PuzzleELO)
         {
-            FEN = fEN;
-            this.moves = moves;
-            this.puzzleELO = puzzleELO;
-            pastmoves = new List<string>();
+            this.FEN = FEN;
+            this.Moves = Moves;
+            this.PuzzleELO = PuzzleELO;
+            PastMoves = new List<string>();
         }
 
         string FEN {  get; set; }
-        string[] moves {  get; set; } 
-        int puzzleELO {  get; set; }
-        int current_move { get; set; } = 0;
-        List<string> pastmoves { get; set; }
+        string[] Moves {  get; set; } 
+        int PuzzleELO {  get; set; }
+        int CurrentMove { get; set; } = 0;
+        List<string> PastMoves { get; set; }
         
         public string GetNextMove()
         {
-            if (!check_pointer()) { 
-                return moves[current_move];
+            if (!CheckPointer()) { 
+                return Moves[CurrentMove];
             }
             else {
                 return "GAME OVER";
             }
         }
-        public bool check_pointer()
+
+        public bool CheckPointer()
         {
-            if(current_move >= moves.Length)
+            if(CurrentMove >= Moves.Length)
             {
                 return true;
             }
@@ -44,22 +45,22 @@ namespace Chesscape.Puzzle
                 return false;
             }
         }
-        public void increment()
-        {
-            pastmoves.Add(moves[current_move]);
-            current_move++;
-        }
-        public List<string> getpastmoves()
-        {
-            return pastmoves;
-        }
-        
 
-        
-        public string getFEN() { return FEN;}
-        public int getPuzzleELO() {  return puzzleELO;}
-        
+        public void Increment()
+        {
+            PastMoves.Add(Moves[CurrentMove]);
+            CurrentMove++;
+        }
 
+        public List<string> GetPastMoves()
+        {
+            return PastMoves;
+        }
+       
+        
+        public string GetFEN() { return FEN;}
+        public int GetPuzzleELO() {  return PuzzleELO;}
+        
 
     }
 }

@@ -13,76 +13,60 @@ namespace Chesscape.Puzzle
 {
     public class PuzzleManager
     {
-        private string[] Easy { get; set; } = File.ReadAllLines(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"Databases\1700-2100_elo.txt")));
-        private string[] Medium { get; set; } = File.ReadAllLines(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"Databases\2000-2100_elo.txt")));
-        private string[] Hard { get; set; } = File.ReadAllLines(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"Databases\2200-2600_elo.txt")));
-        
-        private static Random Random = new Random();
-        public PuzzleManager() {
+        private readonly string[] Easy;
+        private readonly string[] Medium;
+        private readonly string[] Hard;
 
-        } 
-        
-        public Puzzle getEasyPuzzle()
+        private static Random Random = new Random(); //uniform random object
+
+        public PuzzleManager()
         {
-            int num = Random.Next(Easy.Length);
+            Easy = File.ReadAllLines(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"Databases\1700-2100_elo.txt")));
 
-            string newFEN = null;
-            string[] MOVES = null;
+            Medium = File.ReadAllLines(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"Databases\2000-2100_elo.txt")));
 
-            if (num %2 == 0)
-            {
-                newFEN = Easy[num];
-                MOVES = Easy[num + 1].Split(' ');
-            } else
-            {
-                newFEN = Easy[num - 1];
-                MOVES = Easy[num].Split(' ');
-            }
-
-            return new Puzzle(newFEN, MOVES, 1900);
+            Hard = File.ReadAllLines(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"Databases\2200-2600_elo.txt")));
         }
 
-        public Puzzle getMediumPuzzle()
+        public Puzzle GetArbitraryPuzzle(String diffic)
         {
-            int num = Random.Next(Medium.Length);
 
-            string newFEN = null;
-            string[] MOVES = null;
+            string[] difficAccessing;
+            int ELOSend;
 
-            if (num % 2 == 0)
+            if (diffic.Equals("easy"))
             {
-                newFEN = Medium[num];
-                MOVES = Medium[num + 1].Split(' ');
+                difficAccessing = Easy;
+                ELOSend = 1900;
+            }
+            else if (diffic.Equals("medium"))
+            {
+                difficAccessing = Medium;
+                ELOSend = 2050;
             }
             else
             {
-                newFEN = Medium[num - 1];
-                MOVES = Medium[num].Split(' ');
+                difficAccessing = Hard;
+                ELOSend = 2400;
             }
 
-            return new Puzzle(newFEN, MOVES, 2050);
-        }
+            string newFEN;
+            string[] MOVES;
 
-        public Puzzle getHardPuzzle()
-        {
-            int num = Random.Next(Hard.Length);
+            int randAccess = Random.Next(difficAccessing.Length);
 
-            string newFEN = null;
-            string[] MOVES = null;
-
-            if (num % 2 == 0)
+            if (randAccess % 2 == 0)
             {
-                newFEN = Hard[num];
-                MOVES = Hard[num + 1].Split(' ');
+                newFEN = difficAccessing[randAccess];
+                MOVES = difficAccessing[randAccess + 1].Split(' ');
             }
             else
             {
-                newFEN = Hard[num - 1];
-                MOVES = Hard[num].Split(' ');
+                newFEN = Easy[randAccess - 1];
+                MOVES = Easy[randAccess].Split(' ');
             }
 
-            return new Puzzle(newFEN, MOVES, 2400);
+            return new Puzzle(newFEN, MOVES, ELOSend);
         }
-
     }
 }

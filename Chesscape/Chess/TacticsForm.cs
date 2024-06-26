@@ -11,7 +11,7 @@ namespace Chesscape.Chess
     {
 
         private Board board;
-        private Puzzle.Puzzle currentPuzzle {  get; set; }
+        private Puzzle.Puzzle currentPuzzle { get; set; }
 
         public TacticsForm(Puzzle.Puzzle puzzle)
         {
@@ -21,10 +21,10 @@ namespace Chesscape.Chess
             Square.SetFileTranslation();
             board = Board.GetInstance();
             board.SetPerspective(true);
-            board.SetBoard(puzzle.getFEN());
+            board.SetBoard(puzzle.GetFEN());
             board.PreviousSetup = FEN.ToFEN(board.Squares);
             board.SetPuzzle(puzzle);
-            board.setForm(this);
+            board.SetForm(this);
             this.currentPuzzle = puzzle;
             Invalidate();
         }
@@ -47,7 +47,7 @@ namespace Chesscape.Chess
         {
             board.MakeMove(e.Location);
 
-            // TODO CHECK MOVES => IF CORRECT DialogResult.Yes / ELSE IF TOO MANY MOVES DialogResult.No
+            // TODO: CHECK MOVES => IF CORRECT DialogResult.Yes / ELSE IF TOO MANY MOVES DialogResult.No
             Invalidate();
         }
         private void TacticsForm_MouseMove(object sender, MouseEventArgs e)
@@ -55,19 +55,19 @@ namespace Chesscape.Chess
             board.Cursor = e.Location;
             Invalidate();
         }
-        public void updateMoves()
+
+        public void UpdateMoves()
         {
-            lb1.Items.Clear();
-            List<string> moves=currentPuzzle.getpastmoves();
-            foreach(string s in moves)
-            {
-                lb1.Items.Add(s);
-            }
+            lbDoneMoves.Items.Clear();
+
+            currentPuzzle.GetPastMoves()
+                .ForEach(puzzle => lbDoneMoves.Items.Add(puzzle));
         }
 
         private void timerforBlackMove_Tick(object sender, EventArgs e)
         {
 
         }
+
     }
 }

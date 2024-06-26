@@ -30,48 +30,48 @@ namespace Chesscape
 
         private void btn_Easy_Click(object sender, EventArgs e)
         {
-            Puzzle.Puzzle puzzle = pm.getEasyPuzzle();
+            Puzzle.Puzzle puzzle = pm.GetArbitraryPuzzle("easy");
             var form = new Chess.TacticsForm(puzzle).ShowDialog();
 
             if(form == DialogResult.Yes)
             {
-                ELO = new Chess.Internals.ELO(puzzle.getPuzzleELO(), ELO, true).calculatePlayerELO();
+                ELO = new Chess.Internals.ELO(puzzle.GetPuzzleELO(), ELO, true).calculatePlayerELO();
             }
             else
             {
-                ELO = new Chess.Internals.ELO(puzzle.getPuzzleELO(), ELO, false).calculatePlayerELO();
+                ELO = new Chess.Internals.ELO(puzzle.GetPuzzleELO(), ELO, false).calculatePlayerELO();
             }
             updateLabel();
         }
 
         private void btn_Medium_Click(object sender, EventArgs e)
         {
-            Puzzle.Puzzle puzzle = pm.getMediumPuzzle();
+            Puzzle.Puzzle puzzle = pm.GetArbitraryPuzzle("medium");
             var form = new Chess.TacticsForm(puzzle).ShowDialog();
 
             if (form == DialogResult.Yes)
             {
-                ELO = new Chess.Internals.ELO(puzzle.getPuzzleELO(), ELO, true).calculatePlayerELO();
+                ELO = new Chess.Internals.ELO(puzzle.GetPuzzleELO(), ELO, true).calculatePlayerELO();
             }
             else
             {
-                ELO = new Chess.Internals.ELO(puzzle.getPuzzleELO(), ELO, false).calculatePlayerELO();
+                ELO = new Chess.Internals.ELO(puzzle.GetPuzzleELO(), ELO, false).calculatePlayerELO();
             }
             updateLabel();
         }
 
         private void btn_Hard_Click(object sender, EventArgs e)
         {
-            Puzzle.Puzzle puzzle = pm.getHardPuzzle();
+            Puzzle.Puzzle puzzle = pm.GetArbitraryPuzzle("hard");
             var form = new Chess.TacticsForm(puzzle).ShowDialog();
 
             if (form == DialogResult.Yes)
             {
-                ELO = new Chess.Internals.ELO(puzzle.getPuzzleELO(), ELO, true).calculatePlayerELO();
+                ELO = new Chess.Internals.ELO(puzzle.GetPuzzleELO(), ELO, true).calculatePlayerELO();
             }
             else
             {
-                ELO = new Chess.Internals.ELO(puzzle.getPuzzleELO(), ELO, false).calculatePlayerELO();
+                ELO = new Chess.Internals.ELO(puzzle.GetPuzzleELO(), ELO, false).calculatePlayerELO();
             }
             updateLabel();
         }
