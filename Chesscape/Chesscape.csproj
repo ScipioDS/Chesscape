@@ -169,6 +169,7 @@
     <Content Include="Chess\cburnett_pieces\t_rook.png" />
     <Content Include="Chess\cburnett_pieces\w_rook.ico" />
     <Content Include="Images\background.png" />
+    <Content Include="Images\logo.ico" />
     <Content Include="Puzzle\Databases\1700-2100_elo.txt" />
     <Content Include="Puzzle\Databases\2000-2100_elo.txt" />
     <Content Include="Puzzle\Databases\2200-2600_elo.txt" />

@@ -37,7 +37,7 @@ namespace Chesscape.Chess
         public bool KingInCheck { get; set; }
         public bool WhiteKingInCheck { get; set; }
         public string PreviousSetup { get; set; }
-        public Chesscape.Puzzle.Puzzle currentPuzzle { get; set; }
+        public global::Chesscape.Puzzle.Puzzle currentPuzzle { get; set; }
         public TacticsForm tf { get; set; }
 
 
@@ -69,12 +69,11 @@ namespace Chesscape.Chess
                 }
             }
         }
-
+        
         public void SetPuzzle(Puzzle.Puzzle puzzle)
         {
             this.currentPuzzle = puzzle;
         }
-
         public void SetForm(TacticsForm tf)
         {
             this.tf = tf;
@@ -127,12 +126,12 @@ namespace Chesscape.Chess
 
         public Piece CheckForPromotion(Square check)
         {
-            if (check.GetRankPhysical() == 0)
+            if(check.GetRankPhysical() == 0)
             {
                 Promotion tmp = new Promotion();
-                if (tmp.ShowDialog() == DialogResult.OK)
+                if(tmp.ShowDialog() == DialogResult.OK)
                 {
-
+                    
                     return tmp.piece;
                 }
             }
@@ -236,48 +235,43 @@ namespace Chesscape.Chess
                 moveTo.Add(i.GetToSquare());
             }
             bool promotion = false;
-
+            
 
             string preloadCheckPos = null;
-            StringBuilder currentPlayerMove = new StringBuilder();
-            Move playerMove = null;
-            string next_move = currentPuzzle.GetNextMove();
-
+            StringBuilder currentplayermove=new StringBuilder();
+            Move player_Move = null;
+            string next_move=currentPuzzle.GetNextMove();
             if (next_move.Contains("+") || next_move.Contains("#"))
             {
-                next_move = next_move.Substring(0, next_move.Length - 1);
+                next_move = next_move.Substring(0,next_move.Length-1);
             }
-
             if (moveTo.Contains(square) && FromSquare != null)
             {
                 preloadCheckPos = FromSquare.ToString();
 
                 //map move onto board
-                playerMove = new Move(FromSquare, square);
-                currentPlayerMove.Append(playerMove);
-
-                if (KnightRookCheck(next_move, next_move.Substring(0, 1)))
+                player_Move = new Move(FromSquare, square);
+                currentplayermove.Append(player_Move);
+                if (knight_rook_check(next_move, next_move.Substring(0, 1)))
                 {
-                    currentPlayerMove = new StringBuilder();
-                    currentPlayerMove.Append(playerMove.ToString().Substring(0, 1));
-                    currentPlayerMove.Append(FromSquare.GetFileChar(FromSquare.File));
-                    currentPlayerMove.Append(playerMove.ToString().Substring(1, playerMove.ToString().Length - 1));
+                    currentplayermove = new StringBuilder();
+                    currentplayermove.Append(player_Move.ToString().Substring(0, 1));
+                    currentplayermove.Append(FromSquare.GetFileChar(FromSquare.File));
+                    currentplayermove.Append(player_Move.ToString().Substring(1, player_Move.ToString().Length - 1));
                 }
-
                 if (FromSquare.Piece.ToString().ToLower().Equals("p"))
                 {
                     Piece check = CheckForPromotion(square);
                     if (check != null)
                     {
-                        currentPlayerMove.Append("/" + check.ToString());
+                        currentplayermove.Append("/" + check.ToString());
                         FromSquare.Piece = check;
                         promotion = true;
                     }
                 }
-
-                if (currentPlayerMove.ToString().Equals(next_move))
+                if (currentplayermove.ToString().Equals(next_move))
                 {
-                    playerMove.MakeMove(false);
+                    player_Move.MakeMove(false);
                     if (square.Piece.ToString().ToLower().Equals("p"))
                     {
                         EnPassantCheck(square);
@@ -290,14 +284,11 @@ namespace Chesscape.Chess
 
                     if (preloadCheckPos != null && !preloadCheckPos.Equals(square.ToString()))
                         Trajectories.PreloadIllegalOfBlack();
-
                     LegalMoves = null;
-                    SelectedPiece = null;
+                    this.SelectedPiece = null;
                     FromSquare = null;
-
-                    await Task.Delay(200);
+                    await Task.Delay(750);
                     next_move = currentPuzzle.GetNextMove();
-
                     if (next_move.Equals("GAME OVER"))
                     {
                         tf.UpdateMoves();
@@ -305,15 +296,12 @@ namespace Chesscape.Chess
                         tf.DialogResult = DialogResult.Yes;
                         return;
                     }
-
                     if (next_move.Contains("+") || next_move.Contains("#"))
                     {
-                        next_move = next_move.Substring(0, next_move.Length - 1);
+                        next_move = next_move.Substring(0,next_move.Length-1);
                     }
-
                     BlackMove(next_move);
                     currentPuzzle.Increment();
-
                     if (EnPassantTarget != null)
                     {
                         EnPassantTarget = null;
@@ -330,10 +318,8 @@ namespace Chesscape.Chess
 
                     if (preloadCheckPos != null && !preloadCheckPos.Equals(square.ToString()))
                         Trajectories.PreloadIllegalOfBlack();
-
                     LegalMoves = null;
                     this.SelectedPiece = null;
-
                     if (promotion)
                     {
                         FromSquare.Piece = new Pawn(true);
@@ -354,13 +340,12 @@ namespace Chesscape.Chess
 
             if (preloadCheckPos != null && !preloadCheckPos.Equals(square.ToString()))
                 Trajectories.PreloadIllegalOfBlack();
-
-
+            
+            
             LegalMoves = null;
-            SelectedPiece = null;
+            this.SelectedPiece = null;
         }
-
-        public bool KnightRookCheck(string move, string piece)
+        public bool knight_rook_check(string move,string piece)
         {
             if ((piece.ToLower().Equals("r") || piece.ToLower().Equals("n")) && char.IsLetter(move[1]) && char.IsLetter(move[2]) && !move[1].Equals('x'))
             {
@@ -373,27 +358,22 @@ namespace Chesscape.Chess
         }
         public void BlackMove(string move)
         {
-            string piece = getPiece(move.Substring(0, 1));
-            bool rookKnightCheck = false;
-
-            if (KnightRookCheck(move, piece))
+            string piece = getPiece(move.Substring(0,1));
+            bool rook_knight_check = false;
+            if(knight_rook_check(move,piece))
             {
-                rookKnightCheck = true;
+                rook_knight_check = true;
             }
-
-            string square = move.Substring(move.Length - 2);
-
-            Piece blackPiece = null;
+            string square = move.Substring(move.Length-2);
+            Piece blackpiece = null;
             Square toMove = null;
-
-            for (int i = 0; i < 8; i++)
+            for(int i= 0; i < 8; i++)
             {
-                if (blackPiece != null && toMove != null)
+                if(blackpiece!=null && toMove != null)
                 {
                     break;
                 }
-
-                for (int j = 0; j < 8; j++)
+                for(int j = 0; j < 8; j++)
                 {
                     if (Squares[i][j].PieceResident())
                     {
@@ -403,13 +383,13 @@ namespace Chesscape.Chess
                             switch (piece.ToLower())
                             {
                                 case "q":
-                                    blackPiece = Squares[i][j].Piece;
+                                    blackpiece = Squares[i][j].Piece;
                                     Squares[i][j].Piece = null;
                                     LegalMoves = null;
                                     break;
                                 case "k":
                                     LegalMoves = null;
-                                    blackPiece = Squares[i][j].Piece;
+                                    blackpiece = Squares[i][j].Piece;
                                     Squares[i][j].Piece = null;
                                     break;
                                 case "r":
@@ -422,11 +402,10 @@ namespace Chesscape.Chess
                                     LegalMoves = Trajectories.DiagonalTrajectory(Squares[i][j]);
                                     break;
                                 case "p":
-                                    string piece_square = Squares[i][j].ToString().Substring(0, 1);
+                                    string piece_square=Squares[i][j].ToString().Substring(0,1);
                                     string to_find = move.Substring(0, 1);
-                                    if (piece_square.Equals(to_find))
-                                    {
-                                        blackPiece = Squares[i][j].Piece;
+                                    if (piece_square.Equals(to_find)){
+                                        blackpiece=Squares[i][j].Piece;
                                         Squares[i][j].Piece = null;
                                     }
                                     break;
@@ -435,7 +414,7 @@ namespace Chesscape.Chess
                             {
                                 foreach (Move tmp in LegalMoves)
                                 {
-                                    if (rookKnightCheck)
+                                    if (rook_knight_check)
                                     {
                                         StringBuilder currentplayermove = new StringBuilder();
                                         currentplayermove.Append(tmp.ToString().Substring(0, 1));
@@ -443,7 +422,7 @@ namespace Chesscape.Chess
                                         currentplayermove.Append(tmp.ToString().Substring(1, tmp.ToString().Length - 1));
                                         if (currentplayermove.ToString().Equals(move.ToLower()))
                                         {
-                                            blackPiece = Squares[i][j].Piece;
+                                            blackpiece = Squares[i][j].Piece;
                                             Squares[i][j].Piece = null;
                                             break;
                                         }
@@ -452,23 +431,23 @@ namespace Chesscape.Chess
                                     {
                                         if (tmp.ToString().Equals(move.ToLower()))
                                         {
-                                            blackPiece = Squares[i][j].Piece;
+                                            blackpiece = Squares[i][j].Piece;
                                             Squares[i][j].Piece = null;
                                             break;
                                         }
                                     }
-                                }
-                            }
+                                }                           
+                              }
                         }
                     }
                     if (Squares[i][j].ToString().Equals(square))
                     {
-                        toMove = Squares[i][j];
+                        toMove=Squares[i][j];
                     }
                 }
             }
-            rookKnightCheck = false;
-            toMove.Piece = blackPiece;
+            rook_knight_check = false;
+            toMove.Piece= blackpiece;
             PreviousSetup = FEN.ToFEN(Squares);
             if (piece.Equals("p"))
             {
@@ -492,7 +471,7 @@ namespace Chesscape.Chess
                 }
             }
         }
-
+        
         public string getPiece(string move)
         {
             string to_return = "";

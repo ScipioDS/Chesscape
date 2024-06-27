@@ -95,8 +95,9 @@
             this.Controls.Add(this.btn_Easy);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Menu";
-            this.Text = "Form1";
+            this.Text = "Chesscape";
             this.ResumeLayout(false);
             this.PerformLayout();
 
