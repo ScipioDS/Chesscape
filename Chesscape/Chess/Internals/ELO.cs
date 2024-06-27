@@ -37,11 +37,14 @@ namespace Chesscape.Chess.Internals
         {
             //Expected score
             var E_B = 1 / (1 + Math.Pow(10, (puzzleELO - playerELO) / 400.0));
+
             if (correctSolve)
             {
                 return (int)Math.Round(playerELO + K * (1 - E_B));
             } else
             {
+                return playerELO + (playerELO - (int)Math.Round(playerELO + K * (1 - E_B)));
+                /*
                 var newELO = (int)Math.Round(playerELO + K * (0 - E_B));
                 if (newELO == playerELO)
                 {
@@ -51,6 +54,7 @@ namespace Chesscape.Chess.Internals
                 {
                     return newELO;
                 }
+                */
             }
         }
     }
