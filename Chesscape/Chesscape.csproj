@@ -73,10 +73,10 @@
       <DependentUpon>Menu.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="Promotion.cs">
+    <Compile Include="Chess\VisualsAndLogic\Promotion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Promotion.Designer.cs">
+    <Compile Include="Chess\VisualsAndLogic\Promotion.Designer.cs">
       <DependentUpon>Promotion.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,7 +95,7 @@
     <EmbeddedResource Include="Menu\Menu.resx">
       <DependentUpon>Menu.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Promotion.resx">
+    <EmbeddedResource Include="Chess\VisualsAndLogic\Promotion.resx">
       <DependentUpon>Promotion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
