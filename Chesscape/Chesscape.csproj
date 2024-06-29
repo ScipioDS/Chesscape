@@ -46,22 +46,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Chess\Bishop.cs" />
-    <Compile Include="Chess\Board.cs" />
-    <Compile Include="Chess\ICastleable.cs" />
+    <Compile Include="Chess\Pieces\Bishop.cs" />
+    <Compile Include="Chess\VisualsAndLogic\Board.cs" />
+    <Compile Include="Chess\VisualsAndLogic\ICastleable.cs" />
     <Compile Include="Chess\Internals\ELO.cs" />
-    <Compile Include="Chess\King.cs" />
-    <Compile Include="Chess\Knight.cs" />
-    <Compile Include="Chess\Move.cs" />
-    <Compile Include="Chess\Pawn.cs" />
-    <Compile Include="Chess\Piece.cs" />
-    <Compile Include="Chess\Queen.cs" />
-    <Compile Include="Chess\Rook.cs" />
-    <Compile Include="Chess\Square.cs" />
-    <Compile Include="Chess\TacticsForm.cs">
+    <Compile Include="Chess\Pieces\King.cs" />
+    <Compile Include="Chess\Pieces\Knight.cs" />
+    <Compile Include="Chess\VisualsAndLogic\Move.cs" />
+    <Compile Include="Chess\Pieces\Pawn.cs" />
+    <Compile Include="Chess\Pieces\Piece.cs" />
+    <Compile Include="Chess\Pieces\Queen.cs" />
+    <Compile Include="Chess\Pieces\Rook.cs" />
+    <Compile Include="Chess\VisualsAndLogic\Square.cs" />
+    <Compile Include="Chess\VisualsAndLogic\TacticsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Chess\TacticsForm.Designer.cs">
+    <Compile Include="Chess\VisualsAndLogic\TacticsForm.Designer.cs">
       <DependentUpon>TacticsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Chess\Internals\FEN.cs" />
@@ -89,7 +89,7 @@
       <DependentUpon>Register.cs</DependentUpon>
     </Compile>
     <Compile Include="Users\User.cs" />
-    <EmbeddedResource Include="Chess\TacticsForm.resx">
+    <EmbeddedResource Include="Chess\VisualsAndLogic\TacticsForm.resx">
       <DependentUpon>TacticsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Menu\Menu.resx">
