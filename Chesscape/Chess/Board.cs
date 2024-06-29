@@ -367,6 +367,10 @@ namespace Chesscape.Chess
             string square = move.Substring(move.Length-2);
             Piece blackpiece = null;
             Square toMove = null;
+            Square todelete = null;
+            bool edge_case = true;
+            int xi = 0;
+            int xy = 0;
             for(int i= 0; i < 8; i++)
             {
                 if(blackpiece!=null && toMove != null)
@@ -423,7 +427,7 @@ namespace Chesscape.Chess
                                         if (currentplayermove.ToString().Equals(move.ToLower()))
                                         {
                                             blackpiece = Squares[i][j].Piece;
-                                            Squares[i][j].Piece = null;
+                                            todelete = Squares[i][j];
                                             break;
                                         }
                                     }
@@ -445,6 +449,10 @@ namespace Chesscape.Chess
                         toMove=Squares[i][j];
                     }
                 }
+            }
+            if (todelete != null)
+            {
+                todelete.Piece = null;
             }
             rook_knight_check = false;
             toMove.Piece= blackpiece;
