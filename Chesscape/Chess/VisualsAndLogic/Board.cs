@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -43,6 +44,9 @@ namespace Chesscape.Chess
 
         //DRAWING ATTRIBUTES
         //Selection & Moving
+        private bool stopAnnoying = false;
+        private Color CWhite = Color.FromArgb(255, 255, 253, 208);
+        private Color CBlack = Color.FromArgb(255, 210, 180, 140);
         public Piece SelectedPiece { get; set; } = null;
         public Point Cursor { get; set; }
         public Square FromSquare { get; set; }
@@ -55,7 +59,6 @@ namespace Chesscape.Chess
         /// </summary>
         private Board()
         {
-
             KingInCheck = false;
             WhiteKingInCheck = false;
 
@@ -69,11 +72,62 @@ namespace Chesscape.Chess
                 }
             }
         }
-        
+
+        public void SetColorsDef()
+        {
+
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"board_colors.txt"));
+
+            File.WriteAllText(path, "255,253,208\n");
+            File.AppendAllText(path, "210, 180, 140\n");
+
+            ReadColorsFromDefaultDirective();
+
+        }
+
+        public void SetColors()
+        {
+
+            if (!stopAnnoying)
+            {
+                MessageBox.Show("First, select a color for the white squares, then the black squares.", "Color Selection", MessageBoxButtons.OK);
+                stopAnnoying = true;
+            }
+
+            string path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), @"board_colors.txt"));
+
+            string appendWhite = $"{CWhite.R},{CWhite.G},{CWhite.B}";
+            string appendBlack = $"{CBlack.R},{CBlack.G},{CBlack.B}";
+
+            ColorDialog cdWhite = new ColorDialog();
+            ColorDialog cdBlack = new ColorDialog();
+
+            if (cdWhite.ShowDialog() == DialogResult.OK)
+            {
+                Color forWhite = cdWhite.Color;
+                if (forWhite != null)
+                    appendWhite = $"{forWhite.R},{forWhite.G},{forWhite.B}";
+            }
+
+            if (cdBlack.ShowDialog() == DialogResult.OK)
+            {
+                Color forBlack = cdBlack.Color;
+                if (forBlack != null)
+                    appendBlack = $"{forBlack.R},{forBlack.G},{forBlack.B}";
+            }
+
+            File.WriteAllText(path, appendWhite + "\n");
+            File.AppendAllText(path, appendBlack + "\n");
+
+            ReadColorsFromDefaultDirective();
+
+        }
+
         public void SetPuzzle(Puzzle.Puzzle puzzle)
         {
             this.currentPuzzle = puzzle;
         }
+
         public void SetForm(TacticsForm tf)
         {
             this.tf = tf;
@@ -90,8 +144,12 @@ namespace Chesscape.Chess
         /// Board perspective drawing logic. Sets the basis justMoved colors from which the board will be drawn.
         /// </summary>
         /// <param name="white">Pass true if the board perspective is from the white player.</param>
-        public void SetPerspective(bool white)
+        public void SetSquaresTheme()
         {
+            bool white = true;
+
+            ReadColorsFromDefaultDirective();
+
             int y_incrementer = 53;
             for (int i = 0; i < 8; ++i, y_incrementer += 64)
             {
@@ -100,11 +158,11 @@ namespace Chesscape.Chess
                 {
                     if (white)
                     {
-                        SingleBoard.Squares[i][j].ColorDraw = Color.FromArgb(255, 232, 235, 239);
+                        SingleBoard.Squares[i][j].ColorDraw = CWhite;
                     }
                     else
                     {
-                        SingleBoard.Squares[i][j].ColorDraw = Color.FromArgb(255, 125, 135, 150);
+                        SingleBoard.Squares[i][j].ColorDraw = CBlack;
                     }
 
                     SingleBoard.Squares[i][j].TopLeftCoord = new Point(x_incrementer, y_incrementer);
@@ -126,12 +184,12 @@ namespace Chesscape.Chess
 
         public Piece CheckForPromotion(Square check)
         {
-            if(check.GetRankPhysical() == 0)
+            if (check.GetRankPhysical() == 0)
             {
                 Promotion tmp = new Promotion();
-                if(tmp.ShowDialog() == DialogResult.OK)
+                if (tmp.ShowDialog() == DialogResult.OK)
                 {
-                    
+
                     return tmp.piece;
                 }
             }
@@ -139,6 +197,19 @@ namespace Chesscape.Chess
         }
 
         //----------------------------------UTILITY METHODS----------------------------------
+
+        private void ReadColorsFromDefaultDirective() {
+
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string[] currentColors = File.ReadAllLines(Path.GetFullPath(Path.Combine(currentDirectory, @"board_colors.txt")));
+
+            List<int> whiteColors = currentColors[0].Split(',').ToList<string>().Select(val => int.Parse(val)).ToList<int>();
+            List<int> blackColors = currentColors[1].Split(',').ToList<string>().Select(val => int.Parse(val)).ToList<int>();
+
+            CWhite = Color.FromArgb(255, whiteColors[0], whiteColors[1], whiteColors[2]);
+            CBlack = Color.FromArgb(255, blackColors[0], blackColors[1], blackColors[2]);
+
+        }
 
         public Square KingSquare(bool white)
         {
@@ -235,15 +306,15 @@ namespace Chesscape.Chess
                 moveTo.Add(i.GetToSquare());
             }
             bool promotion = false;
-            
+
 
             string preloadCheckPos = null;
-            StringBuilder currentplayermove=new StringBuilder();
+            StringBuilder currentplayermove = new StringBuilder();
             Move player_Move = null;
-            string next_move=currentPuzzle.GetNextMove();
+            string next_move = currentPuzzle.GetNextMove();
             if (next_move.Contains("+") || next_move.Contains("#"))
             {
-                next_move = next_move.Substring(0,next_move.Length-1);
+                next_move = next_move.Substring(0, next_move.Length - 1);
             }
             if (moveTo.Contains(square) && FromSquare != null)
             {
@@ -298,7 +369,7 @@ namespace Chesscape.Chess
                     }
                     if (next_move.Contains("+") || next_move.Contains("#"))
                     {
-                        next_move = next_move.Substring(0,next_move.Length-1);
+                        next_move = next_move.Substring(0, next_move.Length - 1);
                     }
                     BlackMove(next_move);
                     currentPuzzle.Increment();
@@ -340,12 +411,12 @@ namespace Chesscape.Chess
 
             if (preloadCheckPos != null && !preloadCheckPos.Equals(square.ToString()))
                 Trajectories.PreloadIllegalOfBlack();
-            
-            
+
+
             LegalMoves = null;
             this.SelectedPiece = null;
         }
-        public bool knight_rook_check(string move,string piece)
+        public bool knight_rook_check(string move, string piece)
         {
             if ((piece.ToLower().Equals("r") || piece.ToLower().Equals("n")) && char.IsLetter(move[1]) && char.IsLetter(move[2]) && !move[1].Equals('x'))
             {
@@ -358,26 +429,26 @@ namespace Chesscape.Chess
         }
         public void BlackMove(string move)
         {
-            string piece = getPiece(move.Substring(0,1));
+            string piece = getPiece(move.Substring(0, 1));
             bool rook_knight_check = false;
-            if(knight_rook_check(move,piece))
+            if (knight_rook_check(move, piece))
             {
                 rook_knight_check = true;
             }
-            string square = move.Substring(move.Length-2);
+            string square = move.Substring(move.Length - 2);
             Piece blackpiece = null;
             Square toMove = null;
             Square todelete = null;
             bool edge_case = true;
             int xi = 0;
             int xy = 0;
-            for(int i= 0; i < 8; i++)
+            for (int i = 0; i < 8; i++)
             {
-                if(blackpiece!=null && toMove != null)
+                if (blackpiece != null && toMove != null)
                 {
                     break;
                 }
-                for(int j = 0; j < 8; j++)
+                for (int j = 0; j < 8; j++)
                 {
                     if (Squares[i][j].PieceResident())
                     {
@@ -406,10 +477,11 @@ namespace Chesscape.Chess
                                     LegalMoves = Trajectories.DiagonalTrajectory(Squares[i][j]);
                                     break;
                                 case "p":
-                                    string piece_square=Squares[i][j].ToString().Substring(0,1);
+                                    string piece_square = Squares[i][j].ToString().Substring(0, 1);
                                     string to_find = move.Substring(0, 1);
-                                    if (piece_square.Equals(to_find)){
-                                        blackpiece=Squares[i][j].Piece;
+                                    if (piece_square.Equals(to_find))
+                                    {
+                                        blackpiece = Squares[i][j].Piece;
                                         Squares[i][j].Piece = null;
                                     }
                                     break;
@@ -440,13 +512,13 @@ namespace Chesscape.Chess
                                             break;
                                         }
                                     }
-                                }                           
-                              }
+                                }
+                            }
                         }
                     }
                     if (Squares[i][j].ToString().Equals(square))
                     {
-                        toMove=Squares[i][j];
+                        toMove = Squares[i][j];
                     }
                 }
             }
@@ -455,7 +527,7 @@ namespace Chesscape.Chess
                 todelete.Piece = null;
             }
             rook_knight_check = false;
-            toMove.Piece= blackpiece;
+            toMove.Piece = blackpiece;
             PreviousSetup = FEN.ToFEN(Squares);
             if (piece.Equals("p"))
             {
@@ -479,7 +551,7 @@ namespace Chesscape.Chess
                 }
             }
         }
-        
+
         public string getPiece(string move)
         {
             string to_return = "";

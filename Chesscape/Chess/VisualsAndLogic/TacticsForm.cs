@@ -20,7 +20,7 @@ namespace Chesscape.Chess
 
             Square.SetFileTranslation();
             board = Board.GetInstance();
-            board.SetPerspective(true);
+            board.SetSquaresTheme();
             board.SetBoard(puzzle.GetFEN());
             board.PreviousSetup = FEN.ToFEN(board.Squares);
             board.SetPuzzle(puzzle);
@@ -69,5 +69,18 @@ namespace Chesscape.Chess
 
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            board.SetColors();
+            board.SetSquaresTheme();
+            Invalidate();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            board.SetColorsDef();
+            board.SetSquaresTheme();
+            Invalidate();
+        }
     }
 }
