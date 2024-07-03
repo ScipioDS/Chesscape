@@ -33,8 +33,8 @@
             this.lbDoneMoves = new System.Windows.Forms.ListBox();
             this.timerforBlackMove = new System.Windows.Forms.Timer(this.components);
             this.labelMoves = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.bMakeCustomTheme = new System.Windows.Forms.Button();
+            this.bResetTheme = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lbDoneMoves
@@ -67,31 +67,31 @@
             this.labelMoves.TabIndex = 1;
             this.labelMoves.Text = "Moves";
             // 
-            // button1
+            // bMakeCustomTheme
             // 
-            this.button1.BackColor = System.Drawing.Color.Gray;
-            this.button1.Font = new System.Drawing.Font("Arial", 12F);
-            this.button1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.button1.Location = new System.Drawing.Point(956, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(147, 32);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Custom Colors";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.bMakeCustomTheme.BackColor = System.Drawing.Color.Gray;
+            this.bMakeCustomTheme.Font = new System.Drawing.Font("Arial", 12F);
+            this.bMakeCustomTheme.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.bMakeCustomTheme.Location = new System.Drawing.Point(956, 12);
+            this.bMakeCustomTheme.Name = "bMakeCustomTheme";
+            this.bMakeCustomTheme.Size = new System.Drawing.Size(147, 32);
+            this.bMakeCustomTheme.TabIndex = 2;
+            this.bMakeCustomTheme.Text = "Custom Colors";
+            this.bMakeCustomTheme.UseVisualStyleBackColor = false;
+            this.bMakeCustomTheme.Click += new System.EventHandler(this.bMakeCustomTheme_click);
             // 
-            // button2
+            // bResetTheme
             // 
-            this.button2.BackColor = System.Drawing.Color.Gray;
-            this.button2.Font = new System.Drawing.Font("Arial", 12F);
-            this.button2.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.button2.Location = new System.Drawing.Point(956, 47);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(147, 32);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Reset Colors";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.bResetTheme.BackColor = System.Drawing.Color.Gray;
+            this.bResetTheme.Font = new System.Drawing.Font("Arial", 12F);
+            this.bResetTheme.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.bResetTheme.Location = new System.Drawing.Point(956, 47);
+            this.bResetTheme.Name = "bResetTheme";
+            this.bResetTheme.Size = new System.Drawing.Size(147, 32);
+            this.bResetTheme.TabIndex = 3;
+            this.bResetTheme.Text = "Reset Colors";
+            this.bResetTheme.UseVisualStyleBackColor = false;
+            this.bResetTheme.Click += new System.EventHandler(this.bResetTheme_click);
             // 
             // TacticsForm
             // 
@@ -99,8 +99,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1115, 628);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.bResetTheme);
+            this.Controls.Add(this.bMakeCustomTheme);
             this.Controls.Add(this.labelMoves);
             this.Controls.Add(this.lbDoneMoves);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -121,7 +121,7 @@
         private System.Windows.Forms.ListBox lbDoneMoves;
         private System.Windows.Forms.Timer timerforBlackMove;
         private System.Windows.Forms.Label labelMoves;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button bMakeCustomTheme;
+        private System.Windows.Forms.Button bResetTheme;
     }
 }

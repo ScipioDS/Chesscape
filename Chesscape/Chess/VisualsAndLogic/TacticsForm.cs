@@ -69,14 +69,14 @@ namespace Chesscape.Chess
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void bMakeCustomTheme_click(object sender, EventArgs e)
         {
             board.SetColors();
             board.SetSquaresTheme();
             Invalidate();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void bResetTheme_click(object sender, EventArgs e)
         {
             board.SetColorsDef();
             board.SetSquaresTheme();
