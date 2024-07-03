@@ -122,6 +122,10 @@ namespace Chesscape
             }
             updateLabel();
         }
+        public void update_elo(Puzzle.Puzzle puzzle)
+        {
+            ELO = new Chess.Internals.ELO(puzzle.GetPuzzleELO(), ELO, true).calculatePlayerELO();
+        }
 
         private void Menu_Load(object sender, EventArgs e)
         {

@@ -367,6 +367,7 @@ namespace Chesscape.Chess
                         DialogResult result = MessageBox.Show("Would you like a problem of the same category?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                         if (result == DialogResult.Yes)
                         {
+                            tf.menu.update_elo(this.currentPuzzle);
                             tf.generate_next();
                             return;
                         }

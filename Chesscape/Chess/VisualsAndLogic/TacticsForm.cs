@@ -12,7 +12,7 @@ namespace Chesscape.Chess
     {
 
         private Board board;
-        private Menu menu;
+        public Menu menu;
         private Puzzle.Puzzle currentPuzzle { get; set; }
 
         public TacticsForm(Puzzle.Puzzle puzzle,Menu menu)
