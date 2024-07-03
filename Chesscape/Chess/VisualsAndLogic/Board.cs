@@ -364,8 +364,17 @@ namespace Chesscape.Chess
                     {
                         tf.UpdateMoves();
                         MessageBox.Show("Puzzle Completed! Good Job!");
-                        tf.DialogResult = DialogResult.Yes;
-                        return;
+                        DialogResult result = MessageBox.Show("Would you like a problem of the same category?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                        if (result == DialogResult.Yes)
+                        {
+                            tf.generate_next();
+                            return;
+                        }
+                        else if (result == DialogResult.No)
+                        {
+                            tf.DialogResult = DialogResult.Yes;
+                            return;
+                        }
                     }
                     if (next_move.Contains("+") || next_move.Contains("#"))
                     {

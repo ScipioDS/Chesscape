@@ -1,4 +1,5 @@
 ﻿using Chesscape.Chess.Internals;
+using Chesscape.Puzzle;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,13 +12,14 @@ namespace Chesscape.Chess
     {
 
         private Board board;
+        private Menu menu;
         private Puzzle.Puzzle currentPuzzle { get; set; }
 
-        public TacticsForm(Puzzle.Puzzle puzzle)
+        public TacticsForm(Puzzle.Puzzle puzzle,Menu menu)
         {
             InitializeComponent();
             DoubleBuffered = true;
-
+            this.menu = menu;
             Square.SetFileTranslation();
             board = Board.GetInstance();
             board.SetSquaresTheme();
@@ -62,6 +64,13 @@ namespace Chesscape.Chess
 
             currentPuzzle.GetPastMoves()
                 .ForEach(puzzle => lbDoneMoves.Items.Add(puzzle));
+        }
+        public void generate_next()
+        {
+            Puzzle.Puzzle tmp=menu.generate_next_puzzle();
+            board.SetBoard(tmp.GetFEN());
+            board.SetPuzzle(tmp);
+            lbDoneMoves.Items.Clear ();
         }
 
         private void timerforBlackMove_Tick(object sender, EventArgs e)

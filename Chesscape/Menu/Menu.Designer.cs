@@ -110,6 +110,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Menu";
             this.Text = "Chesscape";
+            this.Load += new System.EventHandler(this.Menu_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
