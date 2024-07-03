@@ -70,7 +70,8 @@ namespace Chesscape.Chess
             Puzzle.Puzzle tmp=menu.generate_next_puzzle();
             board.SetBoard(tmp.GetFEN());
             board.SetPuzzle(tmp);
-            lbDoneMoves.Items.Clear ();
+            currentPuzzle = tmp;
+            lbDoneMoves.Items.Clear();
         }
 
         private void timerforBlackMove_Tick(object sender, EventArgs e)
