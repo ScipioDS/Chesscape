@@ -5,27 +5,26 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace Chesscape
 {
     public partial class Menu : Form
     {
         PuzzleManager pm { get; set; }
-        int ELO = 1600;
+        int ELO;
+        string path = @"eloscore.txt";
         public Menu()
         {
             InitializeComponent();
             pm = new PuzzleManager();
-            lbl_ELO.Text = new StringBuilder("ELO: ").Append(ELO).ToString();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            
+            ELO = int.Parse(File.ReadAllText(path));
+            lbl_ELO.Text = new StringBuilder("ELO: ").Append(File.ReadAllText(path)).ToString();
         }
 
         private void btn_Easy_Click(object sender, EventArgs e)
@@ -78,7 +77,16 @@ namespace Chesscape
 
         private void updateLabel()
         {
-            lbl_ELO.Text = new StringBuilder("ELO: ").Append(ELO).ToString();
+            File.WriteAllText(path, ELO.ToString());
+            lbl_ELO.Text = new StringBuilder("ELO: ").Append(File.ReadAllText(path)).ToString();
+        }
+
+        private void btn_score_Click(object sender, EventArgs e)
+        {
+            string path = @"eloscore.txt";
+            File.WriteAllText(path, "1600");
+
+            lbl_ELO.Text = new StringBuilder("ELO: ").Append(File.ReadAllText(path)).ToString();
         }
     }
 }

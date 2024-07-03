@@ -33,6 +33,7 @@
             this.btn_Medium = new System.Windows.Forms.Button();
             this.btn_Hard = new System.Windows.Forms.Button();
             this.lbl_ELO = new System.Windows.Forms.Label();
+            this.btn_score = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btn_Easy
@@ -82,6 +83,16 @@
             this.lbl_ELO.TabIndex = 3;
             this.lbl_ELO.Text = "ELO: ";
             // 
+            // btn_score
+            // 
+            this.btn_score.Location = new System.Drawing.Point(689, 409);
+            this.btn_score.Name = "btn_score";
+            this.btn_score.Size = new System.Drawing.Size(99, 23);
+            this.btn_score.TabIndex = 4;
+            this.btn_score.Text = "Reset score";
+            this.btn_score.UseVisualStyleBackColor = true;
+            this.btn_score.Click += new System.EventHandler(this.btn_score_Click);
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -89,6 +100,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btn_score);
             this.Controls.Add(this.lbl_ELO);
             this.Controls.Add(this.btn_Hard);
             this.Controls.Add(this.btn_Medium);
@@ -109,6 +121,7 @@
         private System.Windows.Forms.Button btn_Medium;
         private System.Windows.Forms.Button btn_Hard;
         private System.Windows.Forms.Label lbl_ELO;
+        private System.Windows.Forms.Button btn_score;
     }
 }
 
