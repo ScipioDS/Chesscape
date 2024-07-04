@@ -103,12 +103,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-<<<<<<< HEAD
             this.ClientSize = new System.Drawing.Size(600, 366);
-=======
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.btn_score);
->>>>>>> 41c8facd8593637e815146e59434926dbccf21b8
             this.Controls.Add(this.lbl_ELO);
             this.Controls.Add(this.btn_Hard);
             this.Controls.Add(this.btn_Medium);

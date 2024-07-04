@@ -12,6 +12,10 @@ namespace Chesscape.Chess
     {
 
         private Board board;
+
+        private Puzzle.Puzzle CurrentPuzzle { get; set; }
+
+        public Menu menu;
         private Puzzle.Puzzle currentPuzzle { get; set; }
 
         public TacticsForm(Puzzle.Puzzle puzzle,Menu menu)
@@ -69,7 +73,7 @@ namespace Chesscape.Chess
         }
         public void generate_next()
         {
-            Puzzle.Puzzle tmp=menu.generate_next_puzzle();
+            Puzzle.Puzzle tmp = menu.generate_next_puzzle();
             board.SetBoard(tmp.GetFEN());
             board.SetPuzzle(tmp);
             currentPuzzle = tmp;
