@@ -11,7 +11,7 @@ namespace Chesscape.Chess
     {
 
         private Board board;
-        private Puzzle.Puzzle currentPuzzle { get; set; }
+        private Puzzle.Puzzle CurrentPuzzle { get; set; }
 
         public TacticsForm(Puzzle.Puzzle puzzle)
         {
@@ -20,12 +20,15 @@ namespace Chesscape.Chess
 
             Square.SetFileTranslation();
             board = Board.GetInstance();
+
             board.SetSquaresTheme();
             board.SetBoard(puzzle.GetFEN());
             board.PreviousSetup = FEN.ToFEN(board.Squares);
             board.SetPuzzle(puzzle);
             board.SetForm(this);
-            this.currentPuzzle = puzzle;
+
+            CurrentPuzzle = puzzle;
+
             Invalidate();
         }
 
@@ -60,7 +63,7 @@ namespace Chesscape.Chess
         {
             lbDoneMoves.Items.Clear();
 
-            currentPuzzle.GetPastMoves()
+            CurrentPuzzle.GetPastMoves()
                 .ForEach(puzzle => lbDoneMoves.Items.Add(puzzle));
         }
 

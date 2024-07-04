@@ -39,9 +39,10 @@
             // 
             this.btn_Easy.BackColor = System.Drawing.Color.LightGreen;
             this.btn_Easy.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Easy.Location = new System.Drawing.Point(75, 110);
+            this.btn_Easy.Location = new System.Drawing.Point(56, 89);
+            this.btn_Easy.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn_Easy.Name = "btn_Easy";
-            this.btn_Easy.Size = new System.Drawing.Size(280, 50);
+            this.btn_Easy.Size = new System.Drawing.Size(210, 41);
             this.btn_Easy.TabIndex = 0;
             this.btn_Easy.Text = "Easy";
             this.btn_Easy.UseVisualStyleBackColor = false;
@@ -51,9 +52,10 @@
             // 
             this.btn_Medium.BackColor = System.Drawing.Color.Khaki;
             this.btn_Medium.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Medium.Location = new System.Drawing.Point(75, 190);
+            this.btn_Medium.Location = new System.Drawing.Point(56, 154);
+            this.btn_Medium.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn_Medium.Name = "btn_Medium";
-            this.btn_Medium.Size = new System.Drawing.Size(280, 50);
+            this.btn_Medium.Size = new System.Drawing.Size(210, 41);
             this.btn_Medium.TabIndex = 1;
             this.btn_Medium.Text = "Medium";
             this.btn_Medium.UseVisualStyleBackColor = false;
@@ -63,9 +65,10 @@
             // 
             this.btn_Hard.BackColor = System.Drawing.Color.Salmon;
             this.btn_Hard.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Hard.Location = new System.Drawing.Point(75, 270);
+            this.btn_Hard.Location = new System.Drawing.Point(56, 219);
+            this.btn_Hard.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn_Hard.Name = "btn_Hard";
-            this.btn_Hard.Size = new System.Drawing.Size(280, 50);
+            this.btn_Hard.Size = new System.Drawing.Size(210, 41);
             this.btn_Hard.TabIndex = 2;
             this.btn_Hard.Text = "Hard";
             this.btn_Hard.UseVisualStyleBackColor = false;
@@ -74,21 +77,22 @@
             // lbl_ELO
             // 
             this.lbl_ELO.AutoSize = true;
-            this.lbl_ELO.BackColor = System.Drawing.SystemColors.WindowFrame;
+            this.lbl_ELO.BackColor = System.Drawing.Color.Transparent;
             this.lbl_ELO.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_ELO.Location = new System.Drawing.Point(12, 409);
+            this.lbl_ELO.Location = new System.Drawing.Point(9, 332);
+            this.lbl_ELO.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbl_ELO.Name = "lbl_ELO";
-            this.lbl_ELO.Size = new System.Drawing.Size(86, 32);
+            this.lbl_ELO.Size = new System.Drawing.Size(68, 26);
             this.lbl_ELO.TabIndex = 3;
             this.lbl_ELO.Text = "ELO: ";
             // 
             // Menu
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(600, 366);
             this.Controls.Add(this.lbl_ELO);
             this.Controls.Add(this.btn_Hard);
             this.Controls.Add(this.btn_Medium);
@@ -96,6 +100,7 @@
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Menu";
             this.Text = "Chesscape";
             this.ResumeLayout(false);
