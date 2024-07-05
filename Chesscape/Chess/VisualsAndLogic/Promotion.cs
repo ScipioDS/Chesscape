@@ -43,5 +43,10 @@ namespace Chesscape
             piece = new Knight(true);
             DialogResult = DialogResult.OK;
         }
+
+        private void Promotion_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

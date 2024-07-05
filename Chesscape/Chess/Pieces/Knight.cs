@@ -15,8 +15,8 @@ namespace Chesscape.Chess
         {
             string currentDirectory = Directory.GetCurrentDirectory();
 
-            string fullPathW = Path.GetFullPath(Path.Combine(currentDirectory, @"cburnett_pieces\w_knight.png"));
-            string fullPathB = Path.GetFullPath(Path.Combine(currentDirectory, @"cburnett_pieces\b_knight.png"));
+            string fullPathW = Path.GetFullPath(Path.Combine(currentDirectory, $@"{Board.PieceSetDirective}\w_knight.png"));
+            string fullPathB = Path.GetFullPath(Path.Combine(currentDirectory, $@"{Board.PieceSetDirective}\b_knight.png"));
 
             PieceImage = isWhite ? Image.FromFile(fullPathW)
                 :
@@ -52,30 +52,39 @@ namespace Chesscape.Chess
             return Image.FromFile(fullPathT);
         }
 
-        public override void setFile(char file)
+        public override void SetFile(char file)
         {
             this.File = file;
         }
 
-        public override void setRank(int rank)
+        public override void SetRank(int rank)
         {
             this.Rank = rank;
         }
 
-        public override void setAddFile()
+        public override void SetAddFile()
         {
             this.addFile = true;
         }
 
-        public override void refresh()
+        public override void Refresh()
         {
             this.addRank = false;
             this.addFile = false;
         }
 
-        public override void setAddRank()
+        public override void SetAddRank()
         {
            this.addRank = true;
+        }
+
+        public override void SetPieceSet(string directive)
+        {
+            string wd = Directory.GetCurrentDirectory();
+
+            PieceImage = White ? Image.FromFile(Path.GetFullPath(Path.Combine(wd, $@"{directive}\w_knight.png")))
+                        :
+                        Image.FromFile(Path.GetFullPath(Path.Combine(wd, $@"{directive}\b_knight.png")));
         }
     }
 }

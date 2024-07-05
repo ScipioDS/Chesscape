@@ -7,10 +7,11 @@ namespace Chesscape.Chess
     public abstract class Piece
     {
         public bool White { get; set; }
+
         protected Image PieceImage;
-        public bool addRank {  get; set; }
+        public bool addRank { get; set; }
         public bool addFile { get; set; }
-        public char File {  get; set; }
+        public char File { get; set; }
         public int Rank { get; set; }
 
         protected Piece(bool isWhite)
@@ -32,11 +33,13 @@ namespace Chesscape.Chess
         {
             return PieceImage;
         }
-        public abstract void setFile(char file);
-        public abstract void setRank(int rank);
-        public abstract void setAddFile();
-        public abstract void setAddRank();
-        public abstract void refresh();
+
+        public abstract void SetPieceSet(string directive);
+        public abstract void SetFile(char file);
+        public abstract void SetRank(int rank);
+        public abstract void SetAddFile();
+        public abstract void SetAddRank();
+        public abstract void Refresh();
         public abstract Image GetImageT();
     }
 }

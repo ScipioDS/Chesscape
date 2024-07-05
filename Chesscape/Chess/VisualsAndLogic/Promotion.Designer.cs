@@ -40,7 +40,7 @@
             this.queen_btn.BackgroundImage = global::Chesscape.Properties.Resources.w_queen;
             this.queen_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.queen_btn.Location = new System.Drawing.Point(9, 10);
-            this.queen_btn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.queen_btn.Margin = new System.Windows.Forms.Padding(2);
             this.queen_btn.Name = "queen_btn";
             this.queen_btn.Size = new System.Drawing.Size(64, 71);
             this.queen_btn.TabIndex = 4;
@@ -53,7 +53,7 @@
             this.bishop_btn.BackgroundImage = global::Chesscape.Properties.Resources.w_bishop;
             this.bishop_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.bishop_btn.Location = new System.Drawing.Point(78, 10);
-            this.bishop_btn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.bishop_btn.Margin = new System.Windows.Forms.Padding(2);
             this.bishop_btn.Name = "bishop_btn";
             this.bishop_btn.Size = new System.Drawing.Size(64, 71);
             this.bishop_btn.TabIndex = 5;
@@ -66,7 +66,7 @@
             this.rook_btn.BackgroundImage = global::Chesscape.Properties.Resources.w_rook;
             this.rook_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.rook_btn.Location = new System.Drawing.Point(147, 10);
-            this.rook_btn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rook_btn.Margin = new System.Windows.Forms.Padding(2);
             this.rook_btn.Name = "rook_btn";
             this.rook_btn.Size = new System.Drawing.Size(64, 71);
             this.rook_btn.TabIndex = 6;
@@ -79,7 +79,7 @@
             this.knight_btn.BackgroundImage = global::Chesscape.Properties.Resources.w_knight;
             this.knight_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.knight_btn.Location = new System.Drawing.Point(216, 10);
-            this.knight_btn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.knight_btn.Margin = new System.Windows.Forms.Padding(2);
             this.knight_btn.Name = "knight_btn";
             this.knight_btn.Size = new System.Drawing.Size(64, 71);
             this.knight_btn.TabIndex = 7;
@@ -97,9 +97,10 @@
             this.Controls.Add(this.rook_btn);
             this.Controls.Add(this.bishop_btn);
             this.Controls.Add(this.queen_btn);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Promotion";
             this.Text = "Choose your fighter";
+            this.Load += new System.EventHandler(this.Promotion_Load);
             this.ResumeLayout(false);
 
         }

@@ -51,6 +51,8 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.cbPieceSet = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // lbDoneMoves
@@ -70,7 +72,6 @@
             // timerforBlackMove
             // 
             this.timerforBlackMove.Interval = 1000;
-            this.timerforBlackMove.Tick += new System.EventHandler(this.timerforBlackMove_Tick);
             // 
             // labelMoves
             // 
@@ -285,12 +286,36 @@
             this.label16.TabIndex = 18;
             this.label16.Text = "h";
             // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
+            this.label17.ForeColor = System.Drawing.Color.White;
+            this.label17.Location = new System.Drawing.Point(960, 93);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(112, 26);
+            this.label17.TabIndex = 19;
+            this.label17.Text = "Piece Set:";
+            // 
+            // cbPieceSet
+            // 
+            this.cbPieceSet.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.cbPieceSet.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
+            this.cbPieceSet.FormattingEnabled = true;
+            this.cbPieceSet.Location = new System.Drawing.Point(965, 122);
+            this.cbPieceSet.Name = "cbPieceSet";
+            this.cbPieceSet.Size = new System.Drawing.Size(123, 28);
+            this.cbPieceSet.TabIndex = 20;
+            this.cbPieceSet.SelectedIndexChanged += new System.EventHandler(this.cbPieceSet_SelectedIndexChanged);
+            // 
             // TacticsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1115, 628);
+            this.Controls.Add(this.cbPieceSet);
+            this.Controls.Add(this.label17);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.label14);
@@ -347,5 +372,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.ComboBox cbPieceSet;
     }
 }

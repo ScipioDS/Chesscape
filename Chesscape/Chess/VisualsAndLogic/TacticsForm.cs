@@ -21,6 +21,7 @@ namespace Chesscape.Chess
         public TacticsForm(Puzzle.Puzzle puzzle,Menu menu)
         {
             InitializeComponent();
+
             DoubleBuffered = true;
             this.menu = menu;
             Square.SetFileTranslation();
@@ -31,6 +32,9 @@ namespace Chesscape.Chess
             board.PreviousSetup = FEN.ToFEN(board.Squares);
             board.SetPuzzle(puzzle);
             board.SetForm(this);
+
+            cbPieceSet.Items.Add("CBurnett");
+            cbPieceSet.Items.Add("Tia");
 
             CurrentPuzzle = puzzle;
 
@@ -80,11 +84,6 @@ namespace Chesscape.Chess
             lbDoneMoves.Items.Clear();
         }
 
-        private void timerforBlackMove_Tick(object sender, EventArgs e)
-        {
-
-        }
-
         private void bMakeCustomTheme_click(object sender, EventArgs e)
         {
             board.SetColors();
@@ -96,6 +95,17 @@ namespace Chesscape.Chess
         {
             board.SetColorsDef();
             board.SetSquaresTheme();
+            Invalidate();
+        }
+
+        private void cbPieceSet_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch(cbPieceSet.SelectedItem.ToString())
+            {
+                case "CBurnett": board.ChangePieceSet("cburnett_pieces"); Board.PieceSetDirective = "cburnett_pieces"; break;
+                case "Tia": board.ChangePieceSet("tia_pieces"); Board.PieceSetDirective = "tia_pieces"; break;
+            }
+
             Invalidate();
         }
     }

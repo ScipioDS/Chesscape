@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Chesscape",
+    "\\Chesscape\\Chess",
+    "\\Chesscape\\Chess\\VisualsAndLogic"
   ],
+  "SelectedNode": "\\Chesscape.sln",
   "PreviewInSolutionExplorer": false
 }

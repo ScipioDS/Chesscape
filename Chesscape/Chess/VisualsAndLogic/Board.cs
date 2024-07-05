@@ -33,7 +33,7 @@ namespace Chesscape.Chess
         public Square EnPassantTarget { get; set; }
         //Turn
         public bool WhiteToPlay { get; set; }
-        //Legal moveTo
+        //Legal moves
         private HashSet<Move> LegalMoves { get; set; }
         public bool KingInCheck { get; set; }
         public bool WhiteKingInCheck { get; set; }
@@ -53,12 +53,14 @@ namespace Chesscape.Chess
 
         //Drawing squares - Do NOT change value from 64 unless necessary.
         private static readonly int SQUARE_SIZE = 64;
+        public static string PieceSetDirective { get; set; }
 
         /// <summary>
         /// Reserves memory for the Square matrix (the board itself). Private due to singleton.
         /// </summary>
         private Board()
         {
+            PieceSetDirective = "cburnett_pieces";
             KingInCheck = false;
             WhiteKingInCheck = false;
 
@@ -337,6 +339,7 @@ namespace Chesscape.Chess
                     {
                         currentplayermove.Append("/" + check.ToString());
                         FromSquare.Piece = check;
+                        ChangePieceSet(PieceSetDirective);
                         promotion = true;
                     }
                 }
@@ -358,7 +361,7 @@ namespace Chesscape.Chess
                     LegalMoves = null;
                     this.SelectedPiece = null;
                     FromSquare = null;
-                    await Task.Delay(750);
+                    await Task.Delay(250);
                     next_move = currentPuzzle.GetNextMove();
                     if (next_move.Equals("GAME OVER"))
                     {
@@ -400,11 +403,14 @@ namespace Chesscape.Chess
 
                     if (preloadCheckPos != null && !preloadCheckPos.Equals(square.ToString()))
                         Trajectories.PreloadIllegalOfBlack();
+                    
                     LegalMoves = null;
-                    this.SelectedPiece = null;
+                    SelectedPiece = null;
+
                     if (promotion)
                     {
                         FromSquare.Piece = new Pawn(true);
+                        FromSquare.Piece.SetPieceSet(PieceSetDirective);
                     }
                     if (EnPassantTarget != null)
                     {
@@ -426,6 +432,7 @@ namespace Chesscape.Chess
 
             LegalMoves = null;
             this.SelectedPiece = null;
+            
         }
         public bool knight_rook_check(string move, string piece)
         {
@@ -613,17 +620,17 @@ namespace Chesscape.Chess
             {
                 if (Rook1.File == Rook2.File)
                 {
-                    Rook1.Piece.setRank(Rook1.GetRankPhysical());
-                    Rook2.Piece.setRank(Rook2.GetRankPhysical());
-                    Rook1.Piece.setAddRank();
-                    Rook2.Piece.setAddRank();
+                    Rook1.Piece.SetRank(Rook1.GetRankPhysical());
+                    Rook2.Piece.SetRank(Rook2.GetRankPhysical());
+                    Rook1.Piece.SetAddRank();
+                    Rook2.Piece.SetAddRank();
                 }
                 else
                 {
-                    Rook2.Piece.setFile(Rook2.GetFileChar(Rook2.File));
-                    Rook1.Piece.setFile(Rook1.GetFileChar(Rook1.File));
-                    Rook1.Piece.setAddFile();
-                    Rook2.Piece.setAddFile();
+                    Rook2.Piece.SetFile(Rook2.GetFileChar(Rook2.File));
+                    Rook1.Piece.SetFile(Rook1.GetFileChar(Rook1.File));
+                    Rook1.Piece.SetAddFile();
+                    Rook2.Piece.SetAddFile();
                 }
             }
         }
@@ -653,17 +660,17 @@ namespace Chesscape.Chess
             {
                 if (knight1.File == knight2.File)
                 {
-                    knight1.Piece.setRank(knight1.GetRankPhysical());
-                    knight2.Piece.setRank(knight2.GetRankPhysical());
-                    knight1.Piece.setAddRank();
-                    knight2.Piece.setAddRank();
+                    knight1.Piece.SetRank(knight1.GetRankPhysical());
+                    knight2.Piece.SetRank(knight2.GetRankPhysical());
+                    knight1.Piece.SetAddRank();
+                    knight2.Piece.SetAddRank();
                 }
                 else
                 {
-                    knight2.Piece.setFile(knight2.GetFileChar(knight2.File));
-                    knight1.Piece.setFile(knight1.GetFileChar(knight1.File));
-                    knight1.Piece.setAddFile();
-                    knight2.Piece.setAddFile();
+                    knight2.Piece.SetFile(knight2.GetFileChar(knight2.File));
+                    knight1.Piece.SetFile(knight1.GetFileChar(knight1.File));
+                    knight1.Piece.SetAddFile();
+                    knight2.Piece.SetAddFile();
                 }
             }
 
@@ -757,6 +764,20 @@ namespace Chesscape.Chess
                 this.Cursor = point;
             }
 
+        }
+
+        internal void ChangePieceSet(string directive)
+        {
+            for (int i = 0; i < 8; ++i)
+            {
+                for (int j = 0; j < 8; ++j)
+                {
+                    if (Squares[i][j].PieceResident())
+                    {
+                        Squares[i][j].Piece.SetPieceSet(directive);
+                    }
+                }
+            }
         }
     }
 }

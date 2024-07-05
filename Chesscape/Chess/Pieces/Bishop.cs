@@ -13,8 +13,8 @@ namespace Chesscape.Chess
         {
             string currentDirectory = Directory.GetCurrentDirectory();
 
-            string fullPathW = Path.GetFullPath(Path.Combine(currentDirectory, @"cburnett_pieces\w_bishop.png"));
-            string fullPathB = Path.GetFullPath(Path.Combine(currentDirectory, @"cburnett_pieces\b_bishop.png"));
+            string fullPathW = Path.GetFullPath(Path.Combine(currentDirectory, $@"{Board.PieceSetDirective}\w_bishop.png"));
+            string fullPathB = Path.GetFullPath(Path.Combine(currentDirectory, $@"{Board.PieceSetDirective}\b_bishop.png"));
 
             PieceImage = isWhite ? Image.FromFile(fullPathW) 
                 : 
@@ -26,7 +26,7 @@ namespace Chesscape.Chess
             return White ? "B" : "b";
         }
 
-        public override void refresh()
+        public override void Refresh()
         {
             throw new NotImplementedException();
         }
@@ -38,22 +38,22 @@ namespace Chesscape.Chess
             return Image.FromFile(fullPathT);
         }
 
-        public override void setFile(char file)
+        public override void SetFile(char file)
         {
             throw new NotImplementedException();
         }
 
-        public override void setRank(int rank)
+        public override void SetRank(int rank)
         {
             throw new NotImplementedException();
         }
 
-        public override void setAddFile()
+        public override void SetAddFile()
         {
             throw new NotImplementedException();
         }
 
-        public override void setAddRank()
+        public override void SetAddRank()
         {
             throw new NotImplementedException();
         }
@@ -61,6 +61,15 @@ namespace Chesscape.Chess
         public override string FENNotation()
         {
             return White ? "B" : "b";
+        }
+
+        public override void SetPieceSet(string directive)
+        {
+            string wd = Directory.GetCurrentDirectory();
+
+            PieceImage = White ? Image.FromFile(Path.GetFullPath(Path.Combine(wd, $@"{directive}\w_bishop.png")))
+                        :
+                        Image.FromFile(Path.GetFullPath(Path.Combine(wd, $@"{directive}\b_bishop.png")));
         }
     }
 }
