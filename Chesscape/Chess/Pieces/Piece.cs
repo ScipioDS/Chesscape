@@ -9,6 +9,7 @@ namespace Chesscape.Chess
         public bool White { get; set; }
 
         protected Image PieceImage;
+        protected Image TransparentImage;
         public bool addRank { get; set; }
         public bool addFile { get; set; }
         public char File { get; set; }
@@ -18,9 +19,6 @@ namespace Chesscape.Chess
         {
             White = isWhite;
         }
-
-        //TODO: Add piece methods
-
         /// <summary>
         /// To be used for debugging purposes with Debug.WriteLine(square.Piece.ToString())
         /// </summary>

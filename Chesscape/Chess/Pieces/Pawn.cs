@@ -11,7 +11,6 @@ namespace Chesscape.Chess
 {
     public class Pawn : Piece
     {
-        //TODO: Implement pawn
         public Pawn(bool isWhite) : base(isWhite)
         {
             string currentDirectory = Directory.GetCurrentDirectory();
@@ -20,10 +19,13 @@ namespace Chesscape.Chess
 
             string fullPathW = Path.GetFullPath(Path.Combine(currentDirectory, $@"{Board.PieceSetDirective}\w_pawn.png"));
             string fullPathB = Path.GetFullPath(Path.Combine(currentDirectory, $@"{Board.PieceSetDirective}\b_pawn.png"));
+            string fullPathT = Path.GetFullPath(Path.Combine(currentDirectory, $@"{Board.PieceSetDirective}\t_pawn.png"));
 
             PieceImage = isWhite ? Image.FromFile(fullPathW)
                 :
                 Image.FromFile(fullPathB);
+
+            TransparentImage = Image.FromFile(fullPathT);
         }
 
         public override string FENNotation()
@@ -44,9 +46,7 @@ namespace Chesscape.Chess
 
         public override Image GetImageT()
         {
-            string currentDirectory = Directory.GetCurrentDirectory();
-            string fullPathT = Path.GetFullPath(Path.Combine(currentDirectory, @"cburnett_pieces\t_pawn.png"));
-            return Image.FromFile(fullPathT);
+            return TransparentImage;
         }
 
 
@@ -77,6 +77,8 @@ namespace Chesscape.Chess
             PieceImage = White ? Image.FromFile(Path.GetFullPath(Path.Combine(wd, $@"{directive}\w_pawn.png")))
                         :
                         Image.FromFile(Path.GetFullPath(Path.Combine(wd, $@"{directive}\b_pawn.png")));
+
+            TransparentImage = Image.FromFile(Path.GetFullPath(Path.Combine(wd, $@"{directive}\t_pawn.png")));
         }
     }
 }

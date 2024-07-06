@@ -10,17 +10,19 @@ namespace Chesscape.Chess
 {
     public class Queen : Piece
     {
-        //TODO: Implement queen
         public Queen(bool isWhite) : base(isWhite)
         {
             string currentDirectory = Directory.GetCurrentDirectory();
 
             string fullPathW = Path.GetFullPath(Path.Combine(currentDirectory, $@"{Board.PieceSetDirective}\w_queen.png"));
             string fullPathB = Path.GetFullPath(Path.Combine(currentDirectory, $@"{Board.PieceSetDirective}\b_queen.png"));
+            string fullPathT = Path.GetFullPath(Path.Combine(currentDirectory, $@"{Board.PieceSetDirective}\t_queen.png"));
 
             PieceImage = isWhite ? Image.FromFile(fullPathW)
                 :
                 Image.FromFile(fullPathB);
+
+            TransparentImage = Image.FromFile(fullPathT);
         }
 
         public override string ToString()
@@ -35,9 +37,7 @@ namespace Chesscape.Chess
 
         public override Image GetImageT()
         {
-            string currentDirectory = Directory.GetCurrentDirectory();
-            string fullPathT = Path.GetFullPath(Path.Combine(currentDirectory, @"cburnett_pieces\t_queen.png"));
-            return Image.FromFile(fullPathT);
+            return TransparentImage;
         }
 
         public override void SetFile(char file)
@@ -73,6 +73,8 @@ namespace Chesscape.Chess
             PieceImage = White ? Image.FromFile(Path.GetFullPath(Path.Combine(wd, $@"{directive}\w_queen.png")))
                         :
                         Image.FromFile(Path.GetFullPath(Path.Combine(wd, $@"{directive}\b_queen.png")));
+
+            TransparentImage = Image.FromFile(Path.GetFullPath(Path.Combine(wd, $@"{directive}\t_queen.png")));
         }
     }
 }
