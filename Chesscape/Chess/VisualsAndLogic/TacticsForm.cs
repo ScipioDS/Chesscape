@@ -80,7 +80,7 @@ namespace Chesscape.Chess
             Puzzle.Puzzle tmp = menu.generate_next_puzzle();
             board.SetBoard(tmp.GetFEN());
             board.SetPuzzle(tmp);
-            currentPuzzle = tmp;
+            CurrentPuzzle = tmp;
             lbDoneMoves.Items.Clear();
         }
 
