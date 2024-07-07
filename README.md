@@ -1,1 +1,1 @@
-# Chesscape Project 2024 - Visual Programming @ FSCE - UKIM - Skopje
+# Chesscape, A Chess Tactics Project - Visual Programming @ FSCE UKIM, 2024
