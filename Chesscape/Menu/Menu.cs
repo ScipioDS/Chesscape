@@ -32,19 +32,19 @@ namespace Chesscape
         private void btn_Easy_Click(object sender, EventArgs e)
         {
             difficulty = "easy";
-            generate_easy();
+            GenerateEasy();
         }
 
         private void btn_Medium_Click(object sender, EventArgs e)
         {
             difficulty = "medium";
-           generate_medium();   
+           GenerateMedium();   
         }
 
         private void btn_Hard_Click(object sender, EventArgs e)
         {
             difficulty = "hard";
-           generate_hard();
+           GenerateHard();
         }
 
         private void updateLabel()
@@ -60,6 +60,7 @@ namespace Chesscape
 
             lbl_ELO.Text = new StringBuilder("ELO: ").Append(File.ReadAllText(path)).ToString();
         }
+
         public  Puzzle.Puzzle generate_next_puzzle()
         {
             Puzzle.Puzzle tmp = null;
@@ -77,7 +78,8 @@ namespace Chesscape
             }
             return tmp;
         }
-        public void generate_easy()
+
+        public void GenerateEasy()
         {
             Puzzle.Puzzle puzzle = pm.GetArbitraryPuzzle("easy");
             var form = new Chess.TacticsForm(puzzle,this).ShowDialog();
@@ -92,7 +94,8 @@ namespace Chesscape
             }
             updateLabel();
         }
-        public void generate_medium()
+
+        public void GenerateMedium()
         {
             Puzzle.Puzzle puzzle = pm.GetArbitraryPuzzle("medium");
             var form = new Chess.TacticsForm(puzzle,this).ShowDialog();
@@ -107,7 +110,8 @@ namespace Chesscape
             }
             updateLabel();
         }
-        public void generate_hard()
+
+        public void GenerateHard()
         {
             Puzzle.Puzzle puzzle = pm.GetArbitraryPuzzle("hard");
             var form = new Chess.TacticsForm(puzzle,this).ShowDialog();

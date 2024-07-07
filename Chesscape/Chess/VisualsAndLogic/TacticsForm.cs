@@ -16,7 +16,6 @@ namespace Chesscape.Chess
         private Puzzle.Puzzle CurrentPuzzle { get; set; }
 
         public Menu menu;
-        private Puzzle.Puzzle currentPuzzle { get; set; }
 
         public TacticsForm(Puzzle.Puzzle puzzle,Menu menu)
         {
@@ -73,14 +72,14 @@ namespace Chesscape.Chess
             lbDoneMoves.Items.Clear();
 
             CurrentPuzzle.GetPastMoves()
-                .ForEach(puzzle => lbDoneMoves.Items.Add(puzzle));
+                .ForEach(moveOfPuzzle => lbDoneMoves.Items.Add(moveOfPuzzle));
         }
-        public void generate_next()
+        public void GenerateNext()
         {
             Puzzle.Puzzle tmp = menu.generate_next_puzzle();
             board.SetBoard(tmp.GetFEN());
             board.SetPuzzle(tmp);
-            currentPuzzle = tmp;
+            CurrentPuzzle = tmp;
             lbDoneMoves.Items.Clear();
         }
 

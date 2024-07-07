@@ -371,7 +371,7 @@ namespace Chesscape.Chess
                         if (result == DialogResult.Yes)
                         {
                             tf.menu.update_elo(this.currentPuzzle);
-                            tf.generate_next();
+                            tf.GenerateNext();
                             PreviousSetup = FEN.ToFEN(Squares);
                             return;
                         }
