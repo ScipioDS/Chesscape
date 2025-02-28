@@ -1,1 +1,1 @@
-# Chesscape, A Chess Tactics Project - Visual Programming @ FSCE UKIM, 2024
+# Chesscape, A Chess Problems Project
